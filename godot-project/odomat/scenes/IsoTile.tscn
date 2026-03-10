@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b4fk8xm2n3ja"]
+
+[ext_resource type="Script" uid="uid://bn3iwtbvejv05" path="res://scripts/iso_tile.gd" id="1_tile_script"]
+
+[node name="IsoTile" type="Node2D" unique_id=1160055728]
+script = ExtResource("1_tile_script")
+
+[node name="Left" type="Polygon2D" parent="." unique_id=647405899]
+color = Color(0.294, 0.476, 0.294, 1)
+polygon = PackedVector2Array(-32, -6, 0, 10, 0, 16, -32, 0)
+
+[node name="Right" type="Polygon2D" parent="." unique_id=551655756]
+color = Color(0.231, 0.374, 0.231, 1)
+polygon = PackedVector2Array(32, -6, 0, 10, 0, 16, 32, 0)
+
+[node name="Top" type="Polygon2D" parent="." unique_id=396492562]
+color = Color(0.42, 0.68, 0.42, 1)
+polygon = PackedVector2Array(0, -22, 32, -6, 0, 10, -32, -6)
