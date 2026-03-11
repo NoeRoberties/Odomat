@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Odomat"
-run/main_scene="uid://b8lbay3r2x1m"
+run/main_scene="uid://brnw2i2klx3j6"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
