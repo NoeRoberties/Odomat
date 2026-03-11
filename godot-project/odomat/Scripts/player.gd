@@ -16,7 +16,7 @@ const ATTACK_DAMAGE: int = 1
 ## Cooldown entre deux attaques (secondes).
 const ATTACK_COOLDOWN: float = 0.4
 ## Script du swoosh, instancié dynamiquement à chaque attaque.
-const SwooshScript := preload("res://scripts/swoosh.gd")
+const SwooshScript := preload("res://Scripts/swoosh.gd")
 
 var _cooldown_remaining: float = 0.0
 
