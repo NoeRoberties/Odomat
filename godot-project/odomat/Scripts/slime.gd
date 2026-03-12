@@ -3,30 +3,33 @@ class_name Slime
 
 var animated_sprite: AnimatedSprite2D
 var wandering_destination: Vector2
-var state = WANDERING
+var attacking_destination: Vector2
 
 func _ready() -> void:
-	speed = 35
 	animated_sprite = $AnimatedSprite2D
 	choose_wandering_destination()
 
 
-func _process(delta: float) -> void:
-	if state == WANDERING:
-		wander(delta)
-	if state == ATTACKING:
-		attack_player(delta)
+func load_attack() -> void:
+	velocity = Vector2.ZERO
+	state = LOADING
+	$AttackLoadingTimer.start()
 
 
-func attack_player(delta: float) -> void:
-	print("Attack.")
+func attack() -> void:
+	var direction: Vector2 = attacking_destination - global_position
+	
+	if direction.length() > 3.0:
+		velocity = direction.normalized() * speed * 2
+	else:
+		load_attack()
+	move_and_slide()
 
 
-func wander(delta: float) -> void:
+func wander() -> void:
 	var direction: Vector2 = wandering_destination - global_position
 	
-	print(direction.length())
-	if direction.length() > 5:
+	if direction.length() > 5.0:
 		velocity = direction.normalized() * speed
 	else:
 		velocity = Vector2.ZERO
@@ -40,3 +43,21 @@ func choose_wandering_destination() -> void:
 	var offset_vector: Vector2 = Vector2(cos(angle), sin(angle)) * distance
 	
 	wandering_destination = global_position + offset_vector
+
+
+# To replace later with the player body
+func _on_detection_area_mouse_entered() -> void:
+	load_attack()
+
+
+# To replace later with the player body
+func _on_detection_area_mouse_exited() -> void:
+	state = WANDERING
+	$AttackLoadingTimer.stop()
+	choose_wandering_destination()
+
+
+func _on_attack_loading_timer_timeout() -> void:
+	state = ATTACKING
+	attacking_destination = get_global_mouse_position()
+	$AttackLoadingTimer.stop()
