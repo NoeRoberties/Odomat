@@ -15,6 +15,11 @@ run/main_scene="uid://brnw2i2klx3j6"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+RobotModules="*res://Scripts/RobotModules.gd"
+EquipmentMenu="*res://Scenes/EquipmentMenu.tscn"
+
 [display]
 
 window/size/viewport_width=1280

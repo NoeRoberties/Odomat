@@ -1,24 +1,36 @@
 extends CharacterBody2D
 
-const SPEED: float = 150.0
+## ── Valeurs de base du robot (sans aucun module équipé) ──────────────────────
+const BASE_SPEED          : float = 150.0
+const BASE_ATTACK_RANGE   : float = 100.0
+const BASE_ATTACK_DAMAGE  : int   = 1
+const BASE_ATTACK_COOLDOWN: float = 0.4
 
 const ISO_DIRS: Dictionary = {
 	"ui_up":    Vector2( 0.0, -1.0),
-	"ui_right": Vector2( 1.0,  0),
-	"ui_down":  Vector2(0.0,  1.0),
-	"ui_left":  Vector2(-1.0, 0.0),
+	"ui_right": Vector2( 1.0,  0.0),
+	"ui_down":  Vector2( 0.0,  1.0),
+	"ui_left":  Vector2(-1.0,  0.0),
 }
 
-## Portée d'attaque en pixels écran.
-const ATTACK_RANGE: float = 100.0
-## Dégâts infligés par coup.
-const ATTACK_DAMAGE: int = 1
-## Cooldown entre deux attaques (secondes).
-const ATTACK_COOLDOWN: float = 0.4
-## Script du swoosh, instancié dynamiquement à chaque attaque.
 const SwooshScript := preload("res://Scripts/swoosh.gd")
 
 var _cooldown_remaining: float = 0.0
+
+
+# ── Statistiques calculées : base + bonus des modules équipés ─────────────────
+
+func _get_speed() -> float:
+	return BASE_SPEED + RobotModules.get_speed_bonus()
+
+func _get_attack_damage() -> int:
+	return BASE_ATTACK_DAMAGE + RobotModules.get_damage_bonus()
+
+func _get_attack_range() -> float:
+	return BASE_ATTACK_RANGE + RobotModules.get_range_bonus()
+
+func _get_attack_cooldown() -> float:
+	return BASE_ATTACK_COOLDOWN * RobotModules.get_cooldown_multiplier()
 
 
 func _process(delta: float) -> void:
@@ -32,7 +44,7 @@ func _physics_process(_delta: float) -> void:
 		if Input.is_action_pressed(action):
 			move_dir += ISO_DIRS[action]
 
-	velocity = move_dir.normalized() * SPEED if move_dir != Vector2.ZERO else Vector2.ZERO
+	velocity = move_dir.normalized() * _get_speed() if move_dir != Vector2.ZERO else Vector2.ZERO
 	move_and_slide()
 
 
@@ -41,7 +53,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			and event.pressed \
 			and event.button_index == MOUSE_BUTTON_LEFT:
 		if _cooldown_remaining <= 0.0:
-			_cooldown_remaining = ATTACK_COOLDOWN
+			_cooldown_remaining = _get_attack_cooldown()
 			_do_attack()
 
 
@@ -51,16 +63,16 @@ func _do_attack() -> void:
 	var attack_dir: Vector2 = (mouse_world - global_position).normalized()
 
 	var nearest_enemy: Node2D = null
-	var nearest_dist: float = ATTACK_RANGE
+	var nearest_dist: float   = _get_attack_range()
 
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		var dist: float = position.distance_to((enemy as Node2D).position)
 		if dist <= nearest_dist:
-			nearest_dist = dist
+			nearest_dist  = dist
 			nearest_enemy = enemy
 
 	if nearest_enemy != null:
-		nearest_enemy.take_damage(ATTACK_DAMAGE)
+		nearest_enemy.take_damage(_get_attack_damage())
 
 	_spawn_swoosh(attack_dir)
 

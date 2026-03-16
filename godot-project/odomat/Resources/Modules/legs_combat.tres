@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ModuleData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/ModuleData.gd" id="1_mod"]
+
+[resource]
+script = ExtResource("1_mod")
+module_name = "Combat Legs"
+slot = 2
+description = "Stabilizing gyroscopes. Improves precision and range."
+speed_bonus = -20.0
+damage_bonus = 0
+range_bonus = 25.0
+cooldown_multiplier = 1.0

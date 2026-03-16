@@ -1,0 +1,198 @@
+[gd_scene format=3 uid="uid://iqasfoyj0nyo"]
+
+[ext_resource type="Script" uid="uid://dv1xly4yw068s" path="res://Scripts/EquipmentMenu.gd" id="1_em_script"]
+[ext_resource type="PackedScene" uid="uid://dgrsaebgjx6wy" path="res://Scenes/ModuleSelectionPopup.tscn" id="2_pisol"]
+
+[node name="EquipmentMenu" type="CanvasLayer" unique_id=181712624]
+process_mode = 3
+layer = 10
+script = ExtResource("1_em_script")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=151375263]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1979795259]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainPanel" type="PanelContainer" parent="Center" unique_id=494028858]
+custom_minimum_size = Vector2(480, 410)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/MainPanel" unique_id=42549262]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="RootVBox" type="VBoxContainer" parent="Center/MainPanel/Margin" unique_id=449602839]
+layout_mode = 2
+
+[node name="TitleBar" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox" unique_id=935193177]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Center/MainPanel/Margin/RootVBox/TitleBar" unique_id=1028182679]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "  ROBOT MODULES"
+
+[node name="CloseButton" type="Button" parent="Center/MainPanel/Margin/RootVBox/TitleBar" unique_id=1610334783]
+unique_name_in_owner = true
+layout_mode = 2
+text = " ✕ "
+flat = true
+
+[node name="TitleSep" type="HSeparator" parent="Center/MainPanel/Margin/RootVBox" unique_id=813167913]
+layout_mode = 2
+
+[node name="BodyDiagram" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox" unique_id=1229820420]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="VSpacer1" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=1386159231]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopRow" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=973828058]
+layout_mode = 2
+
+[node name="TopSpacer1" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow" unique_id=844612009]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BrainChipPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow" unique_id=236815481]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="BtnBrainChip" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow/BrainChipPart" unique_id=704336420]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
+text = "🧠 Brain Chip"
+
+[node name="LblBrainChip" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow/BrainChipPart" unique_id=1454070022]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "⬦ empty"
+horizontal_alignment = 1
+
+[node name="TopSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow" unique_id=295353471]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MiddleRow" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=741173002]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MidSpacer1" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=833888708]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftArmPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=196004321]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="BtnLeftArm" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/LeftArmPart" unique_id=1679155713]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 90)
+layout_mode = 2
+text = "🦾 Left Arm"
+
+[node name="LblLeftArm" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/LeftArmPart" unique_id=1458813802]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "⬦ empty"
+horizontal_alignment = 1
+
+[node name="TorsoPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=374545221]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Torso" type="Panel" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/TorsoPart" unique_id=961253372]
+custom_minimum_size = Vector2(110, 90)
+layout_mode = 2
+
+[node name="TorsoLabel" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/TorsoPart/Torso" unique_id=2107678864]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+text = "Torso"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TorsoAlignLbl" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/TorsoPart" unique_id=93808790]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = " "
+horizontal_alignment = 1
+
+[node name="RightArmPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=509301253]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="BtnRightArm" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/RightArmPart" unique_id=333364059]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 90)
+layout_mode = 2
+text = "🦾 Right Arm"
+
+[node name="LblRightArm" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/RightArmPart" unique_id=179681987]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "⬦ empty"
+horizontal_alignment = 1
+
+[node name="MidSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=505832709]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BottomRow" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=884889798]
+layout_mode = 2
+
+[node name="BotSpacer1" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow" unique_id=1993920752]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LegsPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow" unique_id=1535507722]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="BtnLegs" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow/LegsPart" unique_id=1737171037]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
+text = "🦿 Legs"
+
+[node name="LblLegs" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow/LegsPart" unique_id=1039270769]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "⬦ empty"
+horizontal_alignment = 1
+
+[node name="BotSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow" unique_id=2049961972]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=401747132]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ModuleSelectionPopup" parent="." unique_id=322379853 instance=ExtResource("2_pisol")]
+visible = false
