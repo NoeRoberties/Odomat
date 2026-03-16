@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://iqasfoyj0nyo"]
 
-[ext_resource type="Script" uid="uid://dv1xly4yw068s" path="res://Scripts/EquipmentMenu.gd" id="1_em_script"]
+[ext_resource type="Script" uid="uid://dv1xly4yw068s" path="res://Scripts/equipment_menu.gd" id="1_em_script"]
 [ext_resource type="PackedScene" uid="uid://dgrsaebgjx6wy" path="res://Scenes/ModuleSelectionPopup.tscn" id="2_pisol"]
 
 [node name="EquipmentMenu" type="CanvasLayer" unique_id=181712624]

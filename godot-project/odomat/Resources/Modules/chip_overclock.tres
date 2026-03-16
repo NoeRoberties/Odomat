@@ -1,13 +1,12 @@
-[gd_resource type="Resource" script_class="ModuleData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ModuleData" format=3 uid="uid://chnhb0e4818ca"]
 
-[ext_resource type="Script" path="res://Scripts/ModuleData.gd" id="1_mod"]
+[ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/module_data.gd" id="1_itwj1"]
 
 [resource]
-script = ExtResource("1_mod")
+script = ExtResource("1_itwj1")
 module_name = "Overclock Chip"
 slot = 3
 description = "Overclocked processor. Speed and damage boost, but unstable long-term."
 speed_bonus = 30.0
 damage_bonus = 1
-range_bonus = 0.0
 cooldown_multiplier = 0.9

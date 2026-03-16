@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-RobotModules="*res://Scripts/RobotModules.gd"
+RobotModules="*res://Scripts/robot_modules.gd"
 EquipmentMenu="*res://Scenes/EquipmentMenu.tscn"
 
 [display]
