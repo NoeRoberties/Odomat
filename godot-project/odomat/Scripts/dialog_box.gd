@@ -18,9 +18,9 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed():
-		continue_dialogue()
+		_continue_dialogue()
 
-func continue_dialogue() -> void:
+func _continue_dialogue() -> void:
 	if _replica_length != _current_replica.length():
 		_replica_length = _current_replica.length()
 		return
