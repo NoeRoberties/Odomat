@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bw76ceu1o27s6"]
+
+[ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPC.tscn" id="1_s02eq"]
+[ext_resource type="Texture2D" uid="uid://btxhhnlug66wo" path="res://Assets/black_npc.png" id="2_t8dge"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0pc2"]
+atlas = ExtResource("2_t8dge")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ssfg1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0pc2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="TestMap" type="Node2D" unique_id=1339461984]
+
+[node name="NPC" parent="." unique_id=714362369 instance=ExtResource("1_s02eq")]
+position = Vector2(383, 161)
+_dialogues = Array[String](["Salut, je suis Adrien. Je suis un prototype de PNJ.", "Si tout ce passe bien cela veut dire qu'on est pas trop mal dans le développement."])
+_sprite_frames = SubResource("SpriteFrames_ssfg1")
+_name = "Adrien"
