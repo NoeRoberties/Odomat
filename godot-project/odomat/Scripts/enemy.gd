@@ -1,33 +1,33 @@
 extends CharacterBody2D
 class_name Enemy
 
-enum {ATTACKING, WANDERING, LOADING}
+enum State {ATTACKING, WANDERING, LOADING}
 
 @export var health: float = 10.0
 @export var speed: float = 100.0
 
 var alive: bool = true
-var state = WANDERING
+var state: State = State.WANDERING
 
 func _process(_delta: float) -> void:
-	if state == WANDERING:
-		wander()
-	if state == ATTACKING:
-		attack()
+	if state == State.WANDERING:
+		_wander()
+	if state == State.ATTACKING:
+		_attack()
 
-func take_damage(damage: float) -> void:
+func _take_damage(damage: float) -> void:
 	health -= damage
 	if health <= 0.0:
 		alive = false
 
 
-func load_attack() -> void:
+func _load_attack() -> void:
 	pass
 
 
-func attack() -> void:
+func _attack() -> void:
 	pass
 
 
-func wander() -> void:
+func _wander() -> void:
 	pass

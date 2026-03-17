@@ -35,16 +35,20 @@ offset_bottom = 200.0
 theme_override_constants/separation = 15
 
 [node name="Speaker" type="Label" parent="VBoxContainer" unique_id=649202605]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Dialogue" type="RichTextLabel" parent="VBoxContainer" unique_id=956323390]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="SpeakTimer" type="Timer" parent="." unique_id=547027058]
+unique_name_in_owner = true
 wait_time = 0.05
 
 [node name="ContinueIndicator" parent="." unique_id=1482587934 instance=ExtResource("2_wtqhb")]
+unique_name_in_owner = true
 position = Vector2(800, 184)
 scale = Vector2(0.3, 0.3)
 

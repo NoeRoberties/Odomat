@@ -258,7 +258,6 @@ radius = 150.03
 
 [node name="Slime" type="CharacterBody2D" unique_id=1381557161]
 script = ExtResource("1_f0k3c")
-health = null
 speed = 35.0
 metadata/_custom_type_script = "uid://ltynpqd0x742"
 
@@ -277,6 +276,7 @@ shape = SubResource("CircleShape2D_p1xxi")
 shape = SubResource("CircleShape2D_7yyg5")
 
 [node name="AttackLoadingTimer" type="Timer" parent="." unique_id=1611566702]
+unique_name_in_owner = true
 process_callback = 0
 
 [connection signal="mouse_entered" from="DetectionArea" to="." method="_on_detection_area_mouse_entered"]

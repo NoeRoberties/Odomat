@@ -6,15 +6,15 @@ extends Control
 ]
 @export var speaker: String = "John Doe"
 
-var current_replica = ""
-var dialogues_index = 0
-var replica_length = 0
+var current_replica: String = ""
+var dialogues_index: int = 0
+var replica_length: int = 0
 
 func _ready() -> void:
-	$VBoxContainer/Speaker.text = speaker
-	$VBoxContainer/Dialogue.text = ""
+	%Speaker.text = speaker
+	%Dialogue.text = ""
 	current_replica = dialogues[dialogues_index]
-	$SpeakTimer.start()
+	%SpeakTimer.start()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed():
@@ -24,20 +24,20 @@ func continue_dialogue() -> void:
 	if replica_length != current_replica.length():
 		replica_length = current_replica.length()
 		return
-	$ContinueIndicator.stop_blinking()
+	%ContinueIndicator.stop_blinking()
 	dialogues_index += 1
 	if dialogues_index > dialogues.size() - 1:
 		self.queue_free()
 		return
 	current_replica = dialogues[dialogues_index]
 	replica_length = 0
-	$SpeakTimer.start()
+	%SpeakTimer.start()
 
 
 func _on_speak_timer_timeout() -> void:
 	replica_length += 3
 	if replica_length >= current_replica.length():
 		replica_length = current_replica.length()
-		$SpeakTimer.stop()
-		$ContinueIndicator.start_blinking()
-	$VBoxContainer/Dialogue.text = current_replica.substr(0, replica_length)
+		%SpeakTimer.stop()
+		%ContinueIndicator.start_blinking()
+	%Dialogue.text = current_replica.substr(0, replica_length)
