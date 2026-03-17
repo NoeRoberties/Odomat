@@ -1,36 +1,36 @@
 extends Enemy
 class_name Slime
 
-var animated_sprite: AnimatedSprite2D
-var wandering_destination: Vector2
-var attacking_destination: Vector2
+var _animated_sprite: AnimatedSprite2D
+var _wandering_destination: Vector2
+var _attacking_destination: Vector2
 
 func _ready() -> void:
-	animated_sprite = $AnimatedSprite2D
+	_animated_sprite = $AnimatedSprite2D
 	_choose_wandering_destination()
 
 
 func _load_attack() -> void:
 	velocity = Vector2.ZERO
-	state = State.LOADING
+	_state = State.LOADING
 	%AttackLoadingTimer.start()
 
 
 func _attack() -> void:
-	var direction: Vector2 = attacking_destination - global_position
+	var direction: Vector2 = _attacking_destination - global_position
 	
 	if direction.length() > 3.0:
-		velocity = direction.normalized() * speed * 2
+		velocity = direction.normalized() * _speed * 2
 	else:
 		_load_attack()
 	move_and_slide()
 
 
 func _wander() -> void:
-	var direction: Vector2 = wandering_destination - global_position
+	var direction: Vector2 = _wandering_destination - global_position
 	
 	if direction.length() > 5.0:
-		velocity = direction.normalized() * speed
+		velocity = direction.normalized() * _speed
 	else:
 		velocity = Vector2.ZERO
 		_choose_wandering_destination()
@@ -42,7 +42,7 @@ func _choose_wandering_destination() -> void:
 	var angle: float = randf() * TAU
 	var offset_vector: Vector2 = Vector2(cos(angle), sin(angle)) * distance
 	
-	wandering_destination = global_position + offset_vector
+	_wandering_destination = global_position + offset_vector
 
 
 # To replace later with the player body
@@ -52,12 +52,12 @@ func _on_detection_area_mouse_entered() -> void:
 
 # To replace later with the player body
 func _on_detection_area_mouse_exited() -> void:
-	state = State.WANDERING
+	_state = State.WANDERING
 	%AttackLoadingTimer.stop()
 	_choose_wandering_destination()
 
 
 func _on_attack_loading_timer_timeout() -> void:
-	state = State.ATTACKING
-	attacking_destination = get_global_mouse_position()
+	_state = State.ATTACKING
+	_attacking_destination = get_global_mouse_position()
 	%AttackLoadingTimer.stop()
