@@ -6,32 +6,26 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n86jm"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="DialogBox" type="Control" unique_id=1687498643]
-layout_mode = 3
-anchor_left = 0.15
-anchor_top = 0.65
-anchor_right = 0.85
-anchor_bottom = 0.95
-offset_right = 4.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="DialogBox" type="CanvasLayer" unique_id=1416391869]
 script = ExtResource("1_s5i88")
 
 [node name="Panel" type="Panel" parent="." unique_id=210123295]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 190.0
+offset_top = 475.0
+offset_right = -190.0
+offset_bottom = -29.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_n86jm")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=506256218]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 16.0
-offset_right = 860.0
-offset_bottom = 200.0
+offset_left = 230.0
+offset_top = 490.0
+offset_right = 1050.0
+offset_bottom = 674.0
 theme_override_constants/separation = 15
 
 [node name="Speaker" type="Label" parent="VBoxContainer" unique_id=649202605]
@@ -49,7 +43,7 @@ wait_time = 0.05
 
 [node name="ContinueIndicator" parent="." unique_id=1482587934 instance=ExtResource("2_wtqhb")]
 unique_name_in_owner = true
-position = Vector2(800, 184)
+position = Vector2(1000, 650)
 scale = Vector2(0.3, 0.3)
 
 [connection signal="timeout" from="SpeakTimer" to="." method="_on_speak_timer_timeout"]

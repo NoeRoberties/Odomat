@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name NPC
 
 @export var _dialogues: Array[String]
 @export var _sprite_frames: SpriteFrames
@@ -8,7 +9,6 @@ var _dialogue_box_scene: PackedScene = load("res://Scenes/DialogBox.tscn")
 
 func _ready() -> void:
 	%AnimatedSprite2D.sprite_frames = _sprite_frames
-	_launch_dialogue()
 
 
 func _launch_dialogue() -> void:

@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 @export var _dialogues: Array[String] = [
 	"This is a very long text just to see if the text is printing just as I wish. There is nothing very interesting to see here so please continue your way.",
@@ -16,9 +16,11 @@ func _ready() -> void:
 	_current_replica = _dialogues[_dialogues_index]
 	%SpeakTimer.start()
 
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed():
 		_continue_dialogue()
+
 
 func _continue_dialogue() -> void:
 	if _replica_length != _current_replica.length():

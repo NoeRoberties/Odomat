@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://b5nwjyhhw58yu" path="res://Scripts/npc.gd" id="1_fo5tq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b0k6i"]
-size = Vector2(32, 64)
+size = Vector2(24, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_acqhf"]
 
-[node name="NPC" type="CharacterBody2D" unique_id=714362369 groups=["npc"]]
+[node name="NPC" type="CharacterBody2D" unique_id=714362369]
 script = ExtResource("1_fo5tq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1404711380]

@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPC.tscn" id="1_s02eq"]
 [ext_resource type="Texture2D" uid="uid://btxhhnlug66wo" path="res://Assets/black_npc.png" id="2_t8dge"]
+[ext_resource type="PackedScene" uid="uid://b8lbay3r2x1m" path="res://Scenes/Player.tscn" id="3_s02eq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r0pc2"]
 atlas = ExtResource("2_t8dge")
@@ -20,8 +21,13 @@ animations = [{
 
 [node name="TestMap" type="Node2D" unique_id=1339461984]
 
+[node name="UI" type="CanvasLayer" parent="." unique_id=1809834990]
+
 [node name="NPC" parent="." unique_id=714362369 instance=ExtResource("1_s02eq")]
 position = Vector2(383, 161)
+scale = Vector2(2, 2)
 _dialogues = Array[String](["Salut, je suis Adrien. Je suis un prototype de PNJ.", "Si tout ce passe bien cela veut dire qu'on est pas trop mal dans le développement."])
 _sprite_frames = SubResource("SpriteFrames_ssfg1")
 _name = "Adrien"
+
+[node name="Player" parent="." unique_id=979638911 instance=ExtResource("3_s02eq")]
