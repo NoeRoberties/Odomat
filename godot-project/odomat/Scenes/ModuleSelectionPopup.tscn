@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://dgrsaebgjx6wy"]
+
+[ext_resource type="Script" uid="uid://dhth12bn5q8g" path="res://Scripts/module_selection_popup.gd" id="1_wl7uc"]
+[ext_resource type="PackedScene" path="res://Scenes/MenuHeader.tscn" id="2_header"]
+
+[node name="ModuleSelectionPopup" type="CenterContainer" unique_id=322379853]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_wl7uc")
+
+[node name="SlotPopup" type="PanelContainer" parent="." unique_id=752241658]
+custom_minimum_size = Vector2(560, 360)
+layout_mode = 2
+
+[node name="PopupMargin" type="MarginContainer" parent="SlotPopup" unique_id=1596851624]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="PopupVBox" type="VBoxContainer" parent="SlotPopup/PopupMargin" unique_id=1118310832]
+layout_mode = 2
+
+[node name="MenuHeader" parent="SlotPopup/PopupMargin/PopupVBox" unique_id=633066264 instance=ExtResource("2_header")]
+unique_name_in_owner = true
+layout_mode = 2
+title_text = "—"
+
+[node name="PopupContent" type="HBoxContainer" parent="SlotPopup/PopupMargin/PopupVBox" unique_id=1430216715]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="PopupListPanel" type="VBoxContainer" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent" unique_id=823061237]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PopupListHeader" type="Label" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/PopupListPanel" unique_id=1849398585]
+layout_mode = 2
+text = "Available Modules"
+
+[node name="PopupListSep" type="HSeparator" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/PopupListPanel" unique_id=1285685413]
+layout_mode = 2
+
+[node name="PopupListScroll" type="ScrollContainer" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/PopupListPanel" unique_id=1483636975]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ModuleListVBox" type="VBoxContainer" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/PopupListPanel/PopupListScroll" unique_id=574399361]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PopupVSep" type="VSeparator" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent" unique_id=345305820]
+layout_mode = 2
+
+[node name="DetailPanel" type="VBoxContainer" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent" unique_id=501547958]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+
+[node name="DetailHeader" type="Label" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=1976669637]
+layout_mode = 2
+text = "Details"
+
+[node name="DetailHeaderSep" type="HSeparator" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=12755807]
+layout_mode = 2
+
+[node name="DetailName" type="Label" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=139226283]
+unique_name_in_owner = true
+layout_mode = 2
+text = "—"
+
+[node name="DetailDesc" type="Label" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=954300488]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="DetailStatsSep" type="HSeparator" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=519471232]
+layout_mode = 2
+
+[node name="DetailStats" type="Label" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=1251425984]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="DetailSpacer" type="Control" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=13033921]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EquipButton" type="Button" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=2008983449]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Equip"
+
+[node name="UnequipButton" type="Button" parent="SlotPopup/PopupMargin/PopupVBox/PopupContent/DetailPanel" unique_id=2000960610]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Unequip"
