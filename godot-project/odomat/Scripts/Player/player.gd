@@ -13,7 +13,7 @@ const ISO_DIRS: Dictionary = {
 	"ui_left":  Vector2(-1.0, 0.0),
 }
 
-const SwooshScript := preload("res://Scripts/swoosh.gd")
+const SwooshScript := preload("res://Scripts/Player/swoosh.gd")
 
 var _cooldown_remaining: float = 0.0
 var _npc_to_interact: NPC = null

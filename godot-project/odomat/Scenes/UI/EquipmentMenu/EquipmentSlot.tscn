@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b8vtupf7mmlqn"]
+
+[ext_resource type="Script" uid="uid://becd5aso3ydbb" path="res://Scripts/UI/EquipmentMenu/equipment_slot.gd" id="1_1tl5q"]
+
+[node name="EquipmentSlot" type="VBoxContainer" unique_id=674606895]
+script = ExtResource("1_1tl5q")
+
+[node name="SlotButton" type="Button" parent="." unique_id=1022868581]
+layout_mode = 2
+text = "Slot"
+
+[node name="SlotLabel" type="Label" parent="." unique_id=1524947780]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "⬦ empty"
+horizontal_alignment = 1
