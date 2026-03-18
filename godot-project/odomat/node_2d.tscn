@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://c5i76v702cqkr"]
+
+[ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPC.tscn" id="1_0e48y"]
+[ext_resource type="PackedScene" uid="uid://b8lbay3r2x1m" path="res://Scenes/Player.tscn" id="2_epypp"]
+
+[node name="Node2D" type="Node2D" unique_id=1032028569]
+
+[node name="NPC" parent="." unique_id=714362369 instance=ExtResource("1_0e48y")]
+_dialogues = Array[String](["Coucou ! aizugeuyazgdyugazydyugyug duafztydfyazfdf dzudtyzaudtyfyazagd dzuyzydyuazdtyfazd udygzaudgyugd", "zadiygazudvazy uzydgyutzfdty uzygdyazgdya iuzyeguzgegyzuaey uzygeuyzgd", "zeeygazuydguyaz dzudgyztcofrgiheriugre", "zzuuazgeygzuaygeuazyijihfiuhuhycgcuyzgeufygeyfveyfvzy"])
+_name = "adrien"
+
+[node name="Player" parent="." unique_id=979638911 instance=ExtResource("2_epypp")]
