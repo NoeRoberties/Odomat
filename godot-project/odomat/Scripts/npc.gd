@@ -15,4 +15,4 @@ func _launch_dialogue() -> void:
 	var dialogue_box_instance = _dialogue_box_scene.instantiate()
 	dialogue_box_instance._dialogues = _dialogues
 	dialogue_box_instance._speaker = _name
-	get_tree().root.add_child.call_deferred( dialogue_box_instance)
+	get_tree().root.add_child.call_deferred(dialogue_box_instance)

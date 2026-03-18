@@ -1,10 +1,7 @@
 extends CanvasLayer
 
-@export var _dialogues: Array[String] = [
-	"This is a very long text just to see if the text is printing just as I wish. There is nothing very interesting to see here so please continue your way.",
-	"And this is another replica, just to see if we are able to make different dialogues that follow each other."
-]
-@export var _speaker: String = "John Doe"
+@export var _dialogues: Array[String]
+@export var _speaker: String
 
 var _current_replica: String = ""
 var _dialogues_index: int = 0
