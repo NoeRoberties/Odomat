@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-const OPEN_KEY := KEY_E
-
 var _is_open := false
 
 # ── @onready ──────────────────────────────────────────────────────────────────
@@ -43,10 +41,10 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
-	if event.keycode == OPEN_KEY:
+	if event.is_action_pressed("open_inventory"):
 		_toggle()
 		get_viewport().set_input_as_handled()
-	elif _is_open and event.keycode == KEY_ESCAPE:
+	elif _is_open and event.is_action_pressed("escape_inventory"):
 		if _popup.visible:
 			_close_popup()   # Retour au diagramme corporel
 		else:
