@@ -16,6 +16,7 @@ const ISO_DIRS: Dictionary = {
 const SwooshScript := preload("res://Scripts/swoosh.gd")
 
 var _cooldown_remaining: float = 0.0
+var _npc_to_interact: NPC = null
 
 
 # ── Statistiques calculées : base + bonus des modules équipés ─────────────────
@@ -55,6 +56,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _cooldown_remaining <= 0.0:
 			_cooldown_remaining = _get_attack_cooldown()
 			_do_attack()
+	
+	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
+		_npc_to_interact._launch_dialogue()
+		
 
 
 func _do_attack() -> void:
@@ -83,3 +88,12 @@ func _spawn_swoosh(attack_dir: Vector2) -> void:
 	get_parent().add_child(swoosh)
 	swoosh.global_position = global_position
 	swoosh.play(attack_dir)
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if body is NPC:
+		_npc_to_interact = body
+
+
+func _on_hitbox_body_exited(body: Node2D) -> void:
+	if body == _npc_to_interact:
+		_npc_to_interact = null
