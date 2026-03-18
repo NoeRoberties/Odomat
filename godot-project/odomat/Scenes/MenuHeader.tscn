@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/menu_header.gd" id="1_header"]
+
+[node name="MenuHeader" type="VBoxContainer"]
+layout_mode = 2
+script = ExtResource("1_header")
+
+[node name="HeaderBar" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="HeaderBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Title"
+
+[node name="CloseButton" type="Button" parent="HeaderBar"]
+layout_mode = 2
+text = " ✕ "
+flat = true
+
+[node name="HeaderSep" type="HSeparator" parent="."]
+layout_mode = 2

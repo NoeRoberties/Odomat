@@ -2,10 +2,41 @@
 
 [ext_resource type="Script" uid="uid://dv1xly4yw068s" path="res://Scripts/equipment_menu.gd" id="1_em_script"]
 [ext_resource type="PackedScene" uid="uid://dgrsaebgjx6wy" path="res://Scenes/ModuleSelectionPopup.tscn" id="2_pisol"]
+[ext_resource type="PackedScene" path="res://Scenes/MenuHeader.tscn" id="3_header"]
+[ext_resource type="Script" uid="uid://7b676qw87ml8" path="res://Scripts/equipment_slot_config.gd" id="4_slot_cfg"]
+[ext_resource type="PackedScene" uid="uid://1qcyrqbhwq8n" path="res://Scenes/EquipmentRow.tscn" id="5_row"]
 
-[node name="EquipmentMenu" type="CanvasLayer" unique_id=181712624]
+[sub_resource type="Resource" id="SlotCfg_brain"]
+script = ExtResource("4_slot_cfg")
+slot_key = "brain_chip"
+button_text = "🧠 Brain Chip"
+
+[sub_resource type="Resource" id="SlotCfg_left_arm"]
+script = ExtResource("4_slot_cfg")
+slot_key = "left_arm"
+button_text = "🦾 Left Arm"
+button_min_size = Vector2(120, 90)
+
+[sub_resource type="Resource" id="SlotCfg_torso"]
+script = ExtResource("4_slot_cfg")
+button_text = "Torso"
+button_min_size = Vector2(150, 90)
+empty_text = ""
+is_interactive = false
+
+[sub_resource type="Resource" id="SlotCfg_right_arm"]
+script = ExtResource("4_slot_cfg")
+slot_key = "right_arm"
+button_text = "🦾 Right Arm"
+button_min_size = Vector2(120, 90)
+
+[sub_resource type="Resource" id="SlotCfg_legs"]
+script = ExtResource("4_slot_cfg")
+slot_key = "legs"
+button_text = "🦿 Legs"
+
+[node name="EquipmentMenu" type="CanvasLayer" unique_id=604316393]
 process_mode = 3
-layer = 10
 script = ExtResource("1_em_script")
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=151375263]
@@ -21,6 +52,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -5.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MainPanel" type="PanelContainer" parent="Center" unique_id=494028858]
 custom_minimum_size = Vector2(480, 410)
@@ -36,22 +71,9 @@ theme_override_constants/margin_bottom = 16
 [node name="RootVBox" type="VBoxContainer" parent="Center/MainPanel/Margin" unique_id=449602839]
 layout_mode = 2
 
-[node name="TitleBar" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox" unique_id=935193177]
-layout_mode = 2
-
-[node name="TitleLabel" type="Label" parent="Center/MainPanel/Margin/RootVBox/TitleBar" unique_id=1028182679]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "  ROBOT MODULES"
-
-[node name="CloseButton" type="Button" parent="Center/MainPanel/Margin/RootVBox/TitleBar" unique_id=1610334783]
+[node name="MenuHeader" parent="Center/MainPanel/Margin/RootVBox" unique_id=935193177 instance=ExtResource("3_header")]
 unique_name_in_owner = true
-layout_mode = 2
-text = " ✕ "
-flat = true
-
-[node name="TitleSep" type="HSeparator" parent="Center/MainPanel/Margin/RootVBox" unique_id=813167913]
-layout_mode = 2
+title_text = "  ROBOT MODULES"
 
 [node name="BodyDiagram" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox" unique_id=1229820420]
 layout_mode = 2
@@ -62,133 +84,27 @@ theme_override_constants/separation = 12
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TopRow" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=973828058]
-layout_mode = 2
-
-[node name="TopSpacer1" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow" unique_id=844612009]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="BrainChipPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow" unique_id=236815481]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="BtnBrainChip" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow/BrainChipPart" unique_id=704336420]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 60)
-layout_mode = 2
-text = "🧠 Brain Chip"
-
-[node name="LblBrainChip" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow/BrainChipPart" unique_id=1454070022]
+[node name="TopRow" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=973828058 instance=ExtResource("5_row")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "⬦ empty"
-horizontal_alignment = 1
+slots = Array[ExtResource("4_slot_cfg")]([SubResource("SlotCfg_brain")])
+leading_spacers = 1
+trailing_spacers = 1
 
-[node name="TopSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/TopRow" unique_id=295353471]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="MiddleRow" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=741173002]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="MidSpacer1" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=833888708]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LeftArmPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=196004321]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="BtnLeftArm" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/LeftArmPart" unique_id=1679155713]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 90)
-layout_mode = 2
-text = "🦾 Left Arm"
-
-[node name="LblLeftArm" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/LeftArmPart" unique_id=1458813802]
+[node name="MiddleRow" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=741173002 instance=ExtResource("5_row")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "⬦ empty"
-horizontal_alignment = 1
+slots = Array[ExtResource("4_slot_cfg")]([SubResource("SlotCfg_left_arm"), SubResource("SlotCfg_torso"), SubResource("SlotCfg_right_arm")])
+leading_spacers = 1
+trailing_spacers = 1
+row_separation = 10
 
-[node name="TorsoPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=374545221]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="Torso" type="Panel" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/TorsoPart" unique_id=961253372]
-custom_minimum_size = Vector2(110, 90)
-layout_mode = 2
-
-[node name="TorsoLabel" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/TorsoPart/Torso" unique_id=2107678864]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 11
-text = "Torso"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TorsoAlignLbl" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/TorsoPart" unique_id=93808790]
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = " "
-horizontal_alignment = 1
-
-[node name="RightArmPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=509301253]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="BtnRightArm" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/RightArmPart" unique_id=333364059]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 90)
-layout_mode = 2
-text = "🦾 Right Arm"
-
-[node name="LblRightArm" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow/RightArmPart" unique_id=179681987]
+[node name="BottomRow" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=884889798 instance=ExtResource("5_row")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "⬦ empty"
-horizontal_alignment = 1
-
-[node name="MidSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/MiddleRow" unique_id=505832709]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="BottomRow" type="HBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=884889798]
-layout_mode = 2
-
-[node name="BotSpacer1" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow" unique_id=1993920752]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LegsPart" type="VBoxContainer" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow" unique_id=1535507722]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="BtnLegs" type="Button" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow/LegsPart" unique_id=1737171037]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 60)
-layout_mode = 2
-text = "🦿 Legs"
-
-[node name="LblLegs" type="Label" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow/LegsPart" unique_id=1039270769]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "⬦ empty"
-horizontal_alignment = 1
-
-[node name="BotSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram/BottomRow" unique_id=2049961972]
-layout_mode = 2
-size_flags_horizontal = 3
+slots = Array[ExtResource("4_slot_cfg")]([SubResource("SlotCfg_legs")])
+leading_spacers = 1
+trailing_spacers = 1
 
 [node name="VSpacer2" type="Control" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=401747132]
 layout_mode = 2
@@ -196,3 +112,7 @@ size_flags_vertical = 3
 
 [node name="ModuleSelectionPopup" parent="." unique_id=322379853 instance=ExtResource("2_pisol")]
 visible = false
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2

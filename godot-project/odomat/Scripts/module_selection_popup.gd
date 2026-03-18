@@ -15,7 +15,7 @@ const SLOT_LABELS: Dictionary = {
 var _selected_slot   : String     = ""
 var _selected_module : ModuleData = null
 
-@onready var _popup_title      : Label           = %PopupTitle
+@onready var _menu_header      : MenuHeader      = %MenuHeader
 @onready var _module_list_vbox : VBoxContainer   = %ModuleListVBox
 @onready var _detail_name      : Label           = %DetailName
 @onready var _detail_desc      : Label           = %DetailDesc
@@ -25,7 +25,7 @@ var _selected_module : ModuleData = null
 
 
 func _ready() -> void:
-	%PopupCloseButton.pressed.connect(func(): popup_closed.emit())
+	_menu_header.close_pressed.connect(func(): popup_closed.emit())
 	_equip_btn.pressed.connect(_on_equip_pressed)
 	_unequip_btn.pressed.connect(_on_unequip_pressed)
 
@@ -34,7 +34,7 @@ func _ready() -> void:
 func open_for_slot(slot_key: String) -> void:
 	_selected_slot    = slot_key
 	_selected_module  = null
-	_popup_title.text = SLOT_LABELS.get(slot_key, slot_key)
+	_menu_header.set_title(SLOT_LABELS.get(slot_key, slot_key))
 	_refresh_list()
 	_refresh_detail()
 

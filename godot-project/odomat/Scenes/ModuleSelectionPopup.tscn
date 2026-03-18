@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dgrsaebgjx6wy"]
 
 [ext_resource type="Script" uid="uid://dhth12bn5q8g" path="res://Scripts/module_selection_popup.gd" id="1_wl7uc"]
+[ext_resource type="PackedScene" path="res://Scenes/MenuHeader.tscn" id="2_header"]
 
 [node name="ModuleSelectionPopup" type="CenterContainer" unique_id=322379853]
 unique_name_in_owner = true
@@ -23,23 +24,10 @@ theme_override_constants/margin_bottom = 12
 [node name="PopupVBox" type="VBoxContainer" parent="SlotPopup/PopupMargin" unique_id=1118310832]
 layout_mode = 2
 
-[node name="PopupTitleBar" type="HBoxContainer" parent="SlotPopup/PopupMargin/PopupVBox" unique_id=633066264]
-layout_mode = 2
-
-[node name="PopupTitle" type="Label" parent="SlotPopup/PopupMargin/PopupVBox/PopupTitleBar" unique_id=2059919259]
+[node name="MenuHeader" parent="SlotPopup/PopupMargin/PopupVBox" unique_id=633066264 instance=ExtResource("2_header")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-text = "—"
-
-[node name="PopupCloseButton" type="Button" parent="SlotPopup/PopupMargin/PopupVBox/PopupTitleBar" unique_id=1344929806]
-unique_name_in_owner = true
-layout_mode = 2
-text = " ✕ "
-flat = true
-
-[node name="PopupTitleSep" type="HSeparator" parent="SlotPopup/PopupMargin/PopupVBox" unique_id=1494856521]
-layout_mode = 2
+title_text = "—"
 
 [node name="PopupContent" type="HBoxContainer" parent="SlotPopup/PopupMargin/PopupVBox" unique_id=1430216715]
 layout_mode = 2

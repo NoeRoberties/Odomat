@@ -1,4 +1,4 @@
-extends CanvasLayer # AutoLoaded scene
+extends CanvasLayer
 
 const OPEN_KEY := KEY_E
 
@@ -8,27 +8,27 @@ var _is_open := false
 @onready var _overlay : ColorRect       = $Overlay
 @onready var _center  : CenterContainer = $Center
 @onready var _popup   : CenterContainer = %ModuleSelectionPopup
+@onready var _menu_header : MenuHeader  = %MenuHeader
+@onready var _top_row : EquipmentRow    = %TopRow
+@onready var _middle_row : EquipmentRow = %MiddleRow
+@onready var _bottom_row : EquipmentRow = %BottomRow
 
-## slot_key → Label sous chaque partie du corps
-var _equipped_labels : Dictionary = {}
+## slot_key → EquipmentSlot
+var _slot_controls : Dictionary = {}
 
 
 func _ready() -> void:
-	_equipped_labels = {
-		"right_arm":  %LblRightArm,
-		"left_arm":   %LblLeftArm,
-		"legs":       %LblLegs,
-		"brain_chip": %LblBrainChip,
-	}
+	_slot_controls.clear()
 
-	# Clic sur une partie du corps → ouvre le popup pour ce slot
-	%BtnRightArm.pressed.connect(_open_slot_popup.bind("right_arm"))
-	%BtnLeftArm.pressed.connect(_open_slot_popup.bind("left_arm"))
-	%BtnLegs.pressed.connect(_open_slot_popup.bind("legs"))
-	%BtnBrainChip.pressed.connect(_open_slot_popup.bind("brain_chip"))
+	# Récupère tous les slots depuis les rows paramétrables.
+	for row: EquipmentRow in [_top_row, _middle_row, _bottom_row]:
+		row.slot_pressed.connect(_open_slot_popup)
+		var row_slots: Dictionary = row.get_slot_controls()
+		for slot_key: String in row_slots:
+			_slot_controls[slot_key] = row_slots[slot_key]
 
 	# Fermeture du diagramme principal
-	%CloseButton.pressed.connect(_close)
+	_menu_header.close_pressed.connect(_close)
 	# Fermeture du popup (signal émis par module_selection_popup.gd)
 	_popup.popup_closed.connect(_close_popup)
 
@@ -95,23 +95,27 @@ func _close_popup() -> void:
 # ── Labels du diagramme corporel ──────────────────────────────────────────────
 
 func _update_body_labels() -> void:
-	for slot_key: String in _equipped_labels:
+	for slot_key: String in _slot_controls:
 		var module : ModuleData = RobotModules.equipped[slot_key]
-		_equipped_labels[slot_key].text = "✓ " + module.module_name if module != null else "⬦ empty"
+		var slot_control: EquipmentSlot = _slot_controls[slot_key]
+		if module != null:
+			slot_control.set_equipped_name(module.module_name)
+		else:
+			slot_control.set_empty()
 
 
 # ── Réaction aux signaux de RobotModules ──────────────────────────────────────
 
 func _on_module_equipped(slot: String, module: ModuleData) -> void:
-	if _equipped_labels.has(slot):
-		_equipped_labels[slot].text = "✓ " + module.module_name
+	if _slot_controls.has(slot):
+		(_slot_controls[slot] as EquipmentSlot).set_equipped_name(module.module_name)
 	# Délègue le rafraîchissement au popup s'il est visible
 	if _popup.visible:
 		_popup.refresh_for_slot(slot)
 
 
 func _on_module_unequipped(slot: String) -> void:
-	if _equipped_labels.has(slot):
-		_equipped_labels[slot].text = "⬦ empty"
+	if _slot_controls.has(slot):
+		(_slot_controls[slot] as EquipmentSlot).set_empty()
 	if _popup.visible:
 		_popup.refresh_for_slot(slot)
