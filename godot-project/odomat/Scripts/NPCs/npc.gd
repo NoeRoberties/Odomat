@@ -5,7 +5,7 @@ class_name NPC
 @export var _sprite_frames: SpriteFrames
 @export var _name: String
 
-var _dialogue_box_scene: PackedScene = load("res://Scenes/DialogBox.tscn")
+var _dialogue_box_scene: PackedScene = preload("res://Scenes/UI/Dialogues/DialogBox.tscn")
 
 func _ready() -> void:
 	%AnimatedSprite2D.sprite_frames = _sprite_frames

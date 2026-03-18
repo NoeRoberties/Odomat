@@ -3,7 +3,7 @@ extends HBoxContainer
 
 signal slot_pressed(slot_key: String)
 
-@export var slot_scene: PackedScene = preload("res://Scenes/EquipmentSlot.tscn")
+@export var slot_scene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentSlot.tscn")
 @export var slots: Array[EquipmentSlotConfig] = []
 @export var leading_spacers: int = 0
 @export var trailing_spacers: int = 0

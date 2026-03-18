@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://Scripts/menu_header.gd" id="1_header"]
+[ext_resource type="Script" uid="uid://cl47guofiddrl" path="res://Scripts/UI/EquipmentMenu/menu_header.gd" id="1_header"]
 
 [node name="MenuHeader" type="VBoxContainer"]
 layout_mode = 2

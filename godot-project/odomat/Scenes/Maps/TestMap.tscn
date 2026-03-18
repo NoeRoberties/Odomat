@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://3cd113irh1fp"]
+
+[ext_resource type="PackedScene" uid="uid://brnw2i2klx3j6" path="res://Scenes/Player/Player.tscn" id="1_n4a11"]
+[ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPCs/NPC.tscn" id="2_ekms1"]
+[ext_resource type="PackedScene" uid="uid://dpt76ag0jeexs" path="res://Scenes/Enemies/Slime/Slime.tscn" id="3_ekms1"]
+
+[node name="TestMap" type="Node2D" unique_id=619646456]
+
+[node name="Player" parent="." unique_id=979638911 instance=ExtResource("1_n4a11")]
+position = Vector2(304, 157)
+
+[node name="NPC" parent="." unique_id=714362369 instance=ExtResource("2_ekms1")]
+position = Vector2(488, 133)
+_dialogues = Array[String](["zygeauzge", "zueghazuegyu", "ziuegdazi"])
+
+[node name="Slime" parent="." unique_id=1381557161 instance=ExtResource("3_ekms1")]
+position = Vector2(466, 276)
