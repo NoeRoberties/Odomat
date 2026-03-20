@@ -7,10 +7,10 @@ const BASE_ATTACK_DAMAGE  : int   = 1
 const BASE_ATTACK_COOLDOWN: float = 0.4
 
 const ISO_DIRS: Dictionary = {
-	"ui_up":    Vector2(0.0, -1.0),
-	"ui_right": Vector2(1.0, 0.0),
-	"ui_down":  Vector2(0.0, 1.0),
-	"ui_left":  Vector2(-1.0, 0.0),
+	"move_up":    Vector2( 0.0, -1.0),
+	"move_right": Vector2( 1.0,  0),
+	"move_down":  Vector2(0.0,  1.0),
+	"move_left":  Vector2(-1.0, 0.0),
 }
 
 const SwooshScript := preload("res://Scripts/Player/swoosh.gd")
