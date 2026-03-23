@@ -9,7 +9,9 @@ size = Vector2(63, 52)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kyqiw"]
 size = Vector2(58.5, 44.5)
 
-[node name="Player" type="CharacterBody2D" unique_id=979638911]
+[node name="Player" type="CharacterBody2D" unique_id=979638911 groups=["player"]]
+collision_layer = 3
+collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_rpqav")
 
