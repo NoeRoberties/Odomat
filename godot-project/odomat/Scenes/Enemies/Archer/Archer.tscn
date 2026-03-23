@@ -236,7 +236,6 @@ centered = false
 offset = Vector2(-32.275, -47.155)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=319536324]
-visible = false
 position = Vector2(-1.5, -14.5)
 shape = SubResource("RectangleShape2D_c4xqe")
 
@@ -245,7 +244,6 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DangerArea" unique_id=1288082928]
-visible = false
 position = Vector2(-1, -5)
 shape = SubResource("CircleShape2D_3jpb3")
 
@@ -254,7 +252,6 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=1479707010]
-visible = false
 shape = SubResource("CircleShape2D_v2wp6")
 
 [connection signal="body_entered" from="DangerArea" to="." method="_on_danger_area_body_entered"]

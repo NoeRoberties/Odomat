@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var arrow_scene : PackedScene = preload("res://Scenes/Enemies/Archer/arrow.tscn")
+@export var arrow_scene : PackedScene = preload("res://Scenes/Enemies/Archer/Arrow.tscn")
 
 var _speed = 90
 var _flee_speed = 130
