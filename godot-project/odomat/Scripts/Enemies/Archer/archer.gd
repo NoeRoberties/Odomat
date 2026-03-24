@@ -16,6 +16,8 @@ var _is_shooting = false
 
 
 func _physics_process(delta: float) -> void:
+	if GameState.current_state != GameState.GameState.PLAYING:
+		return
 	if _is_shooting:
 		move_and_slide()
 		return

@@ -12,6 +12,8 @@ func _ready() -> void:
 
 
 func _launch_dialogue() -> void:
+	if _dialogues.size() == 0 or _name == "":
+		return
 	var dialogue_box_instance = _dialogue_box_scene.instantiate()
 	dialogue_box_instance._dialogues = _dialogues
 	dialogue_box_instance._speaker = _name
