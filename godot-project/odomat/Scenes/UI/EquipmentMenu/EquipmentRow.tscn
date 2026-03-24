@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://1qcyrqbhwq8n"]
+
+[ext_resource type="Script" uid="uid://mk7ql8xjiq77" path="res://Scripts/equipment_row.gd" id="1_row"]
+
+[node name="EquipmentRow" type="HBoxContainer" unique_id=1778636137]
+script = ExtResource("1_row")
