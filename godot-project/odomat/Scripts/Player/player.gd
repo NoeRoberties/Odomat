@@ -14,6 +14,7 @@ const ISO_DIRS: Dictionary = {
 }
 
 const SwooshScript := preload("res://Scripts/Player/swoosh.gd")
+const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
 
 var _cooldown_remaining: float = 0.0
 var _npc_to_interact: NPC = null
@@ -48,7 +49,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
 		_npc_to_interact._launch_dialogue()
-		
+	
+	if event.is_action_pressed("open_inventory"):
+		add_child(EquipmentMenuScene.instantiate())
 
 
 func _do_attack() -> void:

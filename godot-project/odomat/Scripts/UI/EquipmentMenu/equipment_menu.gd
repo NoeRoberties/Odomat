@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-var _is_open := false
-
 # ── @onready ──────────────────────────────────────────────────────────────────
 @onready var _overlay : ColorRect       = $Overlay
 @onready var _center  : CenterContainer = $Center
@@ -16,6 +14,10 @@ var _slot_controls : Dictionary = {}
 
 
 func _ready() -> void:
+	GameState.current_state = GameState.GameState.MENU
+	_overlay.visible  = true
+	_center.visible   = true
+	_popup.visible    = false
 	_slot_controls.clear()
 
 	# Récupère tous les slots depuis les rows paramétrables.
@@ -39,45 +41,16 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not (event is InputEventKey and event.pressed and not event.echo):
-		return
-	if event.is_action_pressed("open_inventory"):
-		_toggle()
-		get_viewport().set_input_as_handled()
-	elif _is_open and event.is_action_pressed("escape_inventory"):
+	if event.is_action_pressed("escape_inventory"):
 		if _popup.visible:
-			_close_popup()   # Retour au diagramme corporel
+			_close_popup()
 		else:
-			_close()         # Ferme tout
+			_close()
 		get_viewport().set_input_as_handled()
-
-
-# ── Visibilité principale ─────────────────────────────────────────────────────
-
-func _toggle() -> void:
-	if _is_open:
-		_close()
-	else:
-		_open()
-
-
-func _open() -> void:
-	get_tree().paused = true
-	_is_open          = true
-	_overlay.visible  = true
-	_center.visible   = true
-	_popup.visible    = false
-
 
 func _close() -> void:
-	get_tree().paused = false
-	_is_open          = false
-	_overlay.visible  = false
-	_center.visible   = false
-	_popup.visible    = false
-
-
-# ── Popup de slot ─────────────────────────────────────────────────────────────
+	GameState.current_state = GameState.GameState.PLAYING
+	queue_free()
 
 func _open_slot_popup(slot_key: String) -> void:
 	_center.visible = false
