@@ -24,6 +24,8 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if GameState.current_state != GameState.GameState.PLAYING:
+		return
 	var move_dir := Vector2.ZERO
 
 	for action: String in ISO_DIRS:
@@ -35,6 +37,8 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if GameState.current_state != GameState.GameState.PLAYING:
+		return
 	if event is InputEventMouseButton \
 			and event.pressed \
 			and event.button_index == MOUSE_BUTTON_LEFT:

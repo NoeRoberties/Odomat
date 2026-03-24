@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d0g80mm1x8r3e"]
 
-[ext_resource type="Script" uid="uid://cjacllsbww5o" path="res://Scripts/dialog_box.gd" id="1_s5i88"]
-[ext_resource type="PackedScene" uid="uid://cboq4wufmojm0" path="res://Scenes/ContinueIndicator.tscn" id="2_wtqhb"]
+[ext_resource type="Script" uid="uid://cjacllsbww5o" path="res://Scripts/UI/Dialogues/dialog_box.gd" id="1_s5i88"]
+[ext_resource type="PackedScene" uid="uid://cboq4wufmojm0" path="res://Scenes/UI/Dialogues/ContinueIndicator.tscn" id="2_wtqhb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n86jm"]
 bg_color = Color(0, 0, 0, 1)
