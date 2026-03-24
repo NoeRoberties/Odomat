@@ -13,10 +13,18 @@ const ISO_DIRS: Dictionary = {
 	"ui_left":  Vector2(-1.0, 0.0),
 }
 
-const SwooshScript := preload("res://Scripts/swoosh.gd")
+const SwooshScript := preload("res://Scripts/Player/swoosh.gd")
+const DefaultWeaponScript := preload("res://Scripts/Player/Modules/Attacks/basic_weapon.gd")
 
 var _cooldown_remaining: float = 0.0
 var _npc_to_interact: NPC = null
+var _weapon: Weapon
+
+
+func _ready() -> void:
+	RobotModules.module_equipped.connect(_on_module_equipped)
+	RobotModules.module_unequipped.connect(_on_module_unequipped)
+	_refresh_weapon()
 
 
 func _process(delta: float) -> void:
@@ -39,7 +47,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			and event.pressed \
 			and event.button_index == MOUSE_BUTTON_LEFT:
 		if _cooldown_remaining <= 0.0:
-			_cooldown_remaining = BASE_ATTACK_COOLDOWN
+			_cooldown_remaining = _weapon.get_attack_cooldown()
 			_do_attack()
 	
 	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
@@ -52,17 +60,7 @@ func _do_attack() -> void:
 	var mouse_world: Vector2 = get_global_mouse_position()
 	var attack_dir: Vector2 = (mouse_world - global_position).normalized()
 
-	var nearest_enemy: Node2D = null
-	var nearest_dist: float = BASE_ATTACK_RANGE
-
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		var dist: float = position.distance_to((enemy as Node2D).position)
-		if dist <= nearest_dist:
-			nearest_dist  = dist
-			nearest_enemy = enemy
-
-	if nearest_enemy != null:
-		nearest_enemy.take_damage(BASE_ATTACK_DAMAGE)
+	_weapon.attack(self)
 
 	_spawn_swoosh(attack_dir)
 
@@ -82,3 +80,32 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 func _on_hitbox_body_exited(body: Node2D) -> void:
 	if body == _npc_to_interact:
 		_npc_to_interact = null
+
+
+func _on_module_equipped(slot: String, _module: ModuleData) -> void:
+	if slot == "right_arm":
+		_refresh_weapon()
+
+
+func _on_module_unequipped(slot: String) -> void:
+	if slot == "right_arm":
+		_refresh_weapon()
+
+
+func _refresh_weapon() -> void:
+	var right_arm_module: ModuleData = RobotModules.equipped["right_arm"]
+	var next_weapon: Weapon = null
+
+	if right_arm_module != null:
+		next_weapon = right_arm_module.create_weapon_instance()
+
+	if next_weapon == null:
+		next_weapon = DefaultWeaponScript.new()
+
+	next_weapon.configure_from_module(
+		right_arm_module,
+		BASE_ATTACK_RANGE,
+		BASE_ATTACK_DAMAGE,
+		BASE_ATTACK_COOLDOWN
+	)
+	_weapon = next_weapon
