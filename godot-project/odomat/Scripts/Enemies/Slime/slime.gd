@@ -1,9 +1,23 @@
-extends Enemy
+extends CharacterBody2D
 class_name Slime
 
+@export var _health: float = 10.0
+@export var _speed: float = 100.0
+
+var _alive: bool = true
+var _state: State = State.WANDERING
 var _animated_sprite: AnimatedSprite2D
 var _wandering_destination: Vector2
 var _attacking_destination: Vector2
+enum State {ATTACKING, WANDERING, LOADING}
+
+func _physics_process(delta: float) -> void:
+	if GameState.current_state != GameState.GameState.PLAYING:
+		return
+	if _state == State.WANDERING:
+		_wander()
+	if _state == State.ATTACKING:
+		_attack()
 
 func _ready() -> void:
 	_animated_sprite = $AnimatedSprite2D
