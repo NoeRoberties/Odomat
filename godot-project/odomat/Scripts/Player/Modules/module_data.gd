@@ -22,3 +22,9 @@ enum Slot {
 
 ## Icône optionnelle affichée dans l'inventaire.
 @export var icon: Texture2D = null
+
+## Champs de stats optionnels conservés pour l'affichage UI.
+@export var speed_bonus: float = 0.0
+@export var damage_bonus: int = 0
+@export var range_bonus: float = 0.0
+@export var cooldown_multiplier: float = 1.0

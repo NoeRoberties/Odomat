@@ -13,7 +13,8 @@ const SLOT_LABELS: Dictionary = {
 }
 
 var _selected_slot   : String     = ""
-var _selected_module : ModuleData = null
+var _selected_module_scene : PackedScene = null
+var _selected_module_data : ModuleData = null
 
 @onready var _menu_header      : MenuHeader      = %MenuHeader
 @onready var _module_list_vbox : VBoxContainer   = %ModuleListVBox
@@ -33,7 +34,8 @@ func _ready() -> void:
 ## Point d'entrée unique depuis EquipmentMenu — positionne le popup sur ce slot.
 func open_for_slot(slot_key: String) -> void:
 	_selected_slot    = slot_key
-	_selected_module  = null
+	_selected_module_scene = null
+	_selected_module_data = null
 	_menu_header.set_title(SLOT_LABELS.get(slot_key, slot_key))
 	_refresh_list()
 	_refresh_detail()
@@ -53,24 +55,28 @@ func _refresh_list() -> void:
 		child.free()
 
 	var target_slot  : int        = _slot_key_to_enum(_selected_slot)
-	var equipped_mod : ModuleData = RobotModules.equipped[_selected_slot]
+	var equipped_scene : PackedScene = RobotModules.equipped[_selected_slot]
 
-	for module: ModuleData in RobotModules.inventory:
-		if module.slot != target_slot:
+	for module_scene: PackedScene in RobotModules.inventory:
+		var module_data := RobotModules.get_module_data(module_scene)
+		if module_data == null:
+			continue
+		if module_data.slot != target_slot:
 			continue
 
 		var btn := Button.new()
-		var prefix := "✓ " if module == equipped_mod else "   "
-		btn.text = prefix + module.module_name
+		var prefix := "✓ " if module_scene == equipped_scene else "   "
+		btn.text = prefix + module_data.module_name
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.toggle_mode    = true
-		btn.button_pressed = (module == _selected_module)
-		btn.pressed.connect(_on_module_selected.bind(module))
+		btn.button_pressed = (module_scene == _selected_module_scene)
+		btn.pressed.connect(_on_module_selected.bind(module_scene))
 		_module_list_vbox.add_child(btn)
 
 
-func _on_module_selected(module: ModuleData) -> void:
-	_selected_module = module
+func _on_module_selected(module_scene: PackedScene) -> void:
+	_selected_module_scene = module_scene
+	_selected_module_data = RobotModules.get_module_data(module_scene)
 	call_deferred("_refresh_list")  # Différé : évite free() sur un nœud verrouillé
 	_refresh_detail()
 
@@ -78,7 +84,7 @@ func _on_module_selected(module: ModuleData) -> void:
 # ── Détails ────────────────────────────────────────────────────────────────────
 
 func _refresh_detail() -> void:
-	if _selected_module == null:
+	if _selected_module_data == null:
 		_detail_name.text     = "—"
 		_detail_desc.text     = ""
 		_detail_stats.text    = ""
@@ -86,11 +92,11 @@ func _refresh_detail() -> void:
 		_unequip_btn.disabled = true
 		return
 
-	var is_equipped: bool = RobotModules.equipped[_selected_slot] == _selected_module
+	var is_equipped: bool = RobotModules.equipped[_selected_slot] == _selected_module_scene
 
-	_detail_name.text     = _selected_module.module_name
-	_detail_desc.text     = _selected_module.description
-	_detail_stats.text    = _format_stats(_selected_module)
+	_detail_name.text     = _selected_module_data.module_name
+	_detail_desc.text     = _selected_module_data.description
+	_detail_stats.text    = _format_stats(_selected_module_data)
 	_equip_btn.disabled   = is_equipped
 	_unequip_btn.disabled = not is_equipped
 
@@ -112,13 +118,14 @@ func _format_stats(m: ModuleData) -> String:
 # ── Boutons Équiper / Retirer ──────────────────────────────────────────────────
 
 func _on_equip_pressed() -> void:
-	if _selected_module != null:
-		RobotModules.equip(_selected_module)
+	if _selected_module_scene != null:
+		RobotModules.equip(_selected_module_scene)
 
 
 func _on_unequip_pressed() -> void:
 	RobotModules.unequip(_selected_slot)
-	_selected_module = null
+	_selected_module_scene = null
+	_selected_module_data = null
 
 
 # ── Utilitaires ───────────────────────────────────────────────────────────────

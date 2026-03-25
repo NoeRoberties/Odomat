@@ -94,7 +94,7 @@ func _close_popup() -> void:
 
 func _update_body_labels() -> void:
 	for slot_key: String in _slot_controls:
-		var module : ModuleData = RobotModules.equipped[slot_key]
+		var module: ModuleData = RobotModules.get_equipped_module_data(slot_key)
 		var slot_control: EquipmentSlot = _slot_controls[slot_key]
 		if module != null:
 			slot_control.set_equipped_name(module.module_name)
