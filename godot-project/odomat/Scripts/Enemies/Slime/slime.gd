@@ -1,9 +1,28 @@
-extends Enemy
+extends CharacterBody2D
 class_name Slime
 
+const WANDERING_DISTANCE: float = 200.0
+const ATTACK_SPEED_MULTIPLIER: float = 3.0
+
+@export var _health: float = 10.0
+@export var _speed: float = 75.0
+
+var _alive: bool = true
+var _state: State = State.WANDERING
 var _animated_sprite: AnimatedSprite2D
 var _wandering_destination: Vector2
 var _attacking_destination: Vector2
+var _player: CharacterBody2D = null
+
+enum State {ATTACKING, WANDERING, LOADING}
+
+func _physics_process(delta: float) -> void:
+	if GameState.current_state != GameState.GameState.PLAYING:
+		return
+	if _state == State.WANDERING:
+		_wander()
+	if _state == State.ATTACKING:
+		_attack()
 
 func _ready() -> void:
 	_animated_sprite = $AnimatedSprite2D
@@ -20,7 +39,7 @@ func _attack() -> void:
 	var direction: Vector2 = _attacking_destination - global_position
 	
 	if direction.length() > 3.0:
-		velocity = direction.normalized() * _speed * 2
+		velocity = direction.normalized() * _speed * ATTACK_SPEED_MULTIPLIER
 	else:
 		_load_attack()
 	move_and_slide()
@@ -38,26 +57,27 @@ func _wander() -> void:
 
 
 func _choose_wandering_destination() -> void:
-	var distance: float = 50.0
 	var angle: float = randf() * TAU
-	var offset_vector: Vector2 = Vector2(cos(angle), sin(angle)) * distance
+	var offset_vector: Vector2 = Vector2(cos(angle), sin(angle)) * WANDERING_DISTANCE
 	
 	_wandering_destination = global_position + offset_vector
 
 
-# To replace later with the player body
-func _on_detection_area_mouse_entered() -> void:
-	_load_attack()
-
-
-# To replace later with the player body
-func _on_detection_area_mouse_exited() -> void:
-	_state = State.WANDERING
-	%AttackLoadingTimer.stop()
-	_choose_wandering_destination()
-
-
 func _on_attack_loading_timer_timeout() -> void:
 	_state = State.ATTACKING
-	_attacking_destination = get_global_mouse_position()
+	_attacking_destination = _player.global_position
 	%AttackLoadingTimer.stop()
+
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		_player = body
+		_load_attack()
+
+
+func _on_detection_area_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		_player = null
+		_state = State.WANDERING
+		%AttackLoadingTimer.stop()
+		_choose_wandering_destination()

@@ -12,11 +12,13 @@ func _ready() -> void:
 	%Dialogue.text = ""
 	_current_replica = _dialogues[_dialogues_index]
 	%SpeakTimer.start()
+	GameState.current_state = GameState.GameState.DIALOGUE
 
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed():
 		_continue_dialogue()
+		get_viewport().set_input_as_handled()
 
 
 func _continue_dialogue() -> void:
@@ -26,6 +28,7 @@ func _continue_dialogue() -> void:
 	%ContinueIndicator.stop_blinking()
 	_dialogues_index += 1
 	if _dialogues_index > _dialogues.size() - 1:
+		GameState.current_state = GameState.GameState.PLAYING
 		self.queue_free()
 		return
 	_current_replica = _dialogues[_dialogues_index]
