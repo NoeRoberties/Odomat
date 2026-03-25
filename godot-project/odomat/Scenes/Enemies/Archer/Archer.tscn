@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cuyrth054w2hu"]
 
 [ext_resource type="Script" uid="uid://chryh12f7kkfn" path="res://Scripts/Enemies/Archer/archer.gd" id="1_v2wp6"]
-[ext_resource type="Texture2D" uid="uid://dlb84m4684hcp" path="res://Assets/Enemy/Mobs/archer.png" id="3_vdg1n"]
+[ext_resource type="Texture2D" uid="uid://cstciro4qxirm" path="res://Assets/Enemy/Mobs/archer.png" id="3_vdg1n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v2wp6"]
 atlas = ExtResource("3_vdg1n")
@@ -224,7 +224,7 @@ radius = 59.008472
 [sub_resource type="CircleShape2D" id="CircleShape2D_v2wp6"]
 radius = 320.03906
 
-[node name="Archer" type="CharacterBody2D" unique_id=1862442761]
+[node name="Archer" type="CharacterBody2D" unique_id=1862442761 groups=["enemies"]]
 script = ExtResource("1_v2wp6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1330407458]

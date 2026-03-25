@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dpt76ag0jeexs"]
 
 [ext_resource type="Script" uid="uid://ltynpqd0x742" path="res://Scripts/Enemies/Slime/slime.gd" id="1_f0k3c"]
-[ext_resource type="Texture2D" uid="uid://c4btd8qx1l6f7" path="res://Assets/Enemy/Mobs/slime.png" id="2_p1xxi"]
+[ext_resource type="Texture2D" uid="uid://46h7ldkcuyas" path="res://Assets/Enemy/Mobs/slime.png" id="2_p1xxi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7yyg5"]
 atlas = ExtResource("2_p1xxi")
@@ -256,7 +256,7 @@ radius = 14.035668
 [sub_resource type="CircleShape2D" id="CircleShape2D_7yyg5"]
 radius = 150.03
 
-[node name="Slime" type="CharacterBody2D" unique_id=1381557161]
+[node name="Slime" type="CharacterBody2D" unique_id=1381557161 groups=["enemies"]]
 script = ExtResource("1_f0k3c")
 metadata/_custom_type_script = "uid://ltynpqd0x742"
 

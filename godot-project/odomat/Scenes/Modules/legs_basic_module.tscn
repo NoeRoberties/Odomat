@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://Scripts/Player/Modules/Core/legs_basic_module.gd" id="1_mod"]
-[ext_resource type="Script" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
+[ext_resource type="Script" uid="uid://80yxfvrjks1x" path="res://Scripts/Player/Modules/Legs_Module/legs_basic_module.gd" id="1_mod"]
+[ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
 
 [sub_resource type="Resource" id="Resource_data"]
 script = ExtResource("2_data")

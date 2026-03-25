@@ -25,6 +25,18 @@ GameState="*uid://do8qee8ntl23l"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 
+[file_customization]
+
+folder_colors={
+"res://Assets/": "purple",
+"res://Scenes/": "green",
+"res://Scripts/": "blue"
+}
+
+[global_group]
+
+enemies=""
+
 [input]
 
 ui_left={

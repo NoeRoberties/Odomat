@@ -14,6 +14,7 @@ var _slot_controls : Dictionary = {}
 
 
 func _ready() -> void:
+
 	GameState.current_state = GameState.GameState.MENU
 	_overlay.visible  = true
 	_center.visible   = true
@@ -41,7 +42,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("escape_inventory"):
+	if event.is_action_pressed("escape_inventory") or event.is_action_pressed("open_inventory"):
 		if _popup.visible:
 			_close_popup()
 		else:
