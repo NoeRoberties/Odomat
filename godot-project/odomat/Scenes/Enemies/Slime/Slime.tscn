@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dpt76ag0jeexs"]
 
-[ext_resource type="Script" uid="uid://ltynpqd0x742" path="res://Scripts/slime.gd" id="1_f0k3c"]
-[ext_resource type="Texture2D" uid="uid://b8t4bqvhhpj0s" path="res://Assets/Enemy/Mobs/slime.png" id="2_p1xxi"]
+[ext_resource type="Script" uid="uid://ltynpqd0x742" path="res://Scripts/Enemies/Slime/slime.gd" id="1_f0k3c"]
+[ext_resource type="Texture2D" uid="uid://c4btd8qx1l6f7" path="res://Assets/Enemy/Mobs/slime.png" id="2_p1xxi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7yyg5"]
 atlas = ExtResource("2_p1xxi")
@@ -258,7 +258,6 @@ radius = 150.03
 
 [node name="Slime" type="CharacterBody2D" unique_id=1381557161]
 script = ExtResource("1_f0k3c")
-speed = 35.0
 metadata/_custom_type_script = "uid://ltynpqd0x742"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1628199959]
@@ -279,6 +278,6 @@ shape = SubResource("CircleShape2D_7yyg5")
 unique_name_in_owner = true
 process_callback = 0
 
-[connection signal="mouse_entered" from="DetectionArea" to="." method="_on_detection_area_mouse_entered"]
-[connection signal="mouse_exited" from="DetectionArea" to="." method="_on_detection_area_mouse_exited"]
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="timeout" from="AttackLoadingTimer" to="." method="_on_attack_loading_timer_timeout"]
