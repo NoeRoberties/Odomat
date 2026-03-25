@@ -5,6 +5,7 @@ extends PlayerModule
 const ATTACK_RANGE: float = 100.0
 const ATTACK_DAMAGE: int = 1
 const ATTACK_COOLDOWN: float = 0.4
+const KNOCKBACK_FORCE: float = 300.0
 const SWOOSH_SCRIPT := preload("res://Scripts/Player/swoosh.gd")
 
 var _cooldown_remaining: float = 0.0
@@ -41,20 +42,34 @@ func _do_attack(player: CharacterBody2D) -> void:
 	var nearest_enemy: Node2D = null
 	var nearest_dist: float = ATTACK_RANGE
 	
+	# Half arc angle in radians (155° / 2 = 77.5°)
+	var arc_half_radians = deg_to_rad(155.0 / 2.0)
+	var arc_threshold = cos(arc_half_radians)  # ≈ 0.22
 	
-	for enemy in player.get_tree().get_nodes_in_group("enemies"):
+	var enemy_list = player.get_tree().get_nodes_in_group("enemies")
+	
+	for enemy in enemy_list:
 		if not (enemy is Node2D):
 			continue
-		print("enemies")
-		var enemy_node := enemy
+		var enemy_node: Node2D = enemy
 		var dist := player.global_position.distance_to(enemy_node.global_position)
-		if dist <= nearest_dist:
-			nearest_dist = dist
-			nearest_enemy = enemy_node
+		
+		
+		# Check if enemy is within arc range (directional validation)
+		if dist <= ATTACK_RANGE:
+			var enemy_dir = (enemy_node.global_position - player.global_position).normalized()
+			var dot_product = attack_dir.dot(enemy_dir)
+			
+			
+			# Only consider enemies within the swoosh arc
+			if dot_product >= arc_threshold and dist <= nearest_dist:
+				nearest_dist = dist
+				nearest_enemy = enemy_node
 
 	if nearest_enemy != null and nearest_enemy.has_method("take_damage"):
-		print("take damage")
-		nearest_enemy.take_damage(ATTACK_DAMAGE)
+		nearest_enemy.take_damage(ATTACK_DAMAGE, attack_dir * KNOCKBACK_FORCE)
+	else:
+		print("No valid enemy target found")
 
 	_spawn_swoosh(player, attack_dir)
 

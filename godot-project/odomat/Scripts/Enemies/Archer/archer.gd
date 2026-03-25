@@ -143,3 +143,27 @@ func _on_danger_area_body_exited(body: Node2D) -> void:
 	_in_danger_zone = false
 	if not _in_attack_zone:
 		_player = null
+
+
+func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> void:
+	
+	# Apply knockback
+	if knockback_velocity.length() > 0:
+		velocity = knockback_velocity
+	
+	# Visual feedback: blinking effect
+	var sprite = $AnimatedSprite2D
+	if sprite:
+		_animate_archer_blink(sprite)
+	else:
+		print("WARNING: AnimatedSprite2D not found!")
+
+
+func _animate_archer_blink(sprite: AnimatedSprite2D) -> void:
+	var original_color = sprite.self_modulate
+	var tween = create_tween()
+	tween.set_parallel(false)  # Sequential animations
+	
+	for i in range(1):
+		tween.tween_property(sprite, "self_modulate", Color.RED, 0.08)
+		tween.tween_property(sprite, "self_modulate", original_color, 0.08)
