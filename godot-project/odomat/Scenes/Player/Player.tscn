@@ -17,6 +17,7 @@ script = ExtResource("1_rpqav")
 [node name="Hitbox" type="Area2D" parent="." unique_id=1335718208]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1940755092]
+visible = false
 position = Vector2(0, -10)
 shape = SubResource("RectangleShape2D_rpqav")
 
@@ -38,6 +39,7 @@ polygon = PackedVector2Array(0, -36, 32, -20, 0, -4, -32, -20)
 position = Vector2(5, 1)
 
 [node name="Collider" type="CollisionShape2D" parent="." unique_id=618857043]
+visible = false
 position = Vector2(0, -10)
 shape = SubResource("RectangleShape2D_kyqiw")
 

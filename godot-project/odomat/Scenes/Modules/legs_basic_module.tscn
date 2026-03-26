@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://80yxfvrjks1x" path="res://Scripts/Player/Modules/Legs_Module/legs_basic_module.gd" id="1_mod"]
+[ext_resource type="Script" uid="uid://80yxfvrjks1x" path="res://Scripts/Player/Modules/LegsModule/legs_basic_module.gd" id="1_mod"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
 
 [sub_resource type="Resource" id="Resource_data"]
@@ -9,6 +9,54 @@ module_name = "Basic Legs"
 slot = 2
 description = "Default locomotion module."
 
+[sub_resource type="Gradient" id="Gradient_tf83h"]
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s0eop"]
+gradient = SubResource("Gradient_tf83h")
+width = 40
+height = 5
+
+[sub_resource type="Gradient" id="Gradient_kukki"]
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ft8w5"]
+gradient = SubResource("Gradient_kukki")
+width = 40
+height = 5
+
 [node name="LegsBasicModule" type="Node"]
 script = ExtResource("1_mod")
 module_data = SubResource("Resource_data")
+
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="DashAgainTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="DashUI" type="HBoxContainer" parent="."]
+offset_left = -29.0
+offset_top = -52.0
+offset_right = 52.0
+offset_bottom = -42.0
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = -10
+alignment = 1
+
+[node name="DashBar1" type="TextureProgressBar" parent="DashUI"]
+custom_minimum_size = Vector2(40, 5)
+layout_mode = 2
+max_value = 2.0
+step = 0.1
+texture_progress = SubResource("GradientTexture2D_s0eop")
+
+[node name="DashBar2" type="TextureProgressBar" parent="DashUI"]
+custom_minimum_size = Vector2(40, 5)
+layout_mode = 2
+max_value = 2.0
+step = 0.1
+texture_progress = SubResource("GradientTexture2D_ft8w5")
+
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="DashAgainTimer" to="." method="_on_dash_again_timer_timeout"]
