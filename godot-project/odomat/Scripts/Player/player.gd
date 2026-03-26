@@ -1,10 +1,16 @@
 extends CharacterBody2D
+@onready var dash_timer: Timer = $DashTimer
+@onready var dash_again_timer: Timer = $DashAgainTimer
+@onready var dash_bar_1: TextureProgressBar = $DashUI/DashBar1
+@onready var dash_bar_2: TextureProgressBar = $DashUI/DashBar2
 
-## ── Valeurs de base du robot (sans aucun module équipé) ──────────────────────
 const BASE_SPEED          : float = 150.0
 const BASE_ATTACK_RANGE   : float = 100.0
 const BASE_ATTACK_DAMAGE  : int   = 1
 const BASE_ATTACK_COOLDOWN: float = 0.4
+const DASH_SPEED          : float = 300.0
+const MAX_DASH            : int = 2
+
 
 const ISO_DIRS: Dictionary = {
 	"move_up":    Vector2( 0.0, -1.0),
@@ -18,10 +24,29 @@ const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/E
 
 var _cooldown_remaining: float = 0.0
 var _npc_to_interact: NPC = null
-
+var _dashing               : bool = false
+var _dash_count            : int = 0
 
 func _process(delta: float) -> void:
 	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)
+	update_dash_ui()
+
+
+func update_dash_ui() -> void:
+
+	var progress = 0.0
+	if !dash_again_timer.is_stopped():
+		progress = 1.0 - (dash_again_timer.time_left / dash_again_timer.wait_time)
+
+	if _dash_count == 0:
+		dash_bar_1.value = 1.0
+		dash_bar_2.value = 1.0
+	elif _dash_count == 1:
+		dash_bar_1.value = 1.0
+		dash_bar_2.value = progress
+	elif _dash_count == 2:
+		dash_bar_1.value = progress
+		dash_bar_2.value = 0.0
 
 
 func _physics_process(_delta: float) -> void:
@@ -33,7 +58,15 @@ func _physics_process(_delta: float) -> void:
 		if Input.is_action_pressed(action):
 			move_dir += ISO_DIRS[action]
 
-	velocity = move_dir.normalized() * BASE_SPEED if move_dir != Vector2.ZERO else Vector2.ZERO
+	if Input.is_action_just_pressed("dash") and _dash_count < MAX_DASH and move_dir != Vector2.ZERO:
+		_dash_count += 1
+		_dashing = true
+		dash_timer.start()
+		if dash_again_timer.is_stopped():
+			dash_again_timer.start()
+	
+	var current_speed = DASH_SPEED if _dashing else BASE_SPEED
+	velocity = move_dir.normalized() * current_speed if move_dir != Vector2.ZERO else Vector2.ZERO
 	move_and_slide()
 
 
@@ -89,3 +122,15 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 func _on_hitbox_body_exited(body: Node2D) -> void:
 	if body == _npc_to_interact:
 		_npc_to_interact = null
+
+
+func _on_dash_timer_timeout() -> void:
+	_dashing = false
+
+
+func _on_dash_again_timer_timeout() -> void:
+	if _dash_count > 0:
+		_dash_count -= 1
+		if _dash_count > 0:
+			dash_again_timer.start()
+	
