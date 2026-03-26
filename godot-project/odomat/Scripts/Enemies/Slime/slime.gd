@@ -14,6 +14,8 @@ var _wandering_destination: Vector2
 var _attacking_destination: Vector2
 var _player: CharacterBody2D = null
 
+var ATTACK_DAMAGE = 10
+
 enum State {ATTACKING, WANDERING, LOADING}
 
 func _physics_process(delta: float) -> void:

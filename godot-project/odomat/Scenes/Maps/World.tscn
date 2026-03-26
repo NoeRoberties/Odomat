@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cp1qgq66wl8xa" path="res://Scripts/Maps/world.gd" id="2_World"]
 [ext_resource type="PackedScene" uid="uid://dpt76ag0jeexs" path="res://Scenes/Enemies/Slime/Slime.tscn" id="3_7g83o"]
 [ext_resource type="PackedScene" uid="uid://cuyrth054w2hu" path="res://Scenes/Enemies/Archer/Archer.tscn" id="4_87k0f"]
+[ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPCs/NPC.tscn" id="5_81t7q"]
 
 [node name="World" type="Node2D" unique_id=420205900]
 y_sort_enabled = true
@@ -18,3 +19,8 @@ scale = Vector2(2.1210763, 2.144)
 [node name="Archer" parent="." unique_id=1862442761 instance=ExtResource("4_87k0f")]
 position = Vector2(-90, 109)
 scale = Vector2(1.3312757, 1.6796117)
+
+[node name="NPC" parent="." unique_id=714362369 instance=ExtResource("5_81t7q")]
+position = Vector2(119, -61)
+_dialogues = Array[String](["caca", "prout"])
+_name = "cacapipiz"

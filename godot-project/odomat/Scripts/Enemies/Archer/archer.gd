@@ -14,6 +14,8 @@ var _shoot_cooldown = 1.0
 var _shoot_timer = 0.0
 var _is_shooting = false
 
+var ATTACK_DAMAGE = 10
+
 
 func _physics_process(delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:

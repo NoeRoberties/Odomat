@@ -10,6 +10,13 @@ var _equipped_modules: Dictionary = {
 
 const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
 var _equipment_menu: CanvasLayer = null
+@onready var _visual: Node2D = $Visual
+
+var _health = 100
+var _hit_invulnerability: float = 0.0
+var _blink_tween: Tween = null
+
+const HIT_INVULNERABILITY_DURATION: float = 0.25
 
 
 func _ready() -> void:
@@ -36,6 +43,25 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
 		_npc_to_interact._launch_dialogue()
+
+
+func _process(delta: float) -> void:
+	_hit_invulnerability = maxf(0.0, _hit_invulnerability - delta)
+
+
+func _play_damage_blink() -> void:
+	if _visual == null:
+		return
+
+	if _blink_tween != null and _blink_tween.is_valid():
+		_blink_tween.kill()
+
+	var original_color := _visual.modulate
+	_blink_tween = create_tween()
+	_blink_tween.set_parallel(false)
+	for i in range(4):
+		_blink_tween.tween_property(_visual, "modulate", Color.RED, 0.08)
+		_blink_tween.tween_property(_visual, "modulate", original_color, 0.08)
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is NPC:
@@ -75,3 +101,18 @@ func _refresh_module_slot(slot: String) -> void:
 	if next_module != null:
 		add_child(next_module)
 		next_module.on_equip(self)
+		
+func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> void:
+	if _hit_invulnerability > 0.0:
+		return
+
+	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
+	_health -= damage
+	_play_damage_blink()
+	
+	if knockback_velocity.length() > 0:
+		velocity -= knockback_velocity
+		
+	if _health <= 0:
+		_health = 0
+		GameState.current_state = GameState.GameState.MENU
