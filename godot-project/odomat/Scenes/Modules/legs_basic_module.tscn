@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://h1l2bndrv7ra"]
 
 [ext_resource type="Script" uid="uid://80yxfvrjks1x" path="res://Scripts/Player/Modules/LegsModule/legs_basic_module.gd" id="1_mod"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
@@ -25,17 +25,17 @@ gradient = SubResource("Gradient_kukki")
 width = 40
 height = 5
 
-[node name="LegsBasicModule" type="Node"]
+[node name="LegsBasicModule" type="Node2D" unique_id=1761391186]
 script = ExtResource("1_mod")
 module_data = SubResource("Resource_data")
 
-[node name="DashTimer" type="Timer" parent="."]
+[node name="DashTimer" type="Timer" parent="." unique_id=1181708999]
 wait_time = 0.2
 
-[node name="DashAgainTimer" type="Timer" parent="."]
+[node name="DashAgainTimer" type="Timer" parent="." unique_id=1710672303]
 wait_time = 2.0
 
-[node name="DashUI" type="HBoxContainer" parent="."]
+[node name="DashUI" type="HBoxContainer" parent="." unique_id=1389545614]
 offset_left = -29.0
 offset_top = -52.0
 offset_right = 52.0
@@ -44,14 +44,14 @@ size_flags_stretch_ratio = 0.0
 theme_override_constants/separation = -10
 alignment = 1
 
-[node name="DashBar1" type="TextureProgressBar" parent="DashUI"]
+[node name="DashBar1" type="TextureProgressBar" parent="DashUI" unique_id=1240656981]
 custom_minimum_size = Vector2(40, 5)
 layout_mode = 2
 max_value = 2.0
 step = 0.1
 texture_progress = SubResource("GradientTexture2D_s0eop")
 
-[node name="DashBar2" type="TextureProgressBar" parent="DashUI"]
+[node name="DashBar2" type="TextureProgressBar" parent="DashUI" unique_id=718572014]
 custom_minimum_size = Vector2(40, 5)
 layout_mode = 2
 max_value = 2.0
