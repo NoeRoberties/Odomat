@@ -108,6 +108,7 @@ func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> voi
 
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
+	print("health = ", _health)
 	_play_damage_blink()
 	
 	if knockback_velocity.length() > 0:
@@ -116,3 +117,4 @@ func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> voi
 	if _health <= 0:
 		_health = 0
 		GameState.current_state = GameState.GameState.MENU
+		print("DEAD")

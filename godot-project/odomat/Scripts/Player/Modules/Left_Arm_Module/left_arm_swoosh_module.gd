@@ -13,10 +13,6 @@ var _cooldown_remaining: float = 0.0
 var _attack_area: Area2D = null
 
 
-func handle_process(_player: CharacterBody2D, delta: float) -> void:
-	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)
-
-
 func _process(delta: float) -> void:
 	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)
 
@@ -69,6 +65,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _do_attack(player: CharacterBody2D) -> void:
+	if GameState.current_state != GameState.GameState.PLAYING:
+		return
+
 	var mouse_world: Vector2 = player.get_global_mouse_position()
 	var attack_dir: Vector2 = (mouse_world - player.global_position)
 	if attack_dir.length_squared() == 0.0:

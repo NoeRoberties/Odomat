@@ -16,6 +16,8 @@ var _is_shooting = false
 
 var ATTACK_DAMAGE = 10
 
+var _health = 15
+
 
 func _physics_process(delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
@@ -152,6 +154,11 @@ func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> voi
 	# Apply knockback
 	if knockback_velocity.length() > 0:
 		velocity = knockback_velocity
+		
+	_health -= damage
+	
+	if _health	<= 0:
+		queue_free()
 	
 	# Visual feedback: blinking effect
 	var sprite = $AnimatedSprite2D
