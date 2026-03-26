@@ -5,3 +5,6 @@
 Docs/
 
 node_2d.tscn
+
+# MacOS specific ignores
+.DS_Store
