@@ -14,6 +14,8 @@ var _wandering_destination: Vector2
 var _attacking_destination: Vector2
 var _player: CharacterBody2D = null
 
+var ATTACK_DAMAGE = 10
+
 enum State {ATTACKING, WANDERING, LOADING}
 
 func _physics_process(delta: float) -> void:
@@ -76,8 +78,37 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
+	if _health <= 0:
+		return
 	if body.is_in_group("player"):
 		_player = null
 		_state = State.WANDERING
 		%AttackLoadingTimer.stop()
 		_choose_wandering_destination()
+		
+func take_damage(damage, knockback_velocity: Vector2 = Vector2.ZERO):
+	_health -= damage
+	
+	# Apply knockback
+	if knockback_velocity.length() > 0:
+		velocity -= knockback_velocity
+	
+	# Visual feedback: blinking effect
+	if _animated_sprite:
+		_animate_blink()
+	else:
+		print("WARNING: _animated_sprite is null!")
+	
+	if _health <= 0:
+		queue_free()
+
+
+func _animate_blink() -> void:
+	var original_color = _animated_sprite.self_modulate
+	var tween = create_tween()
+	tween.set_parallel(false)  # Sequential animations
+	
+	for i in range(1):
+		tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
+		tween.tween_property(_animated_sprite, "self_modulate", original_color, 0.08)
+	

@@ -1,118 +1,67 @@
 extends CharacterBody2D
-@onready var dash_timer: Timer = $DashTimer
-@onready var dash_again_timer: Timer = $DashAgainTimer
-@onready var dash_bar_1: TextureProgressBar = $DashUI/DashBar1
-@onready var dash_bar_2: TextureProgressBar = $DashUI/DashBar2
 
-const BASE_SPEED          : float = 150.0
-const BASE_ATTACK_RANGE   : float = 100.0
-const BASE_ATTACK_DAMAGE  : int   = 1
-const BASE_ATTACK_COOLDOWN: float = 0.4
-const DASH_SPEED          : float = 300.0
-const MAX_DASH            : int = 2
-
-
-const ISO_DIRS: Dictionary = {
-	"move_up":    Vector2( 0.0, -1.0),
-	"move_right": Vector2( 1.0,  0),
-	"move_down":  Vector2(0.0,  1.0),
-	"move_left":  Vector2(-1.0, 0.0),
+var _npc_to_interact: NPC = null
+var _equipped_modules: Dictionary = {
+	"right_arm":  null,
+	"left_arm":   null,
+	"legs":       null,
+	"brain_chip": null,
 }
 
-const SwooshScript := preload("res://Scripts/Player/swoosh.gd")
 const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
+var _equipment_menu: CanvasLayer = null
+@onready var _visual: Node2D = $Visual
 
-var _cooldown_remaining: float = 0.0
-var _npc_to_interact: NPC = null
-var _dashing               : bool = false
-var _dash_count            : int = 0
+var _health = 100
+var _hit_invulnerability: float = 0.0
+var _blink_tween: Tween = null
 
-func _process(delta: float) -> void:
-	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)
-	update_dash_ui()
-
-
-func update_dash_ui() -> void:
-
-	var progress = 0.0
-	if !dash_again_timer.is_stopped():
-		progress = 1.0 - (dash_again_timer.time_left / dash_again_timer.wait_time)
-
-	if _dash_count == 0:
-		dash_bar_1.value = 1.0
-		dash_bar_2.value = 1.0
-	elif _dash_count == 1:
-		dash_bar_1.value = 1.0
-		dash_bar_2.value = progress
-	elif _dash_count == 2:
-		dash_bar_1.value = progress
-		dash_bar_2.value = 0.0
+const HIT_INVULNERABILITY_DURATION: float = 0.25
 
 
-func _physics_process(_delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
-	var move_dir := Vector2.ZERO
+func _ready() -> void:
+	RobotModules.module_equipped.connect(_on_module_equipped)
+	RobotModules.module_unequipped.connect(_on_module_unequipped)
+	_refresh_all_modules()
 
-	for action: String in ISO_DIRS:
-		if Input.is_action_pressed(action):
-			move_dir += ISO_DIRS[action]
 
-	if Input.is_action_just_pressed("dash") and _dash_count < MAX_DASH and move_dir != Vector2.ZERO:
-		_dash_count += 1
-		_dashing = true
-		dash_timer.start()
-		if dash_again_timer.is_stopped():
-			dash_again_timer.start()
-	
-	var current_speed = DASH_SPEED if _dashing else BASE_SPEED
-	velocity = move_dir.normalized() * current_speed if move_dir != Vector2.ZERO else Vector2.ZERO
-	move_and_slide()
+func _exit_tree() -> void:
+	for slot: String in _equipped_modules:
+		var module := _equipped_modules[slot] as PlayerModule
+		if module != null:
+			module.on_unequip(self)
+			module.queue_free()
+			_equipped_modules[slot] = null
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
-	if event is InputEventMouseButton \
-			and event.pressed \
-			and event.button_index == MOUSE_BUTTON_LEFT:
-		if _cooldown_remaining <= 0.0:
-			_cooldown_remaining = BASE_ATTACK_COOLDOWN
-			_do_attack()
-	
-	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
-		_npc_to_interact._launch_dialogue()
-	
 	if event.is_action_pressed("open_inventory"):
 		add_child(EquipmentMenuScene.instantiate())
+		return
+
+	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
+		_npc_to_interact._launch_dialogue()
 
 
-func _do_attack() -> void:
-	# Direction = joueur → souris en coordonnées monde.
-	var mouse_world: Vector2 = get_global_mouse_position()
-	var attack_dir: Vector2 = (mouse_world - global_position).normalized()
-
-	var nearest_enemy: Node2D = null
-	var nearest_dist: float = BASE_ATTACK_RANGE
-
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		var dist: float = position.distance_to((enemy as Node2D).position)
-		if dist <= nearest_dist:
-			nearest_dist  = dist
-			nearest_enemy = enemy
-
-	if nearest_enemy != null:
-		nearest_enemy.take_damage(BASE_ATTACK_DAMAGE)
-
-	_spawn_swoosh(attack_dir)
+func _process(delta: float) -> void:
+	_hit_invulnerability = maxf(0.0, _hit_invulnerability - delta)
 
 
-func _spawn_swoosh(attack_dir: Vector2) -> void:
-	var swoosh := Node2D.new()
-	swoosh.set_script(SwooshScript)
-	get_parent().add_child(swoosh)
-	swoosh.global_position = global_position
-	swoosh.play(attack_dir)
+func _play_damage_blink() -> void:
+	if _visual == null:
+		return
+
+	if _blink_tween != null and _blink_tween.is_valid():
+		_blink_tween.kill()
+
+	var original_color := _visual.modulate
+	_blink_tween = create_tween()
+	_blink_tween.set_parallel(false)
+	for i in range(4):
+		_blink_tween.tween_property(_visual, "modulate", Color.RED, 0.08)
+		_blink_tween.tween_property(_visual, "modulate", original_color, 0.08)
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is NPC:
@@ -124,13 +73,48 @@ func _on_hitbox_body_exited(body: Node2D) -> void:
 		_npc_to_interact = null
 
 
-func _on_dash_timer_timeout() -> void:
-	_dashing = false
+func _on_module_equipped(slot: String, _module: ModuleData) -> void:
+	_refresh_module_slot(slot)
 
 
-func _on_dash_again_timer_timeout() -> void:
-	if _dash_count > 0:
-		_dash_count -= 1
-		if _dash_count > 0:
-			dash_again_timer.start()
+func _on_module_unequipped(slot: String) -> void:
+	_refresh_module_slot(slot)
+
+
+func _refresh_all_modules() -> void:
+	for slot: String in _equipped_modules:
+		_refresh_module_slot(slot)
+
+
+func _refresh_module_slot(slot: String) -> void:
+	if not _equipped_modules.has(slot):
+		return
+
+	var old_module := _equipped_modules[slot] as PlayerModule
+	if old_module != null:
+		old_module.on_unequip(self)
+		old_module.queue_free()
+
+	var next_module := RobotModules.create_equipped_module_instance(slot)
+	_equipped_modules[slot] = next_module
+
+	if next_module != null:
+		add_child(next_module)
+		next_module.on_equip(self)
+		
+func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> void:
+	if _hit_invulnerability > 0.0:
+		return
+
+	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
+	_health -= damage
+	print("health = ", _health)
+	_play_damage_blink()
 	
+	if knockback_velocity.length() > 0:
+		velocity -= knockback_velocity
+		
+	if _health <= 0:
+		_health = 0
+		GameState.current_state = GameState.GameState.MENU
+		print("DEAD")

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://nioa5f3xgfcc"]
+
+[ext_resource type="PackedScene" uid="uid://brnw2i2klx3j6" path="res://Scenes/Player/Player.tscn" id="1_n4a11"]
+[ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPCs/NPC.tscn" id="2_ekms1"]
+[ext_resource type="PackedScene" uid="uid://dpt76ag0jeexs" path="res://Scenes/Enemies/Slime/Slime.tscn" id="3_ekms1"]
+[ext_resource type="PackedScene" uid="uid://cuyrth054w2hu" path="res://Scenes/Enemies/Archer/Archer.tscn" id="4_tf83h"]
+
+[node name="TestMap" type="Node2D" unique_id=619646456]
+
+[node name="Player" parent="." unique_id=979638911 instance=ExtResource("1_n4a11")]
+position = Vector2(304, 157)
+
+[node name="NPC" parent="." unique_id=714362369 instance=ExtResource("2_ekms1")]
+position = Vector2(594, 9)
+_dialogues = Array[String](["zygeauzge", "zueghazuegyu", "ziuegdazi"])
+
+[node name="Slime" parent="." unique_id=1381557161 instance=ExtResource("3_ekms1")]
+position = Vector2(532, 310)
+
+[node name="Archer" parent="." unique_id=1862442761 instance=ExtResource("4_tf83h")]
+position = Vector2(-18, 38)

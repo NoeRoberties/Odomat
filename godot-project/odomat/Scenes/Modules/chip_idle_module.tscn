@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://oj1v6fj853p2" path="res://Scripts/Player/Modules/Chip_Module/chip_idle_module.gd" id="1_mod"]
+[ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
+
+[sub_resource type="Resource" id="Resource_data"]
+script = ExtResource("2_data")
+module_name = "Brain Chip (Idle)"
+slot = 3
+description = "Placeholder chip module with no active behavior yet."
+
+[node name="ChipIdleModule" type="Node"]
+script = ExtResource("1_mod")
+module_data = SubResource("Resource_data")

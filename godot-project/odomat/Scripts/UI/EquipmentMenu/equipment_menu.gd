@@ -14,6 +14,7 @@ var _slot_controls : Dictionary = {}
 
 
 func _ready() -> void:
+
 	GameState.current_state = GameState.GameState.MENU
 	_overlay.visible  = true
 	_center.visible   = true
@@ -41,7 +42,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("escape_inventory"):
+	if event.is_action_pressed("escape_inventory") or event.is_action_pressed("open_inventory"):
 		if _popup.visible:
 			_close_popup()
 		else:
@@ -67,7 +68,7 @@ func _close_popup() -> void:
 
 func _update_body_labels() -> void:
 	for slot_key: String in _slot_controls:
-		var module : ModuleData = RobotModules.equipped[slot_key]
+		var module: ModuleData = RobotModules.get_equipped_module_data(slot_key)
 		var slot_control: EquipmentSlot = _slot_controls[slot_key]
 		if module != null:
 			slot_control.set_equipped_name(module.module_name)
