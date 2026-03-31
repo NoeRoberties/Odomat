@@ -9,7 +9,6 @@ var _equipped_modules: Dictionary = {
 }
 
 const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
-var _equipment_menu: CanvasLayer = null
 @onready var _visual: Node2D = $Visual
 
 var _health = 100

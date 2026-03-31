@@ -7,7 +7,6 @@ const ATTACK_SPEED_MULTIPLIER: float = 3.0
 @export var _health: float = 10.0
 @export var _speed: float = 75.0
 
-var _alive: bool = true
 var _state: State = State.WANDERING
 var _animated_sprite: AnimatedSprite2D
 var _wandering_destination: Vector2
@@ -18,7 +17,7 @@ var ATTACK_DAMAGE = 10
 
 enum State {ATTACKING, WANDERING, LOADING}
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
 	if _state == State.WANDERING:

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://h1l2bndrv7ra"]
 
-[ext_resource type="Script" uid="uid://80yxfvrjks1x" path="res://Scripts/Player/Modules/LegsModule/legs_basic_module.gd" id="1_mod"]
+[ext_resource type="Script" uid="uid://80yxfvrjks1x" path="res://Scripts/Player/Modules/LegsModule/legs_basic.gd" id="1_mod"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
 
 [sub_resource type="Resource" id="Resource_data"]
