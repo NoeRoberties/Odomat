@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var arrow_scene : PackedScene = preload("res://Scenes/Enemies/Archer/Arrow.tscn")
 
+var _health = 15
 var _speed = 90
 var _flee_speed = 130
 var _shoot_distance = 250.0
@@ -13,10 +14,6 @@ var _in_danger_zone = false
 var _shoot_cooldown = 1.0
 var _shoot_timer = 0.0
 var _is_shooting = false
-
-var ATTACK_DAMAGE = 10
-
-var _health = 15
 
 
 func _physics_process(delta: float) -> void:
@@ -150,14 +147,12 @@ func _on_danger_area_body_exited(body: Node2D) -> void:
 
 
 func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> void:
-	
-	# Apply knockback
 	if knockback_velocity.length() > 0:
 		velocity = knockback_velocity
 		
 	_health -= damage
 	
-	if _health	<= 0:
+	if _health <= 0:
 		queue_free()
 	
 	# Visual feedback: blinking effect

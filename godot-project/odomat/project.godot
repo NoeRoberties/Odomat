@@ -25,6 +25,11 @@ GameState="*uid://do8qee8ntl23l"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 
+[editor]
+
+naming/scene_name_casing=1
+naming/script_name_casing=2
+
 [file_customization]
 
 folder_colors={

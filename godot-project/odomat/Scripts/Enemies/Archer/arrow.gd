@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 		for i in range(get_slide_collision_count()):
 			var collision := get_slide_collision(i)
 			var collider := collision.get_collider()
-			if collider is Node and (collider as Node).is_in_group("player") and collider.has_method("take_damage"):
+			if collider.is_in_group("player") and collider.has_method("take_damage"):
 				var knockback := Vector2(_speed, 0).rotated(dir).normalized() * KNOCKBACK_FORCE
 				collider.take_damage(DAMAGE, knockback)
 		queue_free()
