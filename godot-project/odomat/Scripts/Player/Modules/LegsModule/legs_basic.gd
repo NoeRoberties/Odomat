@@ -29,7 +29,7 @@ func _ready() -> void:
 		dash_ui.z_index = 100
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
 	if event.is_action_pressed("dash"):
@@ -52,7 +52,6 @@ func _physics_process(_delta: float) -> void:
 		_last_move_dir = move_dir.normalized()
 
 	if _dash_requested and _dash_count <= MAX_DASH:
-		print("daaaaash")
 		var dash_dir := _last_move_dir
 		if move_dir != Vector2.ZERO:
 			dash_dir = move_dir.normalized()

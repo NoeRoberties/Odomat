@@ -14,7 +14,6 @@ var _slot_controls : Dictionary = {}
 
 
 func _ready() -> void:
-
 	GameState.current_state = GameState.GameState.MENU
 	_overlay.visible  = true
 	_center.visible   = true
