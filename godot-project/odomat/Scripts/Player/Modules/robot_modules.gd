@@ -12,8 +12,11 @@ signal module_equipped(slot: String, module: ModuleData)
 ## Émis quand un module est retiré. Paramètre : clé du slot.
 signal module_unequipped(slot: String)
 
-## Dossier de configuration des modules (scènes .tscn).
-const MODULE_SCENES_DIR := "res://Scenes/Modules"
+## Dossier des scènes des modules.
+const CHIPS_SCENES_DIR := "res://Scenes/Modules/Chips"
+const LEFT_ARMS_SCENES_DIR := "res://Scenes/Modules/LeftArms"
+const RIGHT_ARMS_SCENES_DIR := "res://Scenes/Modules/RightArms"
+const LEGS_SCENES_DIR := "res://Scenes/Modules/Legs"
 
 ## Modules (scènes) actuellement équipés. Valeur null = emplacement vide.
 var equipped: Dictionary = {
@@ -42,7 +45,20 @@ func _instantiate_module(module_scene: PackedScene) -> PlayerModule:
 
 
 func _ready() -> void:
-	_load_modules_from_scenes()
+	_load_modules_from_dir(CHIPS_SCENES_DIR)
+	_load_modules_from_dir(LEFT_ARMS_SCENES_DIR)
+	_load_modules_from_dir(RIGHT_ARMS_SCENES_DIR)
+	_load_modules_from_dir(LEGS_SCENES_DIR)
+	inventory.sort_custom(func(a: PackedScene, b: PackedScene) -> bool:
+		var data_a := get_module_data(a)
+		var data_b := get_module_data(b)
+		if data_a == null:
+			return false
+		if data_b == null:
+			return true
+		return data_a.module_name.nocasecmp_to(data_b.module_name) < 0
+	)
+	_equip_default_modules()
 
 
 # ── API publique ──────────────────────────────────────────────────────────────
@@ -94,11 +110,8 @@ func slot_key(slot_enum: ModuleData.Slot) -> String:
 
 # ── Inventaire de test ────────────────────────────────────────────────────────
 ## Supprime ou remplace cette fonction quand tu implémentes la sauvegarde.
-
-func _load_modules_from_scenes() -> void:
-	inventory.clear()
-
-	var dir := DirAccess.open(MODULE_SCENES_DIR)
+func _load_modules_from_dir(dir_path: String) -> void:
+	var dir := DirAccess.open(dir_path)
 	if dir == null:
 		return
 
@@ -112,7 +125,7 @@ func _load_modules_from_scenes() -> void:
 		if not file_name.ends_with(".tscn"):
 			continue
 
-		var res_path := "%s/%s" % [MODULE_SCENES_DIR, file_name]
+		var res_path := "%s/%s" % [dir_path, file_name]
 		var module_res := load(res_path)
 		if module_res is PackedScene:
 			inventory.append(module_res)
@@ -120,19 +133,8 @@ func _load_modules_from_scenes() -> void:
 			push_warning("Ignored non-module scene resource: %s" % res_path)
 	dir.list_dir_end()
 
-	inventory.sort_custom(func(a: PackedScene, b: PackedScene) -> bool:
-		var data_a := get_module_data(a)
-		var data_b := get_module_data(b)
-		if data_a == null:
-			return false
-		if data_b == null:
-			return true
-		return data_a.module_name.nocasecmp_to(data_b.module_name) < 0
-	)
 
-	for slot_name: String in equipped.keys():
-		equipped[slot_name] = null
-
+func _equip_default_modules() -> void:
 	for module_scene: PackedScene in inventory:
 		var module_data := get_module_data(module_scene)
 		if module_data == null:
