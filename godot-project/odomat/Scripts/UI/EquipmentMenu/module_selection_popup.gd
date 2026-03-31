@@ -55,10 +55,10 @@ func _refresh_list() -> void:
 		child.free()
 
 	var target_slot  : int        = _slot_key_to_enum(_selected_slot)
-	var equipped_scene : PackedScene = RobotModules.equipped[_selected_slot]
+	var equipped_scene : PackedScene = ModulesInventory.equipped[_selected_slot]
 
-	for module_scene: PackedScene in RobotModules.inventory:
-		var module_data := RobotModules.get_module_data(module_scene)
+	for module_scene: PackedScene in ModulesInventory.inventory:
+		var module_data := ModulesInventory.get_module_data(module_scene)
 		if module_data == null:
 			continue
 		if module_data.slot != target_slot:
@@ -76,7 +76,7 @@ func _refresh_list() -> void:
 
 func _on_module_selected(module_scene: PackedScene) -> void:
 	_selected_module_scene = module_scene
-	_selected_module_data = RobotModules.get_module_data(module_scene)
+	_selected_module_data = ModulesInventory.get_module_data(module_scene)
 	call_deferred("_refresh_list")  # Différé : évite free() sur un nœud verrouillé
 	_refresh_detail()
 
@@ -92,7 +92,7 @@ func _refresh_detail() -> void:
 		_unequip_btn.disabled = true
 		return
 
-	var is_equipped: bool = RobotModules.equipped[_selected_slot] == _selected_module_scene
+	var is_equipped: bool = ModulesInventory.equipped[_selected_slot] == _selected_module_scene
 
 	_detail_name.text     = _selected_module_data.module_name
 	_detail_desc.text     = _selected_module_data.description
@@ -119,11 +119,11 @@ func _format_stats(m: ModuleData) -> String:
 
 func _on_equip_pressed() -> void:
 	if _selected_module_scene != null:
-		RobotModules.equip(_selected_module_scene)
+		ModulesInventory.equip(_selected_module_scene)
 
 
 func _on_unequip_pressed() -> void:
-	RobotModules.unequip(_selected_slot)
+	ModulesInventory.unequip(_selected_slot)
 	_selected_module_scene = null
 	_selected_module_data = null
 

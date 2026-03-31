@@ -1,4 +1,4 @@
-class_name PlayerModule
+class_name Module
 extends Node
 
 

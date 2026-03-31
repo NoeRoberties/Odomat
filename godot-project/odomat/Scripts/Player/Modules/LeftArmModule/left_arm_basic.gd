@@ -1,2 +1,2 @@
 class_name LeftArmSwooshModule
-extends PlayerModule
+extends Module

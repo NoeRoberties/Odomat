@@ -19,14 +19,14 @@ const HIT_INVULNERABILITY_DURATION: float = 0.25
 
 
 func _ready() -> void:
-	RobotModules.module_equipped.connect(_on_module_equipped)
-	RobotModules.module_unequipped.connect(_on_module_unequipped)
+	ModulesInventory.module_equipped.connect(_on_module_equipped)
+	ModulesInventory.module_unequipped.connect(_on_module_unequipped)
 	_refresh_all_modules()
 
 
 func _exit_tree() -> void:
 	for slot: String in _equipped_modules:
-		var module := _equipped_modules[slot] as PlayerModule
+		var module := _equipped_modules[slot] as Module
 		if module != null:
 			module.on_unequip(self)
 			module.queue_free()
@@ -89,12 +89,12 @@ func _refresh_module_slot(slot: String) -> void:
 	if not _equipped_modules.has(slot):
 		return
 
-	var old_module := _equipped_modules[slot] as PlayerModule
+	var old_module := _equipped_modules[slot] as Module
 	if old_module != null:
 		old_module.on_unequip(self)
 		old_module.queue_free()
 
-	var next_module := RobotModules.create_equipped_module_instance(slot)
+	var next_module := ModulesInventory.create_equipped_module_instance(slot)
 	_equipped_modules[slot] = next_module
 
 	if next_module != null:

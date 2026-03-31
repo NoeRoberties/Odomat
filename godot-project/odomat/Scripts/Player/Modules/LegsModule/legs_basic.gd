@@ -1,5 +1,5 @@
 class_name LegsBasicModule
-extends PlayerModule
+extends Module
 
 @onready var dash_timer: Timer = $DashTimer
 @onready var dash_again_timer: Timer = $DashAgainTimer

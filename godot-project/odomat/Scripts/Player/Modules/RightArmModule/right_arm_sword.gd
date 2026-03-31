@@ -1,5 +1,5 @@
 class_name RightArmIdleModule
-extends PlayerModule
+extends Module
 
 const ATTACK_RANGE: float = 100.0
 const ATTACK_ARC_DEG: float = 155.0

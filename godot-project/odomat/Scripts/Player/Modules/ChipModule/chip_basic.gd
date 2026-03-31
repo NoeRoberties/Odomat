@@ -1,2 +1,2 @@
 class_name ChipIdleModule
-extends PlayerModule
+extends Module

@@ -1,8 +1,8 @@
 ## Singleton (AutoLoad) qui gère les modules équipés du robot et son inventaire.
 ##
 ## Accès depuis n'importe quel script :
-##   RobotModules.equip(module_scene)
-##   var slot_content : PackedScene = RobotModules.equipped["right_arm"]
+##   ModulesInventory.equip(module_scene)
+##   var slot_content : PackedScene = ModulesInventory.equipped["right_arm"]
 extends Node
 
 
@@ -30,17 +30,17 @@ var equipped: Dictionary = {
 var inventory: Array[PackedScene] = []
 
 
-func _instantiate_module(module_scene: PackedScene) -> PlayerModule:
+func _instantiate_module(module_scene: PackedScene) -> Module:
 	if module_scene == null:
 		return null
 
 	var instance := module_scene.instantiate()
-	if instance is PlayerModule:
-		return instance as PlayerModule
+	if instance is Module:
+		return instance as Module
 
 	if instance is Node:
 		(instance as Node).queue_free()
-	push_warning("Ignored scene that does not inherit PlayerModule: %s" % module_scene.resource_path)
+	push_warning("Ignored scene that does not inherit Module: %s" % module_scene.resource_path)
 	return null
 
 
@@ -94,7 +94,7 @@ func get_equipped_module_data(slot: String) -> ModuleData:
 	return get_module_data(equipped.get(slot, null) as PackedScene)
 
 
-func create_equipped_module_instance(slot: String) -> PlayerModule:
+func create_equipped_module_instance(slot: String) -> Module:
 	return _instantiate_module(equipped.get(slot, null) as PackedScene)
 
 
