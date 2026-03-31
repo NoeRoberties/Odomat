@@ -12,11 +12,13 @@ script = ExtResource("2_World")
 
 [node name="Slime" parent="." unique_id=1381557161 instance=ExtResource("3_7g83o")]
 position = Vector2(231, 112)
+scale = Vector2(2.1210763, 2.144)
 
 [node name="Player" parent="." unique_id=979638911 instance=ExtResource("1_Player")]
 
 [node name="Archer" parent="." unique_id=1862442761 instance=ExtResource("4_87k0f")]
 position = Vector2(-90, 109)
+scale = Vector2(1.3312757, 1.6796117)
 
 [node name="NPC" parent="." unique_id=714362369 instance=ExtResource("5_81t7q")]
 position = Vector2(119, -61)

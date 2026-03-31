@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://6lh1xcsteivm"]
+
+[ext_resource type="Script" uid="uid://c8q8cmqdfkvm6" path="res://Scripts/Player/Modules/LeftArmModule/left_arm_basic.gd" id="1_5wyh7"]
+[ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_ljj52"]
+
+[sub_resource type="Resource" id="Resource_data"]
+script = ExtResource("2_ljj52")
+module_name = "Swoosh Left Arm"
+slot = 1
+description = "Melee arm using the current swoosh attack."
+
+[node name="LeftArmSwooshModule" type="Node" unique_id=1608895970]
+script = ExtResource("1_5wyh7")
+module_data = SubResource("Resource_data")
