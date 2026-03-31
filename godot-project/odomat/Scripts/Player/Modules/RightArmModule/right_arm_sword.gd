@@ -48,19 +48,12 @@ func _setup_attack_area() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not (event is InputEventMouseButton):
-		return
-	if not event.pressed:
-		return
-	if event.button_index != MOUSE_BUTTON_LEFT:
-		return
-	if _cooldown_remaining > 0.0:
-		return
-	var player = get_parent()
-	if player == null:
-		return
-	_cooldown_remaining = ATTACK_COOLDOWN
-	_do_attack(player)
+	if event.is_action_pressed("sword_attack") and _cooldown_remaining <= 0.0:
+		var player = get_parent()
+		if player == null:
+			return
+		_cooldown_remaining = ATTACK_COOLDOWN
+		_do_attack(player)
 
 
 func _do_attack(player: CharacterBody2D) -> void:

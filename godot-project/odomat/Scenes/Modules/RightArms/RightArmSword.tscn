@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://daebdyth45vwx" path="res://Scripts/Player/Modules/RightArmModule/right_arm_basic.gd" id="1_mod"]
+[ext_resource type="Script" uid="uid://daebdyth45vwx" path="res://Scripts/Player/Modules/RightArmModule/right_arm_sword.gd" id="1_mod"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
 
 [sub_resource type="Resource" id="Resource_data"]
