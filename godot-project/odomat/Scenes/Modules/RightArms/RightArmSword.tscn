@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://ddyv4gut3shpm"]
+[gd_scene format=3 uid="uid://c3hg0ksdxcoo2"]
 
 [ext_resource type="Script" uid="uid://daebdyth45vwx" path="res://Scripts/Player/Modules/RightArmModule/right_arm_sword.gd" id="1_mod"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
@@ -8,6 +8,22 @@
 script = ExtResource("2_data")
 module_name = "Right Arm (Idle)"
 description = "Placeholder right arm module with no active behavior yet."
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ewdhf"]
+atlas = ExtResource("3_ewdhf")
+region = Rect2(0, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4sj2"]
+atlas = ExtResource("3_ewdhf")
+region = Rect2(64, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2pmks"]
+atlas = ExtResource("3_ewdhf")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i28gp"]
+atlas = ExtResource("3_ewdhf")
+region = Rect2(192, 128, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_to4uw"]
 atlas = ExtResource("3_ewdhf")
@@ -47,6 +63,28 @@ region = Rect2(64, 128, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a4sj2"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ewdhf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a4sj2")
+}],
+"loop": false,
+"name": &"attack_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2pmks")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i28gp")
+}],
+"loop": false,
+"name": &"attack_right",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_to4uw")
@@ -91,4 +129,6 @@ module_data = SubResource("Resource_data")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1363165983]
 sprite_frames = SubResource("SpriteFrames_a4sj2")
-animation = &"walk_right"
+animation = &"attack_right"
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

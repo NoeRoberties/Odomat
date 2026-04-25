@@ -10,6 +10,8 @@ const SWOOSH_SCRIPT := preload("res://Scripts/Player/swoosh.gd")
 
 var _cooldown_remaining: float = 0.0
 var _attack_area: Area2D = null
+var _attacking: bool = false
+var _last_move_dir: Vector2 = Vector2.ZERO
 
 
 func _process(delta: float) -> void:
@@ -73,6 +75,11 @@ func _do_attack(player: CharacterBody2D) -> void:
 		if enemy.has_method("take_damage"):
 			enemy.take_damage(ATTACK_DAMAGE, attack_dir * KNOCKBACK_FORCE)
 
+	_attacking = true
+	if _last_move_dir.x <= 0.0:
+		_sprite.play("attack_left")
+	else:
+		_sprite.play("attack_right")
 	_spawn_swoosh(player, attack_dir)
 
 
@@ -109,3 +116,32 @@ func _spawn_swoosh(player: CharacterBody2D, attack_dir: Vector2) -> void:
 	player.get_parent().add_child(swoosh)
 	swoosh.global_position = player.global_position
 	swoosh.play(attack_dir)
+
+func update_animation(move_dir: Vector2) -> void:
+	if _attacking:
+		return
+	if move_dir == Vector2.ZERO:
+		_sprite.stop()
+		return
+	if move_dir.x < 0.0:
+		_sprite.play("walk_left")
+		_last_move_dir = move_dir
+		return
+	if move_dir.x > 0.0:
+		_sprite.play("walk_right")
+		_last_move_dir = move_dir
+		return
+	if move_dir.y > 0.0:
+		_sprite.play()
+		return
+	if move_dir.y < 0.0:
+		_sprite.play()
+		return
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	_attacking = false
+	if _last_move_dir.x <= 0.0:
+		_sprite.play("walk_left")
+	else:
+		_sprite.play("walk_right")
