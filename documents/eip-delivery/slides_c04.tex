@@ -1,0 +1,75 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{booktabs}
+
+\usetheme{Madrid}
+\title{Odomat -- Comp\'etences C04}
+\author{Projet EIP}
+\date{Avril 2026}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{C04.1 -- Chiffrer le projet et cadrer le budget}
+\textbf{P\'erim\`etre technique pris en compte (MVP Odomat)}
+\begin{itemize}
+    \item Syst\`eme modulaire joueur: modules de bras/jambes/puce, impact direct sur les stats (docs: \textit{inventory\_overview}, \textit{player\_integration}).
+    \item UI d'\'equipement dynamique et pause du jeu (doc: \textit{equipment\_menu}).
+    \item Boucle de combat et IA ennemis (scripts Archer/Slime + roadmap MVP en compte-rendu du 23/03/2026).
+\end{itemize}
+
+\vspace{0.4em}
+\textbf{Chiffrage financier (source: \textit{Estimations\_cots\_Odomat.pdf})}
+\begin{table}
+\small
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Poste & Hypoth\`ese basse & Hypoth\`ese haute \\
+\midrule
+Publication Steam Direct & 100\$ & 100\$ \\
+Audio interne (FL Studio) & 100\$ & 100\$ \\
+Audio externalis\'e (musique + SFX) & 100\$ & 600\$ \\
+\midrule
+\textbf{Budget total pr\'evisionnel} & \textbf{200\$} & \textbf{700\$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Cadre budg\'etaire retenu}
+\begin{itemize}
+    \item Sc\'enario Minimaliste: 200\$ (Steam + production audio interne).
+    \item Sc\'enario Hybride: 250\$ \`a 700\$ (Steam + packs/freelance audio).
+    \item Point de vigilance: investissement temps comp\'etences audio en cas d'internalisation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{C04.2 -- Analyse financi\`ere et benchmarks}
+\textbf{Rep\`eres march\'e (source: \textit{Etude\_de\_march\_globale\_Odomat.pdf})}
+\begin{itemize}
+    \item Prix observ\'es pour RPG pixel art isom\'etriques PC: \textbf{15\$ \`a 30\$}.
+    \item March\'e RPG mondial: \textbf{27,5 Md\$ (2024)} \textrightarrow{} \textbf{33,27 Md\$ (2026)}.
+    \item Croissance moyenne: \textbf{8\% \`a 10\%} (TCAC), dynamique favorable mais concurrence forte.
+\end{itemize}
+
+\textbf{Benchmarks concurrents (ordre de grandeur)}
+\begin{itemize}
+    \item Hades: >1 million d'exemplaires vendus rapidement, >100 M\$ cumul\'es.
+    \item Underrail: >100 000 ventes, suite financ\'ee via Kickstarter (500 k\$).
+    \item Segment survivors/roguelike: forte traction (ex. Vampire Survivors, Risk of Rain 2).
+\end{itemize}
+
+\textbf{Lecture pour Odomat}
+\begin{itemize}
+    \item Positionnement prix cible coh\'erent pour un indie: \textbf{milieu-bas de fourchette} (acc\`es, d\'ecouverte).
+    \item Diff\'erenciation produit issue du projet: combat bas\'e modules + progression \`a effets imm\'ediats.
+    \item D\'ecision recommand\'ee: valider la traction via prototype jouable puis ajuster pricing selon retours joueurs.
+\end{itemize}
+\end{frame}
+
+\end{document}

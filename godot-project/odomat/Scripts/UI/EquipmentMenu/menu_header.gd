@@ -7,12 +7,13 @@ signal close_pressed
 @export var close_button_text: String = " ✕ "
 
 @onready var _title_label: Label = $HeaderBar/TitleLabel
-@onready var _close_button: Button = $HeaderBar/CloseButton
+@onready var _close_button: Button = get_node_or_null("HeaderBar/CloseButton")
 
 
 func _ready() -> void:
 	_apply_visuals()
-	_close_button.pressed.connect(func(): close_pressed.emit())
+	if is_instance_valid(_close_button):
+		_close_button.pressed.connect(func(): close_pressed.emit())
 
 
 func set_title(new_title: String) -> void:
@@ -23,4 +24,5 @@ func set_title(new_title: String) -> void:
 
 func _apply_visuals() -> void:
 	_title_label.text = title_text
-	_close_button.text = close_button_text
+	if is_instance_valid(_close_button):
+		_close_button.text = close_button_text
