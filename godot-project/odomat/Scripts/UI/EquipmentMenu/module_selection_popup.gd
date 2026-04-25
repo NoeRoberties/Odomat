@@ -120,12 +120,16 @@ func _format_stats(m: ModuleData) -> String:
 func _on_equip_pressed() -> void:
 	if _selected_module_scene != null:
 		ModulesInventory.equip(_selected_module_scene)
+		# Ensure button/checkmark state updates immediately in this popup.
+		_refresh_list()
+		_refresh_detail()
 
 
 func _on_unequip_pressed() -> void:
 	ModulesInventory.unequip(_selected_slot)
-	_selected_module_scene = null
-	_selected_module_data = null
+	# Keep current selection so the player can re-equip the same module quickly.
+	_refresh_list()
+	_refresh_detail()
 
 
 # ── Utilitaires ───────────────────────────────────────────────────────────────
