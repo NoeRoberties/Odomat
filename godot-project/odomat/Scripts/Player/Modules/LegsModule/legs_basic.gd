@@ -27,6 +27,8 @@ var _last_move_dir: Vector2 = Vector2.RIGHT
 func _ready() -> void:
 	if dash_ui != null:
 		dash_ui.z_index = 100
+	_sprite = $AnimatedSprite2D
+	_sprite.flip_h = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -40,7 +42,7 @@ func _physics_process(_delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
 
-	var player = get_parent()
+	var player: Player = get_parent()
 	if player == null:
 		return
 
@@ -50,6 +52,7 @@ func _physics_process(_delta: float) -> void:
 			move_dir += ISO_DIRS[action]
 	if move_dir != Vector2.ZERO:
 		_last_move_dir = move_dir.normalized()
+	player.update_animation(move_dir)
 
 	if _dash_requested and _dash_count <= MAX_DASH:
 		var dash_dir := _last_move_dir
@@ -102,4 +105,22 @@ func _on_dash_again_timer_timeout() -> void:
 		_dash_count -= 1
 		if _dash_count > 0:
 			dash_again_timer.start()
-	
+
+func update_animation(move_dir: Vector2) -> void:
+	if move_dir == Vector2.ZERO:
+		_sprite.stop()
+		return
+	if move_dir.x < 0.0:
+		_sprite.play("walk")
+		_sprite.flip_h = false
+		return
+	if move_dir.x > 0.0:
+		_sprite.play("walk")
+		_sprite.flip_h = true
+		return
+	if move_dir.y > 0.0:
+		_sprite.play()
+		return
+	if move_dir.y < 0.0:
+		_sprite.play()
+		return

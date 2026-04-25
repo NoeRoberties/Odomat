@@ -1,3 +1,5 @@
+class_name Player
+
 extends CharacterBody2D
 
 var _npc_to_interact: NPC = null
@@ -9,11 +11,9 @@ var _equipped_modules: Dictionary = {
 }
 
 const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
-@onready var _visual: Node2D = $Visual
 
 var _health = 100
 var _hit_invulnerability: float = 0.0
-var _blink_tween: Tween = null
 
 const HIT_INVULNERABILITY_DURATION: float = 0.25
 
@@ -46,21 +46,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	_hit_invulnerability = maxf(0.0, _hit_invulnerability - delta)
-
-
-func _play_damage_blink() -> void:
-	if _visual == null:
-		return
-
-	if _blink_tween != null and _blink_tween.is_valid():
-		_blink_tween.kill()
-
-	var original_color := _visual.modulate
-	_blink_tween = create_tween()
-	_blink_tween.set_parallel(false)
-	for i in range(4):
-		_blink_tween.tween_property(_visual, "modulate", Color.RED, 0.08)
-		_blink_tween.tween_property(_visual, "modulate", original_color, 0.08)
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is NPC:
@@ -107,10 +92,15 @@ func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> voi
 
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
-	_play_damage_blink()
+	# play_damage_blink()
 	
 	if knockback_velocity.length() > 0:
 		velocity -= knockback_velocity
 		
 	if _health <= 0:
 		queue_free()
+
+func update_animation(move_dir: Vector2) -> void:
+	for slot in _equipped_modules:
+		if _equipped_modules[slot] != null:
+			_equipped_modules[slot].update_animation(move_dir)

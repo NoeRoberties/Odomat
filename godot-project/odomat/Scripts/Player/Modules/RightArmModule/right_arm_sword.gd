@@ -18,16 +18,18 @@ func _process(delta: float) -> void:
 
 func _ready() -> void:
 	_setup_attack_area()
+	_sprite = $AnimatedSprite2D
+	_sprite.animation = "walk_left"
 
 
-func on_unequip(_player: CharacterBody2D) -> void:
+func on_unequip(_player: Player) -> void:
 	if _attack_area != null and is_instance_valid(_attack_area):
 		_attack_area.queue_free()
 		_attack_area = null
 
 
 func _setup_attack_area() -> void:
-	var player := get_parent() as CharacterBody2D
+	var player := get_parent() as Player
 	if player == null:
 		return
 
