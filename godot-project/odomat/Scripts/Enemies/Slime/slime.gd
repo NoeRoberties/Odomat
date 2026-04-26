@@ -57,6 +57,17 @@ func _load_attack() -> void:
 
 func _attack() -> void:
 	var direction: Vector2 = _attacking_destination - global_position
+
+	if get_slide_collision_count() > 0:
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+			if collider != null and collider.is_in_group("player"):
+				_load_attack()
+				return
+		_load_attack()
+		return
+
 	if direction.length() > 3.0:
 		velocity = direction.normalized() * _speed * ATTACK_SPEED_MULTIPLIER
 	else:
@@ -66,6 +77,11 @@ func _attack() -> void:
 
 func _wander() -> void:
 	var direction: Vector2 = _wandering_destination - global_position
+
+	if get_slide_collision_count() > 0:
+		_choose_wandering_destination()
+		return
+
 	if direction.length() > 5.0:
 		velocity = direction.normalized() * _speed
 	else:
