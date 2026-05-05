@@ -73,7 +73,7 @@ func _do_attack(player: CharacterBody2D) -> void:
 
 	for enemy in _get_enemies_in_attack_arc(player, attack_dir):
 		if enemy.has_method("take_damage"):
-			enemy.take_damage(ATTACK_DAMAGE, attack_dir * KNOCKBACK_FORCE)
+			enemy.take_damage(ATTACK_DAMAGE, player.global_position)
 
 	_attacking = true
 	if _last_move_dir.x <= 0.0:

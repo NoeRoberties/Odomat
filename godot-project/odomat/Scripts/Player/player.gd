@@ -17,6 +17,11 @@ var _hit_invulnerability: float = 0.0
 
 const HIT_INVULNERABILITY_DURATION: float = 0.25
 
+var is_knocked_back := false
+var _knockback_velocity := Vector2.ZERO
+var _knockback_timer := 0.0
+const KNOCKBACK_DURATION := 0.18
+
 
 func _ready() -> void:
 	ModulesInventory.module_equipped.connect(_on_module_equipped)
@@ -39,13 +44,36 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("open_inventory"):
 		add_child(EquipmentMenuScene.instantiate())
 		return
-
 	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
 		_npc_to_interact._launch_dialogue()
 
 
 func _process(delta: float) -> void:
 	_hit_invulnerability = maxf(0.0, _hit_invulnerability - delta)
+
+
+func _physics_process(delta: float) -> void:
+	if is_knocked_back:
+		_knockback_timer -= delta
+		velocity = _knockback_velocity
+		move_and_slide()
+		if _knockback_timer <= 0.0:
+			is_knocked_back = false
+			_knockback_velocity = Vector2.ZERO
+
+
+func _play_damage_blink() -> void:
+	if _visual == null:
+		return
+	if _blink_tween != null and _blink_tween.is_valid():
+		_blink_tween.kill()
+	var original_color := _visual.modulate
+	_blink_tween = create_tween()
+	_blink_tween.set_parallel(false)
+	for i in range(4):
+		_blink_tween.tween_property(_visual, "modulate", Color.RED, 0.08)
+		_blink_tween.tween_property(_visual, "modulate", original_color, 0.08)
+
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is NPC:
@@ -73,30 +101,28 @@ func _refresh_all_modules() -> void:
 func _refresh_module_slot(slot: String) -> void:
 	if not _equipped_modules.has(slot):
 		return
-
 	var old_module := _equipped_modules[slot] as Module
 	if old_module != null:
 		old_module.on_unequip(self)
 		old_module.queue_free()
-
 	var next_module := ModulesInventory.create_equipped_module_instance(slot)
 	_equipped_modules[slot] = next_module
-
 	if next_module != null:
 		add_child(next_module)
 		next_module.on_equip(self)
-		
-func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> void:
+
+
+func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void:
 	if _hit_invulnerability > 0.0:
 		return
-
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
-	# play_damage_blink()
-	
-	if knockback_velocity.length() > 0:
-		velocity -= knockback_velocity
-		
+	_play_damage_blink()
+	if attacker_position != Vector2.ZERO:
+		var dir := (global_position - attacker_position).normalized()
+		_knockback_velocity = dir * 220.0
+		_knockback_timer = KNOCKBACK_DURATION
+		is_knocked_back = true
 	if _health <= 0:
 		queue_free()
 

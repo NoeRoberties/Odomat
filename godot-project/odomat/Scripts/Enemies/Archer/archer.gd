@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var arrow_scene : PackedScene = preload("res://Scenes/Enemies/Archer/Arrow.tscn")
+@export var arrow_scene: PackedScene = preload("res://Scenes/Enemies/Archer/Arrow.tscn")
 
 var _health = 15
 var _speed = 90
@@ -15,14 +15,32 @@ var _shoot_cooldown = 1.0
 var _shoot_timer = 0.0
 var _is_shooting = false
 
+var _is_knocked_back := false
+var _knockback_velocity := Vector2.ZERO
+var _knockback_timer := 0.0
+const KNOCKBACK_DURATION := 0.5
+const KNOCKBACK_STRENGTH := 250.0
+
 
 func _physics_process(delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
+
+	if _is_knocked_back:
+		_knockback_timer -= delta
+		_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, 300.0 * delta)
+		velocity = _knockback_velocity
+		move_and_slide()
+		if _knockback_timer <= 0.0:
+			_is_knocked_back = false
+			_knockback_velocity = Vector2.ZERO
+			_shoot_timer = _shoot_cooldown
+		return
+
 	if _is_shooting:
 		move_and_slide()
 		return
-		
+
 	if _player == null:
 		_idle()
 		move_and_slide()
@@ -82,27 +100,21 @@ func _update_sprite_direction() -> void:
 func _shoot() -> void:
 	if not arrow_scene or not _player:
 		return
-
 	_is_shooting = true
 	var target_position = _player.global_position
 	$AnimatedSprite2D.play("shoot")
-
 	var shoot_duration = $AnimatedSprite2D.sprite_frames.get_frame_count("shoot") / $AnimatedSprite2D.sprite_frames.get_animation_speed("shoot")
 	await get_tree().create_timer(shoot_duration - 0.5).timeout
-
 	var offset = Vector2(5, -30)
 	if $AnimatedSprite2D.flip_h:
 		offset.x = -offset.x
-
 	var shoot_pos = global_position + offset
-
 	var arrow = arrow_scene.instantiate()
 	arrow.pos = shoot_pos
 	arrow.dir = (target_position - shoot_pos).angle()
 	arrow.rota = arrow.dir
 	arrow.target = _player
 	get_tree().current_scene.add_child(arrow)
-	
 	_is_shooting = false
 	$AnimatedSprite2D.play("idle")
 
@@ -146,28 +158,24 @@ func _on_danger_area_body_exited(body: Node2D) -> void:
 		_player = null
 
 
-func take_damage(damage: int, knockback_velocity: Vector2 = Vector2.ZERO) -> void:
-	if knockback_velocity.length() > 0:
-		velocity = knockback_velocity
-		
+func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void:
 	_health -= damage
-	
-	if _health <= 0:
-		queue_free()
-	
-	# Visual feedback: blinking effect
 	var sprite = $AnimatedSprite2D
 	if sprite:
 		_animate_archer_blink(sprite)
-	else:
-		print("WARNING: AnimatedSprite2D not found!")
+	if attacker_position != Vector2.ZERO:
+		var dir := (global_position - attacker_position).normalized()
+		_knockback_velocity = dir * KNOCKBACK_STRENGTH
+	_knockback_timer = KNOCKBACK_DURATION
+	_is_knocked_back = true
+	if _health <= 0:
+		queue_free()
 
 
 func _animate_archer_blink(sprite: AnimatedSprite2D) -> void:
 	var original_color = sprite.self_modulate
 	var tween = create_tween()
-	tween.set_parallel(false)  # Sequential animations
-	
+	tween.set_parallel(false)
 	for i in range(1):
 		tween.tween_property(sprite, "self_modulate", Color.RED, 0.08)
 		tween.tween_property(sprite, "self_modulate", original_color, 0.08)

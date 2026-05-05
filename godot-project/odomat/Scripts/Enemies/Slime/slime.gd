@@ -15,15 +15,34 @@ var _player: CharacterBody2D = null
 
 var ATTACK_DAMAGE = 10
 
+var _is_knocked_back := false
+var _knockback_velocity := Vector2.ZERO
+var _knockback_timer := 0.0
+const KNOCKBACK_DURATION := 0.22
+const KNOCKBACK_STRENGTH := 400.0
+
 enum State {ATTACKING, WANDERING, LOADING}
 
-func _physics_process(_delta: float) -> void:
+
+func _physics_process(delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
+
+	if _is_knocked_back:
+		_knockback_timer -= delta
+		_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, 300.0 * delta)
+		velocity = _knockback_velocity
+		move_and_slide()
+		if _knockback_timer <= 0.0:
+			_is_knocked_back = false
+			_knockback_velocity = Vector2.ZERO
+		return
+
 	if _state == State.WANDERING:
 		_wander()
 	if _state == State.ATTACKING:
 		_attack()
+
 
 func _ready() -> void:
 	_animated_sprite = $AnimatedSprite2D
@@ -38,7 +57,6 @@ func _load_attack() -> void:
 
 func _attack() -> void:
 	var direction: Vector2 = _attacking_destination - global_position
-	
 	if direction.length() > 3.0:
 		velocity = direction.normalized() * _speed * ATTACK_SPEED_MULTIPLIER
 	else:
@@ -48,7 +66,6 @@ func _attack() -> void:
 
 func _wander() -> void:
 	var direction: Vector2 = _wandering_destination - global_position
-	
 	if direction.length() > 5.0:
 		velocity = direction.normalized() * _speed
 	else:
@@ -60,7 +77,6 @@ func _wander() -> void:
 func _choose_wandering_destination() -> void:
 	var angle: float = randf() * TAU
 	var offset_vector: Vector2 = Vector2(cos(angle), sin(angle)) * WANDERING_DISTANCE
-	
 	_wandering_destination = global_position + offset_vector
 
 
@@ -84,20 +100,17 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 		_state = State.WANDERING
 		%AttackLoadingTimer.stop()
 		_choose_wandering_destination()
-		
-func take_damage(damage, knockback_velocity: Vector2 = Vector2.ZERO):
+
+
+func take_damage(damage, attacker_position: Vector2 = Vector2.ZERO) -> void:
 	_health -= damage
-	
-	# Apply knockback
-	if knockback_velocity.length() > 0:
-		velocity -= knockback_velocity
-	
-	# Visual feedback: blinking effect
 	if _animated_sprite:
 		_animate_blink()
-	else:
-		print("WARNING: _animated_sprite is null!")
-	
+	if attacker_position != Vector2.ZERO:
+		var dir := (global_position - attacker_position).normalized()
+		_knockback_velocity = dir * KNOCKBACK_STRENGTH
+	_knockback_timer = KNOCKBACK_DURATION
+	_is_knocked_back = true
 	if _health <= 0:
 		queue_free()
 
@@ -105,9 +118,7 @@ func take_damage(damage, knockback_velocity: Vector2 = Vector2.ZERO):
 func _animate_blink() -> void:
 	var original_color = _animated_sprite.self_modulate
 	var tween = create_tween()
-	tween.set_parallel(false)  # Sequential animations
-	
+	tween.set_parallel(false)
 	for i in range(1):
 		tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
 		tween.tween_property(_animated_sprite, "self_modulate", original_color, 0.08)
-	
