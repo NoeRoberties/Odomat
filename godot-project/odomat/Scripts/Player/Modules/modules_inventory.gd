@@ -13,10 +13,10 @@ signal module_equipped(slot: String, module: ModuleData)
 signal module_unequipped(slot: String)
 
 ## Dossier des scènes des modules.
-const CHIPS_SCENES_DIR := "res://Scenes/Modules/Chips"
-const LEFT_ARMS_SCENES_DIR := "res://Scenes/Modules/LeftArms"
-const RIGHT_ARMS_SCENES_DIR := "res://Scenes/Modules/RightArms"
-const LEGS_SCENES_DIR := "res://Scenes/Modules/Legs"
+const CHIPS_SCENES_DIR := "res://Scenes/Player/Modules/Chips"
+const LEFT_ARMS_SCENES_DIR := "res://Scenes/Player/Modules/LeftArms"
+const RIGHT_ARMS_SCENES_DIR := "res://Scenes/Player/Modules/RightArms"
+const LEGS_SCENES_DIR := "res://Scenes/Player/Modules/Legs"
 
 ## Modules (scènes) actuellement équipés. Valeur null = emplacement vide.
 var equipped: Dictionary = {

@@ -1,55 +1,21 @@
 class_name RightArmIdleModule
 extends Module
 
-const ATTACK_RANGE: float = 100.0
-const ATTACK_ARC_DEG: float = 155.0
 const ATTACK_DAMAGE: int = 1
 const ATTACK_COOLDOWN: float = 0.4
-const KNOCKBACK_FORCE: float = 300.0
-const SWOOSH_SCRIPT := preload("res://Scripts/Player/swoosh.gd")
+const SWOOSH_RANGE = 50.0
+const SWOOSH_SCENE: PackedScene = preload("res://Scenes/Player/WeaponEffects/SwordSwoosh.tscn")
 
-var _cooldown_remaining: float = 0.0
-var _attack_area: Area2D = null
-var _attacking: bool = false
-var _last_move_dir: Vector2 = Vector2.ZERO
-
-
-func _process(delta: float) -> void:
-	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)
-
+var _cooldown_remaining = 0.0
+var _attacking = false
+var _last_move_dir: Vector2
 
 func _ready() -> void:
-	_setup_attack_area()
 	_sprite = $AnimatedSprite2D
 	_sprite.animation = "walk_left"
 
-
-func on_unequip(_player: Player) -> void:
-	if _attack_area != null and is_instance_valid(_attack_area):
-		_attack_area.queue_free()
-		_attack_area = null
-
-
-func _setup_attack_area() -> void:
-	var player := get_parent() as Player
-	if player == null:
-		return
-
-	_attack_area = Area2D.new()
-	_attack_area.name = "MeleeAttackArea"
-	_attack_area.collision_layer = 0
-	_attack_area.collision_mask = 1
-	_attack_area.monitoring = true
-	_attack_area.monitorable = false
-
-	var shape := CollisionShape2D.new()
-	var circle := CircleShape2D.new()
-	circle.radius = ATTACK_RANGE
-	shape.shape = circle
-	_attack_area.add_child(shape)
-
-	player.add_child(_attack_area)
-
+func _process(delta: float) -> void:
+	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("sword_attack") and _cooldown_remaining <= 0.0:
@@ -63,59 +29,24 @@ func _unhandled_input(event: InputEvent) -> void:
 func _do_attack(player: CharacterBody2D) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
-
-	var mouse_world: Vector2 = player.get_global_mouse_position()
-	var attack_dir: Vector2 = (mouse_world - player.global_position)
-	if attack_dir.length_squared() == 0.0:
-		attack_dir = Vector2.RIGHT
-	else:
-		attack_dir = attack_dir.normalized()
-
-	for enemy in _get_enemies_in_attack_arc(player, attack_dir):
-		if enemy.has_method("take_damage"):
-			enemy.take_damage(ATTACK_DAMAGE, player.global_position)
-
+	
 	_attacking = true
 	if _last_move_dir.x <= 0.0:
 		_sprite.play("attack_left")
 	else:
 		_sprite.play("attack_right")
-	_spawn_swoosh(player, attack_dir)
+	_spawn_swoosh(player)
 
 
-func _get_enemies_in_attack_arc(player: CharacterBody2D, attack_dir: Vector2) -> Array[Node2D]:
-	if _attack_area == null or not is_instance_valid(_attack_area):
-		return []
-
-	var enemies_in_arc: Array[Node2D] = []
-	var arc_threshold := cos(deg_to_rad(ATTACK_ARC_DEG * 0.5))
-
-	for body in _attack_area.get_overlapping_bodies():
-		if not (body is Node2D):
-			continue
-		var enemy := body as Node2D
-		if not enemy.is_in_group("enemies"):
-			continue
-
-		var to_enemy := enemy.global_position - player.global_position
-		if to_enemy.length_squared() == 0.0:
-			continue
-
-		var enemy_dir := to_enemy.normalized()
-		if attack_dir.dot(enemy_dir) < arc_threshold:
-			continue
-
-		enemies_in_arc.append(enemy)
-
-	return enemies_in_arc
-
-
-func _spawn_swoosh(player: CharacterBody2D, attack_dir: Vector2) -> void:
-	var swoosh := Node2D.new()
-	swoosh.set_script(SWOOSH_SCRIPT)
+func _spawn_swoosh(player: CharacterBody2D) -> void:
+	var swoosh := SWOOSH_SCENE.instantiate()
+	var mouse_pos = player.get_global_mouse_position()
+	var direction = (self.global_position - mouse_pos).normalized()
+	
+	swoosh.global_position = self.global_position - direction * SWOOSH_RANGE
+	swoosh.rotation = direction.angle()
 	player.get_parent().add_child(swoosh)
-	swoosh.global_position = player.global_position
-	swoosh.play(attack_dir)
+	swoosh.trigger_hit(ATTACK_DAMAGE, player.global_position)
 
 func update_animation(move_dir: Vector2) -> void:
 	if _attacking:

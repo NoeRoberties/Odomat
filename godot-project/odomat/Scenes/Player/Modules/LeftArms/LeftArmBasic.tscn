@@ -10,52 +10,66 @@ module_name = "Swoosh Left Arm"
 slot = 1
 description = "Melee arm using the current swoosh attack."
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1e6p3"]
-atlas = ExtResource("3_ljj52")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yb677"]
-atlas = ExtResource("3_ljj52")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8cj01"]
-atlas = ExtResource("3_ljj52")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i2g7t"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljj52"]
 atlas = ExtResource("3_ljj52")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8rd5p"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mlye"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdjc1"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pxhtj"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7isg"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1s21w"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kg2wy"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0h28h"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqj0u"]
 atlas = ExtResource("3_ljj52")
 region = Rect2(128, 64, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wwmao"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryjk6"]
 atlas = ExtResource("3_ljj52")
 region = Rect2(192, 64, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7xdrn"]
-atlas = ExtResource("3_ljj52")
-region = Rect2(0, 128, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wid83"]
-atlas = ExtResource("3_ljj52")
-region = Rect2(64, 128, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7mlye"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1e6p3")
+"texture": SubResource("AtlasTexture_ljj52")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yb677")
+"texture": SubResource("AtlasTexture_7mlye")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8cj01")
+"texture": SubResource("AtlasTexture_vdjc1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_i2g7t")
+"texture": SubResource("AtlasTexture_pxhtj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7isg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1s21w")
 }],
 "loop": true,
 "name": &"walk_left",
@@ -63,16 +77,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8rd5p")
+"texture": SubResource("AtlasTexture_kg2wy")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wwmao")
+"texture": SubResource("AtlasTexture_0h28h")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7xdrn")
+"texture": SubResource("AtlasTexture_cqj0u")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wid83")
+"texture": SubResource("AtlasTexture_ryjk6")
 }],
 "loop": true,
 "name": &"walk_right",
