@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://6lh1xcsteivm"]
+
+[ext_resource type="Script" uid="uid://c8q8cmqdfkvm6" path="res://Scripts/Player/Modules/LeftArmModule/left_arm_basic.gd" id="1_5wyh7"]
+[ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_ljj52"]
+[ext_resource type="Texture2D" uid="uid://hgdq6m2sej6o" path="res://Assets/MainCharacter/LeftArm/left_arm_default.png" id="3_ljj52"]
+
+[sub_resource type="Resource" id="Resource_data"]
+script = ExtResource("2_ljj52")
+module_name = "Swoosh Left Arm"
+slot = 1
+description = "Melee arm using the current swoosh attack."
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljj52"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mlye"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdjc1"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pxhtj"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7isg"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1s21w"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kg2wy"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0h28h"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqj0u"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(128, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryjk6"]
+atlas = ExtResource("3_ljj52")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7mlye"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljj52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7mlye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vdjc1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pxhtj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7isg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1s21w")
+}],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kg2wy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h28h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqj0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryjk6")
+}],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}]
+
+[node name="LeftArmBasicModule" type="Node2D" unique_id=684155175]
+script = ExtResource("1_5wyh7")
+module_data = SubResource("Resource_data")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=283920834]
+sprite_frames = SubResource("SpriteFrames_7mlye")
+animation = &"walk_left"
