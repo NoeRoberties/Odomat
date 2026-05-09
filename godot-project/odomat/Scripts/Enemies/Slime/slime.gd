@@ -23,7 +23,6 @@ const KNOCKBACK_STRENGTH := 400.0
 
 enum State {ATTACKING, WANDERING, LOADING}
 
-
 func _physics_process(delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
@@ -43,20 +42,25 @@ func _physics_process(delta: float) -> void:
 	if _state == State.ATTACKING:
 		_attack()
 
-
 func _ready() -> void:
 	_animated_sprite = $AnimatedSprite2D
 	_choose_wandering_destination()
-
 
 func _load_attack() -> void:
 	velocity = Vector2.ZERO
 	_state = State.LOADING
 	%AttackLoadingTimer.start()
 
-
 func _attack() -> void:
 	var direction: Vector2 = _attacking_destination - global_position
+
+	if direction.length() > 3.0:
+		velocity = direction.normalized() * _speed * ATTACK_SPEED_MULTIPLIER
+	else:
+		_load_attack()
+		return
+
+	move_and_slide()
 
 	if get_slide_collision_count() > 0:
 		for i in get_slide_collision_count():
@@ -65,48 +69,36 @@ func _attack() -> void:
 			if collider != null and collider.is_in_group("player"):
 				_load_attack()
 				return
-		_load_attack()
-		return
-
-	if direction.length() > 3.0:
-		velocity = direction.normalized() * _speed * ATTACK_SPEED_MULTIPLIER
-	else:
-		_load_attack()
-	move_and_slide()
-
 
 func _wander() -> void:
 	var direction: Vector2 = _wandering_destination - global_position
-
-	if get_slide_collision_count() > 0:
-		_choose_wandering_destination()
-		return
 
 	if direction.length() > 5.0:
 		velocity = direction.normalized() * _speed
 	else:
 		velocity = Vector2.ZERO
 		_choose_wandering_destination()
+		return
+
 	move_and_slide()
 
+	if get_slide_collision_count() > 0:
+		_choose_wandering_destination()
 
 func _choose_wandering_destination() -> void:
 	var angle: float = randf() * TAU
 	var offset_vector: Vector2 = Vector2(cos(angle), sin(angle)) * WANDERING_DISTANCE
 	_wandering_destination = global_position + offset_vector
 
-
 func _on_attack_loading_timer_timeout() -> void:
 	_state = State.ATTACKING
 	_attacking_destination = _player.global_position
 	%AttackLoadingTimer.stop()
 
-
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player = body
 		_load_attack()
-
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	if _health <= 0:
@@ -116,7 +108,6 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 		_state = State.WANDERING
 		%AttackLoadingTimer.stop()
 		_choose_wandering_destination()
-
 
 func take_damage(damage, attacker_position: Vector2 = Vector2.ZERO) -> void:
 	_health -= damage
@@ -129,7 +120,6 @@ func take_damage(damage, attacker_position: Vector2 = Vector2.ZERO) -> void:
 	_is_knocked_back = true
 	if _health <= 0:
 		queue_free()
-
 
 func _animate_blink() -> void:
 	var original_color = _animated_sprite.self_modulate

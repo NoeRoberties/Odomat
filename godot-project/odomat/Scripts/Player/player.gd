@@ -22,12 +22,10 @@ var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.18
 
-
 func _ready() -> void:
 	ModulesInventory.module_equipped.connect(_on_module_equipped)
 	ModulesInventory.module_unequipped.connect(_on_module_unequipped)
 	_refresh_all_modules()
-
 
 func _exit_tree() -> void:
 	for slot: String in _equipped_modules:
@@ -36,7 +34,6 @@ func _exit_tree() -> void:
 			module.on_unequip(self)
 			module.queue_free()
 			_equipped_modules[slot] = null
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
@@ -47,10 +44,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
 		_npc_to_interact._launch_dialogue()
 
-
 func _process(delta: float) -> void:
 	_hit_invulnerability = maxf(0.0, _hit_invulnerability - delta)
-
 
 func _physics_process(delta: float) -> void:
 	if is_knocked_back:
@@ -60,7 +55,6 @@ func _physics_process(delta: float) -> void:
 		if _knockback_timer <= 0.0:
 			is_knocked_back = false
 			_knockback_velocity = Vector2.ZERO
-
 
 func _play_damage_blink() -> void:
 	if _visual == null:
@@ -74,29 +68,23 @@ func _play_damage_blink() -> void:
 		_blink_tween.tween_property(_visual, "modulate", Color.RED, 0.08)
 		_blink_tween.tween_property(_visual, "modulate", original_color, 0.08)
 
-
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is NPC:
 		_npc_to_interact = body
-
 
 func _on_hitbox_body_exited(body: Node2D) -> void:
 	if body == _npc_to_interact:
 		_npc_to_interact = null
 
-
 func _on_module_equipped(slot: String, _module: ModuleData) -> void:
 	_refresh_module_slot(slot)
-
 
 func _on_module_unequipped(slot: String) -> void:
 	_refresh_module_slot(slot)
 
-
 func _refresh_all_modules() -> void:
 	for slot: String in _equipped_modules:
 		_refresh_module_slot(slot)
-
 
 func _refresh_module_slot(slot: String) -> void:
 	if not _equipped_modules.has(slot):
@@ -110,7 +98,6 @@ func _refresh_module_slot(slot: String) -> void:
 	if next_module != null:
 		add_child(next_module)
 		next_module.on_equip(self)
-
 
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void:
 	if _hit_invulnerability > 0.0:
