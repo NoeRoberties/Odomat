@@ -22,7 +22,6 @@ var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.18
 
-
 func _ready() -> void:
 	ModulesInventory.module_equipped.connect(_on_module_equipped)
 	ModulesInventory.module_unequipped.connect(_on_module_unequipped)
