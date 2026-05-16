@@ -27,8 +27,8 @@ func _physics_process(delta: float) -> void:
 			var collision := get_slide_collision(i)
 			var collider := collision.get_collider()
 			if collider.is_in_group("player") and collider.has_method("take_damage"):
-				var knockback := Vector2(_speed, 0).rotated(dir).normalized() * KNOCKBACK_FORCE
-				collider.take_damage(DAMAGE, knockback)
+				# Pass arrow position as attacker position and the configured force
+				collider.take_damage(DAMAGE, global_position, KNOCKBACK_FORCE)
 		queue_free()
 
 	_lifetime -= delta

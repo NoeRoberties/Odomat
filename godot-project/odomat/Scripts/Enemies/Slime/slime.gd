@@ -118,15 +118,15 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 		_choose_wandering_destination()
 
 
-func take_damage(damage, attacker_position: Vector2 = Vector2.ZERO) -> void:
+func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	_health -= damage
 	if _animated_sprite:
 		_animate_blink()
-	if attacker_position != Vector2.ZERO:
+	if knockback_force > 0 and attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
-		_knockback_velocity = dir * KNOCKBACK_STRENGTH
-	_knockback_timer = KNOCKBACK_DURATION
-	_is_knocked_back = true
+		_knockback_velocity = dir * knockback_force
+		_knockback_timer = KNOCKBACK_DURATION
+		_is_knocked_back = true
 	if _health <= 0:
 		queue_free()
 

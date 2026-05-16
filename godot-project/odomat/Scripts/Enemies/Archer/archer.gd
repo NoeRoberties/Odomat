@@ -158,14 +158,15 @@ func _on_danger_area_body_exited(body: Node2D) -> void:
 		_player = null
 
 
-func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void:
+func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	_health -= damage
 	var sprite = $AnimatedSprite2D
 	if sprite:
 		_animate_archer_blink(sprite)
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
-		_knockback_velocity = dir * KNOCKBACK_STRENGTH
+		var force := knockback_force if knockback_force > 0.0 else KNOCKBACK_STRENGTH
+		_knockback_velocity = dir * force
 	_knockback_timer = KNOCKBACK_DURATION
 	_is_knocked_back = true
 	if _health <= 0:

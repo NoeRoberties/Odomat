@@ -111,7 +111,7 @@ func _refresh_module_slot(slot: String) -> void:
 		next_module.on_equip(self)
 
 
-func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void:
+func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	if _hit_invulnerability > 0.0:
 		return
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
@@ -119,7 +119,8 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void
 	# _play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
-		_knockback_velocity = dir * 220.0
+		var force := knockback_force if knockback_force > 0.0 else 220.0
+		_knockback_velocity = dir * force
 		_knockback_timer = KNOCKBACK_DURATION
 		is_knocked_back = true
 	if _health <= 0:
