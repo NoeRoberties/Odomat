@@ -106,7 +106,6 @@ func _apply_contact_damage_to_player() -> void:
 
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	_health -= damage
-	print("SLIME HIT! new health = ", _health)
 	
 	# Apply knockback: prefer provided force; fall back to 0 (no knockback)
 	if knockback_force > 0 and attacker_position != Vector2.ZERO:
@@ -119,10 +118,7 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 	
 	# Visual feedback: blinking effect
 	if _animated_sprite:
-		print("Starting blink animation")
 		_animate_blink()
-	else:
-		print("WARNING: _animated_sprite is null!")
 	
 	if _health <= 0:
 		queue_free()
@@ -130,12 +126,9 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 
 func _animate_blink() -> void:
 	var original_color = _animated_sprite.self_modulate
-	print("Original color: ", original_color)
 	var tween = create_tween()
 	tween.set_parallel(false)  # Sequential animations
 	
 	for i in range(4):
 		tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
 		tween.tween_property(_animated_sprite, "self_modulate", original_color, 0.08)
-	
-	print("Blink tween created")

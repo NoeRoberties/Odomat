@@ -119,8 +119,7 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 	# _play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
-		var force := knockback_force if knockback_force > 0.0 else 220.0
-		_knockback_velocity = dir * force
+		_knockback_velocity = dir * knockback_force
 		_knockback_timer = KNOCKBACK_DURATION
 		is_knocked_back = true
 	if _health <= 0:

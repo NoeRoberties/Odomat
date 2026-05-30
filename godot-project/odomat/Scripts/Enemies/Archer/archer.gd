@@ -19,7 +19,6 @@ var _is_knocked_back := false
 var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.5
-const KNOCKBACK_STRENGTH := 250.0
 
 
 func _physics_process(delta: float) -> void:
@@ -165,8 +164,7 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		_animate_archer_blink(sprite)
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
-		var force := knockback_force if knockback_force > 0.0 else KNOCKBACK_STRENGTH
-		_knockback_velocity = dir * force
+		_knockback_velocity = dir * knockback_force
 	_knockback_timer = KNOCKBACK_DURATION
 	_is_knocked_back = true
 	if _health <= 0:
