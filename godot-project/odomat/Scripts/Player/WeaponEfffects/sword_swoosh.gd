@@ -1,6 +1,7 @@
 extends Node2D
 
 const FADE_DURATION: float = 0.2
+const KNOCKBACK_FORCE: float = 200.0
 
 var _damage = 0.0
 var _attack_position: Vector2
@@ -14,4 +15,4 @@ func trigger_hit(damage: float, attack_position: Vector2) -> void:
 
 func _on_area_2d_body_entered(body) -> void:
 	if body.is_in_group("enemies") and body.has_method("take_damage"):
-		body.take_damage(_damage, _attack_position)
+		body.take_damage(_damage, _attack_position, KNOCKBACK_FORCE)
