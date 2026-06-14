@@ -2,6 +2,10 @@ class_name Player
 
 extends CharacterBody2D
 
+signal health_changed
+
+@export var max_health: int = 100
+
 var _npc_to_interact: NPC = null
 var _equipped_modules: Dictionary = {
 	"right_arm":  null,
@@ -12,7 +16,7 @@ var _equipped_modules: Dictionary = {
 
 const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
 
-var _health = 100
+var _health := max_health
 var _hit_invulnerability: float = 0.0
 
 const HIT_INVULNERABILITY_DURATION: float = 0.25
@@ -26,6 +30,12 @@ func _ready() -> void:
 	ModulesInventory.module_equipped.connect(_on_module_equipped)
 	ModulesInventory.module_unequipped.connect(_on_module_unequipped)
 	_refresh_all_modules()
+	# Emit initial health for HUD
+	if has_signal("health_changed"):
+		emit_signal("health_changed", _health, max_health)
+
+	# Auto-instantiate HUD if not present (check root for it)
+	call_deferred("_ensure_hud_visible")
 
 
 func _exit_tree() -> void:
@@ -116,6 +126,9 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		return
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
+	# Notify listeners (HUD)
+	if has_signal("health_changed"):
+		emit_signal("health_changed", _health, max_health)
 	# _play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
@@ -124,6 +137,35 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		is_knocked_back = true
 	if _health <= 0:
 		queue_free()
+
+
+func _ensure_hud_visible() -> void:
+	# Check if HUD already exists in the scene tree
+	var root = get_tree().root
+	var hud = root.get_node_or_null("Main_HUD")
+	if hud == null:
+		# Try to find it anywhere in the tree
+		for node in root.get_children():
+			hud = _find_node_by_name(node, "Main_HUD")
+			if hud != null:
+				break
+	
+	# If still not found, instantiate it
+	if hud == null:
+		var hud_scene: PackedScene = preload("res://Scenes/UI/HUD/MainHud.tscn")
+		hud = hud_scene.instantiate()
+		root.add_child(hud)
+
+
+func _find_node_by_name(node: Node, name_to_find: String) -> Node:
+	if node.name == name_to_find:
+		return node
+	for child in node.get_children():
+		var found = _find_node_by_name(child, name_to_find)
+		if found != null:
+			return found
+	return null
+
 
 func update_animation(move_dir: Vector2) -> void:
 	for slot in _equipped_modules:
