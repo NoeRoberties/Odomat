@@ -46,7 +46,7 @@ func _spawn_swoosh(player: CharacterBody2D) -> void:
 	swoosh.global_position = self.global_position - direction * SWOOSH_RANGE
 	swoosh.rotation = direction.angle()
 	player.get_parent().add_child(swoosh)
-	swoosh.trigger_hit(ATTACK_DAMAGE, player.global_position)
+	swoosh.trigger_hit(ATTACK_DAMAGE, player.global_position, 200.0)
 
 func update_animation(move_dir: Vector2) -> void:
 	if _attacking:
