@@ -25,17 +25,17 @@ var is_knocked_back := false
 var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.18
+var hud_scene: PackedScene = preload("res://Scenes/UI/HUD/PlayerTemperature.tscn")
 
 func _ready() -> void:
 	ModulesInventory.module_equipped.connect(_on_module_equipped)
 	ModulesInventory.module_unequipped.connect(_on_module_unequipped)
 	_refresh_all_modules()
+	var root = get_tree().root
+	var hud = hud_scene.instantiate()
+	root.call_deferred("add_child", hud)
 	# Emit initial health for HUD
-	if has_signal("health_changed"):
-		emit_signal("health_changed", _health, max_health)
-
-	# Auto-instantiate HUD if not present (check root for it)
-	call_deferred("_ensure_hud_visible")
+	emit_signal("health_changed", _health, max_health)
 
 
 func _exit_tree() -> void:
@@ -127,8 +127,7 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
 	# Notify listeners (HUD)
-	if has_signal("health_changed"):
-		emit_signal("health_changed", _health, max_health)
+	emit_signal("health_changed", _health, max_health)
 	# _play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
@@ -137,34 +136,6 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		is_knocked_back = true
 	if _health <= 0:
 		queue_free()
-
-
-func _ensure_hud_visible() -> void:
-	# Check if HUD already exists in the scene tree
-	var root = get_tree().root
-	var hud = root.get_node_or_null("Main_HUD")
-	if hud == null:
-		# Try to find it anywhere in the tree
-		for node in root.get_children():
-			hud = _find_node_by_name(node, "Main_HUD")
-			if hud != null:
-				break
-	
-	# If still not found, instantiate it
-	if hud == null:
-		var hud_scene: PackedScene = preload("res://Scenes/UI/HUD/MainHud.tscn")
-		hud = hud_scene.instantiate()
-		root.add_child(hud)
-
-
-func _find_node_by_name(node: Node, name_to_find: String) -> Node:
-	if node.name == name_to_find:
-		return node
-	for child in node.get_children():
-		var found = _find_node_by_name(child, name_to_find)
-		if found != null:
-			return found
-	return null
 
 
 func update_animation(move_dir: Vector2) -> void:

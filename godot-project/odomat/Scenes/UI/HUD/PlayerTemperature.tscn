@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bsnwl7crpb5ee" path="res://Assets/HUD_UI/life_HUD_under.png" id="1_tve1b"]
 [ext_resource type="Texture2D" uid="uid://dr6hhyg7gbvag" path="res://Assets/HUD_UI/life_HUD_over.png" id="2_nawl4"]
 [ext_resource type="Texture2D" uid="uid://blh22ybeeqsju" path="res://Assets/HUD_UI/life_HUD_progress.png" id="3_sca3d"]
-[ext_resource type="Script" uid="uid://dg4uprcocu24y" path="res://Scripts/UI/HUD/main_hud.gd" id="4_mainhud"]
+[ext_resource type="Script" uid="uid://dg4uprcocu24y" path="res://Scripts/UI/HUD/player_temperature.gd" id="4_mainhud"]
 
-[node name="Main_HUD" type="CanvasLayer" unique_id=1565571572]
+[node name="PlayerTemperature" type="CanvasLayer" unique_id=1565571572]
 script = ExtResource("4_mainhud")
 
 [node name="Control" type="Control" parent="." unique_id=1382751512]

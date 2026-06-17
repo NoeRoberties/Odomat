@@ -10,14 +10,10 @@ var _health_tween: Tween
 
 func _ready() -> void:
 	# Position the life bar centered at bottom
-	_bar.anchor_left = 0.5
-	_bar.anchor_right = 0.5
-	_bar.anchor_top = 1.0
+	_bar.anchor_left = 1.0
+	_bar.anchor_right = 0.01
+	_bar.anchor_top = 0.78
 	_bar.anchor_bottom = 1.0
-	_bar.offset_left = -(_bar.get_global_rect().size.x * 1.5 / 2)
-	_bar.offset_right = 0
-	_bar.offset_top = -(_bar.get_global_rect().size.y * 1.5)
-	_bar.offset_bottom = 0
 	
 	_bar.scale = Vector2(1.5, 1.5)
 

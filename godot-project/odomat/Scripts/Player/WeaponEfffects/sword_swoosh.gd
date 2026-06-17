@@ -1,7 +1,6 @@
 extends Node2D
 
 const FADE_DURATION: float = 0.2
-const KNOCKBACK_FORCE: float = 200.0
 
 var _damage = 0.0
 var _attack_position: Vector2

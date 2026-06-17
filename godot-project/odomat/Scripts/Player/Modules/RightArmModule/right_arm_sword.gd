@@ -2,6 +2,7 @@ class_name RightArmIdleModule
 extends Module
 
 const ATTACK_DAMAGE: int = 1
+const KNOCKBACK_FORCE: float = 200.0
 const ATTACK_COOLDOWN: float = 0.4
 const SWOOSH_RANGE = 50.0
 const SWOOSH_SCENE: PackedScene = preload("res://Scenes/Player/WeaponEffects/SwordSwoosh.tscn")
@@ -46,7 +47,7 @@ func _spawn_swoosh(player: CharacterBody2D) -> void:
 	swoosh.global_position = self.global_position - direction * SWOOSH_RANGE
 	swoosh.rotation = direction.angle()
 	player.get_parent().add_child(swoosh)
-	swoosh.trigger_hit(ATTACK_DAMAGE, player.global_position, 200.0)
+	swoosh.trigger_hit(ATTACK_DAMAGE, player.global_position, KNOCKBACK_FORCE)
 
 func update_animation(move_dir: Vector2) -> void:
 	if _attacking:
