@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://tmnsj2r0h66l"]
+
+[ext_resource type="Script" uid="uid://bon80ma2shpi4" path="res://Scripts/Enemies/Worm/shockwave.gd" id="1_exjsh"]
+[ext_resource type="Texture2D" uid="uid://3vgrbhwqrdcm" path="res://Assets/Enemy/Mobs/Worm/AOE_Effect.png" id="2_freyn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8mkad"]
+atlas = ExtResource("2_freyn")
+region = Rect2(0, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_anntk"]
+atlas = ExtResource("2_freyn")
+region = Rect2(128, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lx6bf"]
+atlas = ExtResource("2_freyn")
+region = Rect2(0, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f6wfe"]
+atlas = ExtResource("2_freyn")
+region = Rect2(128, 64, 128, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_milx2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8mkad")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_anntk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lx6bf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f6wfe")
+}],
+"loop": false,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_exjsh"]
+radius = 64.00781
+
+[node name="Shockwave" type="Area2D" unique_id=577683005]
+script = ExtResource("1_exjsh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1988968322]
+position = Vector2(4.7683716e-07, -1)
+scale = Vector2(1.71875, 2.125)
+sprite_frames = SubResource("SpriteFrames_milx2")
+frame = 3
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=46920729]
+position = Vector2(1, -1)
+shape = SubResource("CircleShape2D_exjsh")

@@ -116,6 +116,7 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		return
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
+	
 	# _play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
