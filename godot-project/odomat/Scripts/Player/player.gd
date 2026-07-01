@@ -2,6 +2,10 @@ class_name Player
 
 extends CharacterBody2D
 
+signal health_changed
+
+@export var max_health: int = 100
+
 var _npc_to_interact: NPC = null
 var _equipped_modules: Dictionary = {
 	"right_arm":  null,
@@ -12,7 +16,7 @@ var _equipped_modules: Dictionary = {
 
 const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
 
-var _health = 100
+var _health := max_health
 var _hit_invulnerability: float = 0.0
 
 const HIT_INVULNERABILITY_DURATION: float = 0.25
@@ -21,11 +25,17 @@ var is_knocked_back := false
 var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.18
+var hud_scene: PackedScene = preload("res://Scenes/UI/HUD/PlayerTemperature.tscn")
 
 func _ready() -> void:
 	ModulesInventory.module_equipped.connect(_on_module_equipped)
 	ModulesInventory.module_unequipped.connect(_on_module_unequipped)
 	_refresh_all_modules()
+	var root = get_tree().root
+	var hud = hud_scene.instantiate()
+	root.call_deferred("add_child", hud)
+	# Emit initial health for HUD
+	emit_signal("health_changed", _health, max_health)
 
 
 func _exit_tree() -> void:
@@ -116,7 +126,8 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		return
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
-	
+	# Notify listeners (HUD)
+	emit_signal("health_changed", _health, max_health)
 	# _play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
@@ -125,6 +136,7 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		is_knocked_back = true
 	if _health <= 0:
 		queue_free()
+
 
 func update_animation(move_dir: Vector2) -> void:
 	for slot in _equipped_modules:
