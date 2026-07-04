@@ -15,6 +15,7 @@ var _equipped_modules: Dictionary = {
 }
 
 const EquipmentMenuScene: PackedScene = preload("res://Scenes/UI/EquipmentMenu/EquipmentMenu.tscn")
+const InGameMenuScene: PackedScene = preload("res://Scenes/UI/InGameMenu/InGameMenu.tscn")
 
 var _health := max_health
 var _hit_invulnerability: float = 0.0
@@ -50,11 +51,31 @@ func _exit_tree() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
+	if event.is_action_pressed("escape_inventory"):
+		_open_in_game_menu()
+		return
 	if event.is_action_pressed("open_inventory"):
-		add_child(EquipmentMenuScene.instantiate())
+		_open_equipment_menu()
 		return
 	if event.is_action_pressed("interact_npc") and _npc_to_interact != null:
 		_npc_to_interact._launch_dialogue()
+
+
+func _open_equipment_menu() -> void:
+	_open_menu(EquipmentMenuScene, "EquipmentMenu")
+
+
+func _open_in_game_menu() -> void:
+	_open_menu(InGameMenuScene, "InGameMenu")
+
+
+func _open_menu(menu_scene: PackedScene, menu_node_name: String) -> void:
+	if get_tree().root.get_node_or_null(menu_node_name) != null:
+		return
+	GameState.current_state = GameState.GameState.MENU
+	var menu := menu_scene.instantiate()
+	menu.name = menu_node_name
+	get_tree().root.add_child(menu)
 
 
 func _process(delta: float) -> void:
