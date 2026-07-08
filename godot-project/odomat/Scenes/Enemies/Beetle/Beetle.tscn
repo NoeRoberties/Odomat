@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://dpt76ag0jeexs"]
+
+[ext_resource type="Script" uid="uid://ltynpqd0x742" path="res://Scripts/Enemies/Beetle/beetle.gd" id="1_f0k3c"]
+[ext_resource type="Texture2D" uid="uid://betqluaq6h211" path="res://Assets/Enemy/Mobs/Beetle/beetle.png" id="2_edmr7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p1xxi"]
+radius = 14.035668
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7yyg5"]
+radius = 150.03
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6ba7"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(0, 64, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pj7tx"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(80, 64, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bfev0"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(160, 64, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xyne"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(0, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wbek"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(80, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smy7y"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(160, 0, 80, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ygk7p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h6ba7")
+}],
+"loop": true,
+"name": &"player_detected",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pj7tx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bfev0")
+}],
+"loop": true,
+"name": &"rush",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xyne")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wbek")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smy7y")
+}],
+"loop": true,
+"name": &"wandering",
+"speed": 6.5
+}]
+
+[node name="Beetle" type="CharacterBody2D" unique_id=1381557161 groups=["enemies"]]
+script = ExtResource("1_f0k3c")
+metadata/_custom_type_script = "uid://ltynpqd0x742"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1592588746]
+position = Vector2(1, 0)
+shape = SubResource("CircleShape2D_p1xxi")
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1169256084]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=2086367212]
+shape = SubResource("CircleShape2D_7yyg5")
+
+[node name="AttackLoadingTimer" type="Timer" parent="." unique_id=1611566702]
+unique_name_in_owner = true
+process_callback = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1628199959]
+sprite_frames = SubResource("SpriteFrames_ygk7p")
+animation = &"player_detected"
+frame_progress = 0.011055296
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="timeout" from="AttackLoadingTimer" to="." method="_on_attack_loading_timer_timeout"]
