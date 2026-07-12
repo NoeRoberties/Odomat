@@ -1,0 +1,30 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Carved stone bevel: dark inner shadow + light top edge -->
+    <filter id="carve" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.55"/>
+      <feDropShadow dx="0" dy="-2" stdDeviation="1.5" flood-color="#8a7a5c" flood-opacity="0.35"/>
+    </filter>
+    <linearGradient id="engrave" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2620"/>
+      <stop offset="1" stop-color="#0f0c09"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Arrow shape pointing RIGHT, engraved into rock (dim) -->
+  <g filter="url(#carve)">
+    <path d="M 40 108
+             L 150 108
+             L 150 74
+             L 214 128
+             L 150 182
+             L 150 148
+             L 40 148
+             Z"
+          fill="url(#engrave)"
+          stroke="#1a1712" stroke-width="3" stroke-linejoin="round"/>
+    <!-- subtle inner groove line to read as carved -->
+    <path d="M 52 128 L 150 128"
+          fill="none" stroke="#000000" stroke-opacity="0.4" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

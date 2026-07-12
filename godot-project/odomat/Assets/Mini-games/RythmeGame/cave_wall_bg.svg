@@ -1,0 +1,46 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Rocky base gradient: darker at edges, faint warmth center -->
+    <radialGradient id="rock" cx="0.5" cy="0.45" r="0.75">
+      <stop offset="0" stop-color="#3a332b"/>
+      <stop offset="0.55" stop-color="#2a2520"/>
+      <stop offset="1" stop-color="#14110d"/>
+    </radialGradient>
+
+    <!-- Fractal noise for stone grain -->
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="4" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix"
+        values="0 0 0 0 0.16
+                0 0 0 0 0.14
+                0 0 0 0 0.11
+                0 0 0 0.9 0" result="tint"/>
+      <feComposite in="tint" in2="SourceGraphic" operator="over"/>
+    </filter>
+
+    <!-- Cracks: high-contrast thin noise -->
+    <filter id="cracks">
+      <feTurbulence type="turbulence" baseFrequency="0.008 0.012" numOctaves="2" seed="42" result="t"/>
+      <feColorMatrix in="t" type="matrix"
+        values="0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 6 -2.6" result="c"/>
+      <feComposite in="c" in2="SourceGraphic" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1920" height="1080" fill="url(#rock)"/>
+  <!-- Grain layer -->
+  <rect width="1920" height="1080" filter="url(#grain)" opacity="0.85"/>
+  <!-- Crack layer -->
+  <rect width="1920" height="1080" filter="url(#cracks)" opacity="0.35"/>
+
+  <!-- Vignette to deepen edges -->
+  <radialGradient id="vig" cx="0.5" cy="0.5" r="0.7">
+    <stop offset="0.6" stop-color="#000000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.65"/>
+  </radialGradient>
+  <rect width="1920" height="1080" fill="url(#vig)"/>
+</svg>
