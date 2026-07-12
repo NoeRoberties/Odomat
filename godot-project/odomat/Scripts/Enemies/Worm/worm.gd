@@ -18,9 +18,13 @@ var _speed: float = BASE_SPEED
 
 var shockwave_scene: PackedScene = preload("res://Scenes/Enemies/Worm/Shockwave.tscn")
 
-@onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+var _animated_sprite: AnimatedSprite2D
+var _original_color: Color
+var _blink_tween: Tween
 
 func _ready() -> void:
+	_animated_sprite = $AnimatedSprite2D
+	_original_color = _animated_sprite.modulate
 	$WaitTimer.start(MAX_WAIT_TIME)
 	visible = false
 
@@ -49,26 +53,30 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, _knockb
 
 
 func _animate_blink() -> void:
-	var original_color = _animated_sprite.self_modulate
-	var tween = create_tween()
-	tween.set_parallel(false)  # Sequential animations
+	if _blink_tween:
+		_blink_tween.kill()
+
+	_animated_sprite.self_modulate = _original_color
+	
+	_blink_tween = create_tween()
+	_blink_tween.set_parallel(false)
 	
 	for i in range(4):
-		tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
-		tween.tween_property(_animated_sprite, "self_modulate", original_color, 0.08)
+		_blink_tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
+		_blink_tween.tween_property(_animated_sprite, "self_modulate", _original_color, 0.08)
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if _state == State.ARISING:
 		_state = State.HITTING_GROUND
-		$AnimatedSprite2D.play("hit_ground")
+		_animated_sprite.play("hit_ground")
 	elif _state == State.HITTING_GROUND:
 		_trigger_shockwave()
 		_state = State.GETTING_UP
-		$AnimatedSprite2D.play("getting_up")
+		_animated_sprite.play("getting_up")
 	elif _state == State.GETTING_UP:
 		_state = State.CONFUSED
-		$AnimatedSprite2D.play("confused")
+		_animated_sprite.play("confused")
 		$ConfusedTimer.start(CONFUSED_TIME)
 	elif _state == State.DIVING:
 		visible = false
@@ -90,9 +98,9 @@ func _on_wait_timer_timeout() -> void:
 		global_position = _player.global_position + offset
 		_state = State.ARISING
 		visible = true
-		$AnimatedSprite2D.play("arise")
+		_animated_sprite.play("arise")
 
 
 func _on_confused_timer_timeout() -> void:
 	_state = State.DIVING
-	$AnimatedSprite2D.play("dive")
+	_animated_sprite.play("dive")

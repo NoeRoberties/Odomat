@@ -2,23 +2,20 @@
 
 [ext_resource type="PackedScene" uid="uid://brnw2i2klx3j6" path="res://Scenes/Player/Player.tscn" id="1_Player"]
 [ext_resource type="Script" uid="uid://cp1qgq66wl8xa" path="res://Scripts/Maps/world.gd" id="2_World"]
-[ext_resource type="PackedScene" uid="uid://dpt76ag0jeexs" path="res://Scenes/Enemies/Slime/Slime.tscn" id="3_7g83o"]
+[ext_resource type="PackedScene" uid="uid://dpt76ag0jeexs" path="res://Scenes/Enemies/Beetle/Beetle.tscn" id="3_7g83o"]
 [ext_resource type="PackedScene" uid="uid://cuyrth054w2hu" path="res://Scenes/Enemies/Archer/Archer.tscn" id="4_87k0f"]
-[ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPCs/NPC.tscn" id="5_81t7q"]
+[ext_resource type="PackedScene" uid="uid://bo26nh3e2i3b7" path="res://Scenes/Enemies/Worm/Worm.tscn" id="5_81t7q"]
 
 [node name="World" type="Node2D" unique_id=420205900]
 y_sort_enabled = true
 script = ExtResource("2_World")
-
-[node name="Slime" parent="." unique_id=1381557161 instance=ExtResource("3_7g83o")]
-position = Vector2(231, 112)
 
 [node name="Player" parent="." unique_id=979638911 instance=ExtResource("1_Player")]
 
 [node name="Archer" parent="." unique_id=1862442761 instance=ExtResource("4_87k0f")]
 position = Vector2(-90, 109)
 
-[node name="NPC" parent="." unique_id=714362369 instance=ExtResource("5_81t7q")]
-position = Vector2(119, -61)
-_dialogues = Array[String](["caca", "prout"])
-_name = "cacapipiz"
+[node name="Beetle" parent="." unique_id=1381557161 instance=ExtResource("3_7g83o")]
+
+[node name="Worm" parent="." unique_id=777213769 instance=ExtResource("5_81t7q")]
+position = Vector2(97, -12)
