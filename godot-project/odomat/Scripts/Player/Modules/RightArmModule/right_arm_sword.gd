@@ -14,6 +14,7 @@ var _last_move_dir: Vector2
 func _ready() -> void:
 	_sprite = $AnimatedSprite2D
 	_sprite.animation = "walk_left"
+	_original_color = _sprite.self_modulate
 
 func _process(delta: float) -> void:
 	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)

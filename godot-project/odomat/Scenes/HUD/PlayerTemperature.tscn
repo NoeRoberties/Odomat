@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://cqj2tsnvh0lr1"]
+
+[ext_resource type="Texture2D" uid="uid://bsnwl7crpb5ee" path="res://Assets/HUD/HealthBar/life_HUD_under.png" id="1_tve1b"]
+[ext_resource type="Texture2D" uid="uid://dr6hhyg7gbvag" path="res://Assets/HUD/HealthBar/life_HUD_over.png" id="2_nawl4"]
+[ext_resource type="Texture2D" uid="uid://blh22ybeeqsju" path="res://Assets/HUD/HealthBar/life_HUD_progress.png" id="3_sca3d"]
+[ext_resource type="Script" uid="uid://dg4uprcocu24y" path="res://Scripts/UI/HUD/player_temperature.gd" id="4_mainhud"]
+[ext_resource type="Texture2D" uid="uid://tvra50f8bu3w" path="res://Assets/HUD/HealthBar/health_bar_avatar.png" id="5_iy0yg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gn3hq"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(0, 190, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n3rxd"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(139, 190, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4aq0q"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(278, 190, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tc06o"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(0, 95, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owanx"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(139, 95, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iy0yg"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(278, 95, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xqqx"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(0, 0, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1rii"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(417, 0, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1nx74"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(139, 0, 139, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l2qvc"]
+atlas = ExtResource("5_iy0yg")
+region = Rect2(278, 0, 139, 95)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4aq0q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gn3hq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n3rxd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4aq0q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n3rxd")
+}],
+"loop": true,
+"name": &"critical",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tc06o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owanx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iy0yg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owanx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tc06o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iy0yg")
+}],
+"loop": true,
+"name": &"damaged",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xqqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1rii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xqqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xqqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xqqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1nx74")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1nx74")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1nx74")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2qvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2qvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2qvc")
+}],
+"loop": true,
+"name": &"normal",
+"speed": 2.0
+}]
+
+[node name="PlayerTemperature" type="CanvasLayer" unique_id=1565571572]
+script = ExtResource("4_mainhud")
+
+[node name="Control" type="Control" parent="." unique_id=1382751512]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Life_progress_bar" type="TextureProgressBar" parent="Control" unique_id=136289217]
+layout_mode = 0
+offset_right = 139.0
+offset_bottom = 95.0
+min_value = 20.0
+value = 20.0
+texture_under = ExtResource("1_tve1b")
+texture_over = ExtResource("2_nawl4")
+texture_progress = ExtResource("3_sca3d")
+
+[node name="Avatar" type="AnimatedSprite2D" parent="Control/Life_progress_bar" unique_id=766691624]
+position = Vector2(69, 49)
+sprite_frames = SubResource("SpriteFrames_4aq0q")
+animation = &"damaged"
+frame_progress = 0.38748544
