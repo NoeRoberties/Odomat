@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+const MAIN_MENU_SCENE_PATH := "res://Scenes/UI/MainMenu/MainMenu.tscn"
 const SUPPORTED_RESOLUTIONS: Array[Vector2i] = [
 	Vector2i(1280, 720),
 	Vector2i(1366, 768),
@@ -101,5 +102,6 @@ func _on_volume_slider_value_changed(value: float) -> void:
 	_volume_value_label.text = "%d%%" % int(round(clamped_value))
 
 
-func _on_button_two_pressed() -> void:
-	pass
+func _on_escape_game_button_pressed() -> void:
+	GameState.current_state = GameState.GameState.MENU
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
