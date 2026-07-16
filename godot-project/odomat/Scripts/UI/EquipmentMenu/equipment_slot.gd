@@ -21,15 +21,15 @@ func _ready() -> void:
 
 
 func set_equipped_name(module_name: String) -> void:
-	_label.text = "✓ " + module_name
+	_button.text = "✓ " + module_name
 
 
 func set_empty() -> void:
-	_label.text = empty_text
+	_button.text = empty_text
 
 
 func _apply_visuals() -> void:
-	_button.text = button_text
+	_label.text = button_text
+	_button.text = empty_text
 	_button.custom_minimum_size = button_min_size
 	_button.disabled = not is_interactive
-	_label.text = empty_text

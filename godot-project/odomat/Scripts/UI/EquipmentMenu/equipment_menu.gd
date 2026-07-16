@@ -5,9 +5,7 @@ extends CanvasLayer
 @onready var _center  : CenterContainer = $Center
 @onready var _popup   : CenterContainer = %ModuleSelectionPopup
 @onready var _menu_header : MenuHeader  = %MenuHeader
-@onready var _top_row : EquipmentRow    = %TopRow
-@onready var _middle_row : EquipmentRow = %MiddleRow
-@onready var _bottom_row : EquipmentRow = %BottomRow
+@onready var _body_diagram : Control    = %BodyDiagram
 
 ## slot_key → EquipmentSlot
 var _slot_controls : Dictionary = {}
@@ -20,12 +18,12 @@ func _ready() -> void:
 	_popup.visible    = false
 	_slot_controls.clear()
 
-	# Récupère tous les slots depuis les rows paramétrables.
-	for row: EquipmentRow in [_top_row, _middle_row, _bottom_row]:
-		row.slot_pressed.connect(_open_slot_popup)
-		var row_slots: Dictionary = row.get_slot_controls()
-		for slot_key: String in row_slots:
-			_slot_controls[slot_key] = row_slots[slot_key]
+	# Récupère tous les slots directement depuis le BodyDiagram.
+	for child in _body_diagram.get_children():
+		if child is EquipmentSlot:
+			if child.slot_key != "":
+				_slot_controls[child.slot_key] = child
+			child.slot_pressed.connect(_open_slot_popup)
 
 	# Fermeture du diagramme principal
 	_menu_header.close_pressed.connect(_close)
