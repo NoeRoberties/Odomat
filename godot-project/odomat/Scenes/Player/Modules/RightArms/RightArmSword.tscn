@@ -2,12 +2,14 @@
 
 [ext_resource type="Script" uid="uid://daebdyth45vwx" path="res://Scripts/Player/Modules/RightArmModule/right_arm_sword.gd" id="1_snbx1"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_612gy"]
-[ext_resource type="Texture2D" uid="uid://b1b0hhf2rahd" path="res://Assets/MainCharacter/RightArm/sword_right_arm.png" id="4_5p8t0"]
+[ext_resource type="Texture2D" uid="uid://cb4i8nbm6ohbv" path="res://Assets/HUD_UI/Equipment_Menu_assets/basis_modules_assets/right_arm_basis_item_texture.png" id="2_snbx1"]
+[ext_resource type="Texture2D" uid="uid://b5tmwocokjneg" path="res://Assets/MainCharacter/RightArm/sword_right_arm.png" id="4_5p8t0"]
 
 [sub_resource type="Resource" id="Resource_data"]
 script = ExtResource("2_612gy")
 module_name = "Right Arm (Idle)"
 description = "Placeholder right arm module with no active behavior yet."
+item_texture = ExtResource("2_snbx1")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2pmks"]
 atlas = ExtResource("4_5p8t0")

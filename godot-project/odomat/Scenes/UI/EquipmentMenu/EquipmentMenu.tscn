@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dv1xly4yw068s" path="res://Scripts/UI/EquipmentMenu/equipment_menu.gd" id="1_ujf5b"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/EquipmentMenu/MenuHeader.tscn" id="2_h5u56"]
-[ext_resource type="Texture2D" uid="uid://c10adb51gj5l8" path="res://Assets/HUD_UI/inventory_background.png" id="2_ujf5b"]
+[ext_resource type="Texture2D" uid="uid://bjbsjw43wc5b8" path="res://Assets/HUD_UI/Equipment_Menu_assets/inventory_background.png" id="2_ujf5b"]
 [ext_resource type="PackedScene" uid="uid://b8vtupf7mmlqn" path="res://Scenes/UI/EquipmentMenu/EquipmentSlot.tscn" id="4_slot"]
 [ext_resource type="PackedScene" uid="uid://dgrsaebgjx6wy" path="res://Scenes/UI/EquipmentMenu/ModuleSelectionPopup.tscn" id="5_jaose"]
 
@@ -33,7 +33,6 @@ texture = ExtResource("2_ujf5b")
 
 [node name="Margin" type="MarginContainer" parent="Center/MainPanel" unique_id=42549262]
 layout_mode = 0
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -64,14 +63,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -16.0
-offset_top = -192.0
-offset_right = 79.0
-offset_bottom = -141.0
+offset_top = -189.0
+offset_right = 57.0
+offset_bottom = -145.0
 grow_horizontal = 2
 grow_vertical = 2
 slot_key = "brain_chip"
-button_text = "Chip"
 
 [node name="Slot_left_arm" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=359446186 instance=ExtResource("4_slot")]
 layout_mode = 1
@@ -80,15 +77,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -191.0
-offset_top = -150.0
-offset_right = -121.0
-offset_bottom = -54.0
+offset_left = -197.0
+offset_top = -158.0
+offset_right = -117.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
 slot_key = "left_arm"
-button_text = "Arm"
-button_min_size = Vector2(120, 90)
 
 [node name="Slot_torso" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=1203278901 instance=ExtResource("4_slot")]
 visible = false
@@ -97,8 +92,6 @@ offset_left = 132.0
 offset_top = 123.0
 offset_right = 282.0
 offset_bottom = 213.0
-button_text = "Torso"
-button_min_size = Vector2(150, 90)
 empty_text = ""
 is_interactive = false
 
@@ -109,15 +102,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 132.0
-offset_top = -106.0
-offset_right = 201.0
-offset_bottom = -10.0
+offset_left = 126.0
+offset_top = -113.0
+offset_right = 204.0
+offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 slot_key = "right_arm"
-button_text = "Arm"
-button_min_size = Vector2(120, 90)
 
 [node name="Slot_legs" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=28025503 instance=ExtResource("4_slot")]
 layout_mode = 1
@@ -126,14 +117,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -142.0
-offset_top = 86.0
-offset_right = -76.0
-offset_bottom = 184.0
+offset_left = -149.0
+offset_top = 82.0
+offset_right = -73.0
+offset_bottom = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 slot_key = "legs"
-button_text = "Legs"
 
 [node name="ModuleSelectionPopup" parent="." unique_id=322379853 instance=ExtResource("5_jaose")]
 visible = false

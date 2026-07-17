@@ -68,7 +68,7 @@ func _update_body_labels() -> void:
 		var module: ModuleData = ModulesInventory.get_equipped_module_data(slot_key)
 		var slot_control: EquipmentSlot = _slot_controls[slot_key]
 		if module != null:
-			slot_control.set_equipped_name(module.module_name)
+			slot_control.set_equipped(module)
 		else:
 			slot_control.set_empty()
 
@@ -77,7 +77,7 @@ func _update_body_labels() -> void:
 
 func _on_module_equipped(slot: String, module: ModuleData) -> void:
 	if _slot_controls.has(slot):
-		(_slot_controls[slot] as EquipmentSlot).set_equipped_name(module.module_name)
+		(_slot_controls[slot] as EquipmentSlot).set_equipped(module)
 	# Délègue le rafraîchissement au popup s'il est visible
 	if _popup.visible:
 		_popup.refresh_for_slot(slot)
