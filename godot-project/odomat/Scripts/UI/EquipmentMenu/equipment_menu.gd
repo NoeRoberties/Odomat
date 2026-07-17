@@ -3,7 +3,7 @@ extends CanvasLayer
 # ── @onready ──────────────────────────────────────────────────────────────────
 @onready var _overlay : ColorRect       = $Overlay
 @onready var _center  : CenterContainer = $Center
-@onready var _popup   : CenterContainer = %ModuleSelectionPopup
+@onready var _popup   : Control = %ModuleSelectionPopup
 @onready var _menu_header : MenuHeader  = %MenuHeader
 @onready var _body_diagram : Control    = %BodyDiagram
 
@@ -51,14 +51,19 @@ func _close() -> void:
 	queue_free()
 
 func _open_slot_popup(slot_key: String) -> void:
-	_center.visible = false
+	for slot in _slot_controls.values():
+		slot.set_glowing(false)
+
+	var slot_control: EquipmentSlot = _slot_controls[slot_key]
+	slot_control.set_glowing(true)
 	_popup.visible  = true
-	_popup.open_for_slot(slot_key)
+	_popup.open_for_slot(slot_key, slot_control.global_position, slot_control.size)
 
 
 func _close_popup() -> void:
 	_popup.visible  = false
-	_center.visible = true
+	for slot in _slot_controls.values():
+		slot.set_glowing(false)
 
 
 # ── Labels du diagramme corporel ──────────────────────────────────────────────
