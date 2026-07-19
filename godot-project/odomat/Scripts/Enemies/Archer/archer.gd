@@ -41,6 +41,16 @@ var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.5
 
+var _animated_sprite: AnimatedSprite2D
+var _original_color: Color
+var _blink_tween: Tween
+
+
+
+func _ready() -> void:
+	_animated_sprite = $AnimatedSprite2D
+	_original_color = _animated_sprite.modulate
+
 
 func _physics_process(delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
@@ -78,8 +88,8 @@ func _physics_process(delta: float) -> void:
 
 func _state_idle() -> void:
 	velocity = Vector2.ZERO
-	if $AnimatedSprite2D.animation != "idle":
-		$AnimatedSprite2D.play("idle")
+	if _animated_sprite.animation != "idle":
+		_animated_sprite.play("idle")
 
 	if _player == null:
 		return
@@ -118,15 +128,15 @@ func _state_approach() -> void:
 
 	var direction: Vector2 = (_player.global_position - global_position).normalized()
 	velocity = direction * _speed
-	if $AnimatedSprite2D.animation != "walk":
-		$AnimatedSprite2D.play("walk")
+	if _animated_sprite.animation != "walk":
+		_animated_sprite.play("walk")
 
 
 func _state_dash_approach(delta: float) -> void:
 	_dash_timer -= delta
 	velocity = _dash_direction * _dash_speed
-	if $AnimatedSprite2D.animation != "walk":
-		$AnimatedSprite2D.play("walk")
+	if _animated_sprite.animation != "walk":
+		_animated_sprite.play("walk")
 
 	if _dash_timer <= 0.0:
 		velocity = Vector2.ZERO
@@ -147,8 +157,8 @@ func _state_dash_approach(delta: float) -> void:
 
 func _state_prepare_shot(delta: float) -> void:
 	velocity = Vector2.ZERO
-	if $AnimatedSprite2D.animation != "idle":
-		$AnimatedSprite2D.play("idle")
+	if _animated_sprite.animation != "idle":
+		_animated_sprite.play("idle")
 
 	if _player == null:
 		_state = State.IDLE
@@ -175,8 +185,8 @@ func _state_shoot(delta: float) -> void:
 		_shoot_timer = _shoot_cooldown
 		_shoot()
 
-	if $AnimatedSprite2D.animation != "shoot":
-		$AnimatedSprite2D.play("shoot")
+	if _animated_sprite.animation != "shoot":
+		_animated_sprite.play("shoot")
 
 	_shoot_end_timer -= delta
 	if _shoot_end_timer <= 0.0:
@@ -189,8 +199,8 @@ func _state_shoot(delta: float) -> void:
 func _state_dash_flee(delta: float) -> void:
 	_dash_timer -= delta
 	velocity = _dash_direction * _dash_speed
-	if $AnimatedSprite2D.animation != "walk":
-		$AnimatedSprite2D.play("walk")
+	if _animated_sprite.animation != "walk":
+		_animated_sprite.play("walk")
 
 	if _dash_timer <= 0.0:
 		velocity = Vector2.ZERO
@@ -271,10 +281,10 @@ func _shoot() -> void:
 		return
 
 	var target_position = _player.global_position
-	$AnimatedSprite2D.play("shoot")
+	_animated_sprite.play("shoot")
 
-	var frame_count: int = $AnimatedSprite2D.sprite_frames.get_frame_count("shoot")
-	var anim_speed: float = $AnimatedSprite2D.sprite_frames.get_animation_speed("shoot")
+	var frame_count: int = _animated_sprite.sprite_frames.get_frame_count("shoot")
+	var anim_speed: float = _animated_sprite.sprite_frames.get_animation_speed("shoot")
 	var shoot_duration: float = 0.5
 
 	if anim_speed > 0.0:
@@ -292,7 +302,7 @@ func _shoot() -> void:
 		return
 
 	var offset = Vector2(5, -30)
-	if $AnimatedSprite2D.flip_h:
+	if _animated_sprite.flip_h:
 		offset.x = -offset.x
 
 	var shoot_pos = global_position + offset
@@ -305,7 +315,7 @@ func _shoot() -> void:
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
-	if $AnimatedSprite2D.animation != "shoot":
+	if _animated_sprite.animation != "shoot":
 		return
 
 	if _state != State.SHOOT:
@@ -322,9 +332,9 @@ func _update_sprite_direction() -> void:
 		return
 
 	if _state == State.DASH_FLEE:
-		$AnimatedSprite2D.flip_h = (_player.global_position.x > global_position.x)
+		_animated_sprite.flip_h = (_player.global_position.x > global_position.x)
 	else:
-		$AnimatedSprite2D.flip_h = (_player.global_position.x < global_position.x)
+		_animated_sprite.flip_h = (_player.global_position.x < global_position.x)
 
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
@@ -371,9 +381,8 @@ func _on_danger_area_body_exited(body: Node2D) -> void:
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	_health -= damage
 
-	var sprite = $AnimatedSprite2D
-	if sprite:
-		_animate_archer_blink(sprite)
+	if _animated_sprite:
+		_animate_archer_blink()
 
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
@@ -387,9 +396,15 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		queue_free()
 
 
-func _animate_archer_blink(sprite: AnimatedSprite2D) -> void:
-	var original_color = sprite.self_modulate
-	var tween = create_tween()
-	tween.set_parallel(false)
-	tween.tween_property(sprite, "self_modulate", Color.RED, 0.08)
-	tween.tween_property(sprite, "self_modulate", original_color, 0.08)
+func _animate_archer_blink() -> void:
+	if _blink_tween:
+		_blink_tween.kill()
+
+	_animated_sprite.self_modulate = _original_color
+	
+	_blink_tween = create_tween()
+	_blink_tween.set_parallel(false)
+	
+	for i in range(4):
+		_blink_tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
+		_blink_tween.tween_property(_animated_sprite, "self_modulate", _original_color, 0.08)

@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name Slime
+class_name Beetle
 
 const WANDERING_DISTANCE: float = 200.0
 const ATTACK_SPEED_MULTIPLIER: float = 3.0
@@ -10,10 +10,15 @@ const ATTACK_KNOCKBACK_FORCE: float = 260.0
 @export var _speed: float = 75.0
 
 var _state: State = State.WANDERING
+
 var _animated_sprite: AnimatedSprite2D
+var _original_color: Color
+var _blink_tween: Tween
+
 var _wandering_destination: Vector2
 var _attacking_destination: Vector2
 var _player: CharacterBody2D = null
+
 
 enum State {ATTACKING, WANDERING, LOADING}
 
@@ -21,18 +26,24 @@ func _physics_process(_delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
 	if _state == State.WANDERING:
+		_animated_sprite.play("wandering")
+		_animated_sprite.flip_h = velocity.x > 0
 		_wander()
 	if _state == State.ATTACKING:
+		_animated_sprite.play("rush")
+		_animated_sprite.flip_h = velocity.x > 0
 		_attack()
 
 func _ready() -> void:
 	_animated_sprite = $AnimatedSprite2D
+	_original_color = _animated_sprite.self_modulate
 	_choose_wandering_destination()
 
 
 func _load_attack() -> void:
 	velocity = Vector2.ZERO
 	_state = State.LOADING
+	_animated_sprite.play("player_detected")
 	%AttackLoadingTimer.start()
 
 
@@ -124,10 +135,14 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 
 
 func _animate_blink() -> void:
-	var original_color = _animated_sprite.self_modulate
-	var tween = create_tween()
-	tween.set_parallel(false)  # Sequential animations
+	if _blink_tween:
+		_blink_tween.kill()
+
+	_animated_sprite.self_modulate = _original_color
+	
+	_blink_tween = create_tween()
+	_blink_tween.set_parallel(false)  # Sequential animations
 	
 	for i in range(4):
-		tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
-		tween.tween_property(_animated_sprite, "self_modulate", original_color, 0.08)
+		_blink_tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
+		_blink_tween.tween_property(_animated_sprite, "self_modulate", _original_color, 0.08)

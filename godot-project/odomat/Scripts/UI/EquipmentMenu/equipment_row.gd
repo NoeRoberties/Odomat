@@ -11,6 +11,7 @@ signal slot_pressed(slot_key: String)
 @export var row_separation: int = 0
 
 var _slot_controls: Dictionary = {}
+var _slot_order: Array[EquipmentSlot] = []
 
 
 func _ready() -> void:
@@ -21,10 +22,15 @@ func get_slot_controls() -> Dictionary:
 	return _slot_controls
 
 
+func get_ordered_slots() -> Array[EquipmentSlot]:
+	return _slot_order
+
+
 func _rebuild() -> void:
 	for child in get_children():
 		child.queue_free()
 	_slot_controls.clear()
+	_slot_order.clear()
 
 	for i in range(leading_spacers):
 		_add_spacer("LeadSpacer%d" % i)
@@ -43,6 +49,7 @@ func _rebuild() -> void:
 
 		if cfg.slot_key != "":
 			_slot_controls[cfg.slot_key] = slot_control
+		_slot_order.append(slot_control)
 
 		if spacer_between_slots and i < slots.size() - 1:
 			_add_spacer("MiddleSpacer%d" % i)
