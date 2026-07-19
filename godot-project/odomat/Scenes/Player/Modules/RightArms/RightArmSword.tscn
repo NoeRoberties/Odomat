@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://daebdyth45vwx" path="res://Scripts/Player/Modules/RightArmModule/right_arm_sword.gd" id="1_snbx1"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_612gy"]
-[ext_resource type="Texture2D" uid="uid://cb4i8nbm6ohbv" path="res://Assets/HUD_UI/Equipment_Menu_assets/basis_modules_assets/right_arm_basis_item_texture.png" id="2_snbx1"]
-[ext_resource type="Texture2D" uid="uid://b5tmwocokjneg" path="res://Assets/MainCharacter/RightArm/sword_right_arm.png" id="4_5p8t0"]
+[ext_resource type="Texture2D" uid="uid://clrj4epdm74sr" path="res://Assets/HUD_UI/Equipment_Menu_assets/basis_modules_assets/right_arm_basis_item_texture.png" id="2_snbx1"]
+[ext_resource type="Texture2D" uid="uid://ccr3u33xarcoh" path="res://Assets/Player/RightArm/sword_right_arm.png" id="4_snbx1"]
 
 [sub_resource type="Resource" id="Resource_data"]
 script = ExtResource("2_612gy")
@@ -12,59 +12,59 @@ description = "Placeholder right arm module with no active behavior yet."
 item_texture = ExtResource("2_snbx1")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2pmks"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(384, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i28gp"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(448, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1copl"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(384, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u8u6i"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(448, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_to4uw"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p7cr0"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(128, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vrod0"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fcbn2"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2c03d"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(0, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_snbx1"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(64, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_612gy"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(128, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_445wc"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(192, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5p8t0"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(256, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k36be"]
-atlas = ExtResource("4_5p8t0")
+atlas = ExtResource("4_snbx1")
 region = Rect2(320, 64, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a4sj2"]
