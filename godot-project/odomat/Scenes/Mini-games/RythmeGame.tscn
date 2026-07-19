@@ -5,29 +5,33 @@
 [ext_resource type="Script" uid="uid://c8plfp3fx23wn" path="res://Scenes/Mini-games/target_circle.gd" id="2_gp6jp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rtywq"]
-radius = 126.01587
 
-[node name="RythmeGame" type="Node2D" unique_id=1692936989]
+[node name="RythmeGame" type="Node2D" unique_id=852431976]
 script = ExtResource("1_rtywq")
 arrow_scene = ExtResource("2_b62yq")
 
-[node name="TargetCircle" type="Area2D" parent="." unique_id=54326067]
-position = Vector2(960, 540)
+[node name="TargetCircle" type="Area2D" parent="." unique_id=554153374]
 script = ExtResource("2_gp6jp")
 
-[node name="Sprite2D" type="Sprite2D" parent="TargetCircle" unique_id=579592036]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetCircle" unique_id=1391039642]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetCircle" unique_id=1347519694]
 shape = SubResource("CircleShape2D_rtywq")
 
-[node name="SpawnLeft" type="Marker2D" parent="." unique_id=2038826559]
+[node name="SpawnLeft" type="Marker2D" parent="." unique_id=1213982916]
+position = Vector2(-100, 540)
 
-[node name="SpawnRight" type="Marker2D" parent="." unique_id=161553170]
+[node name="SpawnRight" type="Marker2D" parent="." unique_id=1717047305]
+position = Vector2(2020, 540)
 
-[node name="SpawnTop" type="Marker2D" parent="." unique_id=716932797]
+[node name="SpawnTop" type="Marker2D" parent="." unique_id=568512754]
+position = Vector2(960, -100)
 
-[node name="SpawnBottom" type="Marker2D" parent="." unique_id=104907421]
-position = Vector2(132, 70)
+[node name="SpawnBottom" type="Marker2D" parent="." unique_id=1644546875]
+position = Vector2(960, 1180)
 
-[node name="SpawnTimer" type="Timer" parent="." unique_id=1436571313]
-autostart = true
+[node name="ScoreLabel" type="Label" parent="." unique_id=1517896338]
+offset_left = 40.0
+offset_top = 30.0
+offset_right = 540.0
+offset_bottom = 110.0
+theme_override_font_sizes/font_size = 48
+text = "Score : 0"
