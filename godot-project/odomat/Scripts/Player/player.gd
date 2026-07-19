@@ -25,7 +25,7 @@ var is_knocked_back := false
 var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.18
-var hud_scene: PackedScene = preload("res://Scenes/UI/HUD/PlayerTemperature.tscn")
+var hud_scene: PackedScene = preload("res://Scenes/HUD/PlayerTemperature.tscn")
 
 func _ready() -> void:
 	ModulesInventory.module_equipped.connect(_on_module_equipped)
@@ -71,17 +71,11 @@ func _physics_process(delta: float) -> void:
 			_knockback_velocity = Vector2.ZERO
 
 
-#func _play_damage_blink() -> void:
-	#if _visual == null:
-		#return
-	#if _blink_tween != null and _blink_tween.is_valid():
-		#_blink_tween.kill()
-	#var original_color := _visual.modulate
-	#_blink_tween = create_tween()
-	#_blink_tween.set_parallel(false)
-	#for i in range(4):
-		#_blink_tween.tween_property(_visual, "modulate", Color.RED, 0.08)
-		#_blink_tween.tween_property(_visual, "modulate", original_color, 0.08)
+func _play_damage_blink() -> void:
+	for slot in _equipped_modules:
+		if (_equipped_modules[slot] == null):
+			continue
+		_equipped_modules[slot]._animate_blink()
 
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
@@ -128,7 +122,7 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 	_health -= damage
 	# Notify listeners (HUD)
 	emit_signal("health_changed", _health, max_health)
-	# _play_damage_blink()
+	_play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
 		_knockback_velocity = dir * knockback_force

@@ -29,6 +29,7 @@ func _ready() -> void:
 		dash_ui.z_index = 100
 	_sprite = $AnimatedSprite2D
 	_sprite.flip_h = false
+	_original_color = _sprite.self_modulate
 
 
 func _unhandled_input(event: InputEvent) -> void:

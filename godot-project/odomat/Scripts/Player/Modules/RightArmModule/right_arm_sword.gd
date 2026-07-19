@@ -16,6 +16,7 @@ var _last_device_is_gamepad := false
 func _ready() -> void:
 	_sprite = $AnimatedSprite2D
 	_sprite.animation = "walk_left"
+	_original_color = _sprite.self_modulate
 
 
 func _process(delta: float) -> void:

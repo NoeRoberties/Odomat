@@ -6,9 +6,16 @@ const MIN_BAR_VALUE: int = 20
 const MAX_BAR_VALUE: int = 100
 const ANIMATION_DURATION: float = 0.3
 
+const DAMAGED_TRESHOLD: float = 0.35
+const CRITICAL_TRESHOLD: float = 0.8
+
 var _health_tween: Tween
+var _avatar: AnimatedSprite2D
 
 func _ready() -> void:
+	_avatar = $Control/Life_progress_bar/Avatar
+	_avatar.play("normal")
+	
 	# Position the life bar centered at bottom
 	_bar.anchor_left = 1.0
 	_bar.anchor_right = 0.01
@@ -43,6 +50,13 @@ func _on_health_changed(current: int, maximum: int) -> void:
 	# Invert the health value: low health = high bar, high health = low bar
 	# Formula: bar_value = max - (current / max) * (max - min)
 	var inverted_value = MAX_BAR_VALUE - (float(current) / float(maximum)) * (MAX_BAR_VALUE - MIN_BAR_VALUE)
+	
+	if inverted_value / MAX_BAR_VALUE >= CRITICAL_TRESHOLD:
+		_avatar.play("critical")
+	elif inverted_value / MAX_BAR_VALUE >= DAMAGED_TRESHOLD:
+		_avatar.play("damaged")
+	else:
+		_avatar.play("normal")
 	
 	# Kill previous tween if still running
 	if _health_tween:
