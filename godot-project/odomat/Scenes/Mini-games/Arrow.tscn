@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cfe8plr1obwws"]
+
+[ext_resource type="Script" uid="uid://dcm3kxe1jbdh" path="res://Scenes/Mini-games/arrow.gd" id="1_wcpec"]
+[ext_resource type="Texture2D" uid="uid://ngwa2q2835p" path="res://Assets/Mini-games/RythmeGame/arrow_rune_lit.svg" id="2_6huti"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q5rrr"]
+
+[node name="Arrow" type="Area2D" unique_id=1809042619]
+script = ExtResource("1_wcpec")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1473459108]
+position = Vector2(249.25, 315.75)
+scale = Vector2(0.29492188, 0.30664068)
+texture = ExtResource("2_6huti")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=878269540]
+shape = SubResource("RectangleShape2D_q5rrr")
