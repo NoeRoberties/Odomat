@@ -20,14 +20,13 @@ var _selected_module_data : ModuleData = null
 
 @onready var _popup_bg         : TextureRect     = $PopupBackground
 @onready var _title_label      : Label           = %TitleLabel
-@onready var _close_btn        : Button          = %CloseButton
+
 @onready var _module_list_vbox : VBoxContainer   = %ModuleListVBox
 @onready var _equip_btn        : TextureButton   = %EquipButton
 @onready var _unequip_btn      : TextureButton   = %UnequipButton
 
 
 func _ready() -> void:
-	_close_btn.pressed.connect(func(): popup_closed.emit())
 	_equip_btn.pressed.connect(_on_equip_pressed)
 	_unequip_btn.pressed.connect(_on_unequip_pressed)
 

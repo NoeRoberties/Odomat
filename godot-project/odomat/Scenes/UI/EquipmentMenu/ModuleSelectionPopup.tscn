@@ -41,12 +41,7 @@ text = "Available Modules"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CloseButton" type="Button" parent="PopupBackground/HeaderHBox" unique_id=315171568]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = " X "
-flat = true
+
 
 [node name="Margin" type="MarginContainer" parent="PopupBackground" unique_id=1596851624]
 layout_mode = 1
