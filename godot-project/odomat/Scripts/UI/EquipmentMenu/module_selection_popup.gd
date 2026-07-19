@@ -29,6 +29,41 @@ var _selected_module_data : ModuleData = null
 func _ready() -> void:
 	_equip_btn.pressed.connect(_on_equip_pressed)
 	_unequip_btn.pressed.connect(_on_unequip_pressed)
+	_equip_btn.focus_mode = Control.FOCUS_ALL
+	_unequip_btn.focus_mode = Control.FOCUS_ALL
+
+
+func _input(event: InputEvent) -> void:
+	if not visible:
+		return
+
+	if event.is_action_pressed("ui_accept") or event.is_action_pressed("interact_npc"):
+		if _activate_focused_control():
+			get_viewport().set_input_as_handled()
+
+
+func _activate_focused_control() -> bool:
+	var focused: Control = get_viewport().gui_get_focus_owner()
+	if focused == null:
+		return false
+
+	if focused == _equip_btn:
+		if not _equip_btn.disabled:
+			_on_equip_pressed()
+		return true
+
+	if focused == _unequip_btn:
+		if not _unequip_btn.disabled:
+			_on_unequip_pressed()
+		return true
+
+	if focused is BaseButton and focused.has_meta("module_scene"):
+		var module_scene: PackedScene = focused.get_meta("module_scene")
+		focused.button_pressed = not focused.button_pressed  # reflète le clic visuellement
+		_on_module_selected(module_scene)
+		return true
+
+	return false
 
 
 ## Point d'entrée unique depuis EquipmentMenu — positionne le popup à côté du slot cliqué.
@@ -94,11 +129,52 @@ func _refresh_list() -> void:
 
 		var element := ElementScene.instantiate() as ModuleListElement
 		var is_equipped := (module_scene == equipped_scene)
+		element.set_meta("module_scene", module_scene)
 		_module_list_vbox.add_child(element)
 
 		element.set_module(module_data, is_equipped)
 		element.button_pressed = (module_scene == _selected_module_scene)
 		element.pressed.connect(_on_module_selected.bind(module_scene))
+
+	_wire_list_navigation()
+	_restore_focus(equipped_scene)
+
+
+func _wire_list_navigation() -> void:
+	var buttons: Array = _module_list_vbox.get_children()
+
+	for i in range(buttons.size()):
+		var btn: BaseButton = buttons[i]
+		if i > 0:
+			btn.focus_neighbor_top = btn.get_path_to(buttons[i - 1])
+		if i < buttons.size() - 1:
+			btn.focus_neighbor_bottom = btn.get_path_to(buttons[i + 1])
+		elif is_instance_valid(_equip_btn):
+			btn.focus_neighbor_bottom = btn.get_path_to(_equip_btn)
+
+	if not buttons.is_empty():
+		var last_btn: BaseButton = buttons[buttons.size() - 1]
+		if is_instance_valid(_equip_btn):
+			_equip_btn.focus_neighbor_top = _equip_btn.get_path_to(last_btn)
+		if is_instance_valid(_unequip_btn):
+			_unequip_btn.focus_neighbor_top = _unequip_btn.get_path_to(last_btn)
+
+	if is_instance_valid(_equip_btn) and is_instance_valid(_unequip_btn):
+		_equip_btn.focus_neighbor_right = _equip_btn.get_path_to(_unequip_btn)
+		_unequip_btn.focus_neighbor_left = _unequip_btn.get_path_to(_equip_btn)
+
+func _restore_focus(equipped_scene: PackedScene) -> void:
+	if _module_list_vbox.get_child_count() == 0:
+		return
+
+	var scene_to_focus: PackedScene = _selected_module_scene if _selected_module_scene != null else equipped_scene
+	for child in _module_list_vbox.get_children():
+		var btn: BaseButton = child
+		if btn.get_meta("module_scene", null) == scene_to_focus:
+			btn.grab_focus()
+			return
+
+	(_module_list_vbox.get_child(0) as Control).grab_focus()
 
 
 func _on_module_selected(module_scene: PackedScene) -> void:

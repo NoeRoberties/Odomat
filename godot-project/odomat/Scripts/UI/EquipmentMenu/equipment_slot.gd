@@ -17,6 +17,9 @@ func _ready() -> void:
 	_apply_visuals()
 	if is_interactive and slot_key != "":
 		_button.pressed.connect(func(): slot_pressed.emit(slot_key))
+		_button.focus_mode = Control.FOCUS_ALL
+	else:
+		_button.focus_mode = Control.FOCUS_NONE
 
 
 func set_equipped(module: ModuleData) -> void:
@@ -33,6 +36,18 @@ func set_empty() -> void:
 	_icon.texture = null
 	_button.text = empty_text
 	_button.tooltip_text = ""
+
+
+func get_focus_button() -> Button:
+	if is_interactive and slot_key != "":
+		return _button
+	return null
+
+
+func focus_slot() -> void:
+	var btn := get_focus_button()
+	if btn != null:
+		btn.grab_focus()
 
 
 func _apply_visuals() -> void:
