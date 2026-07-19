@@ -84,7 +84,7 @@ offset_right = -123.0
 offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
-slot_key = "left_arm"
+slot_key = "right_arm"
 
 [node name="Slot_torso" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=1203278901 instance=ExtResource("4_slot")]
 visible = false
@@ -109,7 +109,7 @@ offset_right = 197.0
 offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
-slot_key = "right_arm"
+slot_key = "left_arm"
 
 [node name="Slot_legs" parent="Center/MainPanel/Margin/RootVBox/BodyDiagram" unique_id=28025503 instance=ExtResource("4_slot")]
 layout_mode = 1

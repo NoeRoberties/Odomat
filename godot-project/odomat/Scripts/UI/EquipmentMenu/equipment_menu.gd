@@ -34,8 +34,8 @@ func _ready() -> void:
 	var bottom_row: Array = []
 	
 	if _slot_controls.has("brain_chip"): top_row.append(_slot_controls["brain_chip"])
-	if _slot_controls.has("left_arm"): middle_row.append(_slot_controls["left_arm"])
 	if _slot_controls.has("right_arm"): middle_row.append(_slot_controls["right_arm"])
+	if _slot_controls.has("left_arm"): middle_row.append(_slot_controls["left_arm"])
 	if _slot_controls.has("legs"): bottom_row.append(_slot_controls["legs"])
 	
 	_row_slot_lists = [top_row, middle_row, bottom_row]
