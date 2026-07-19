@@ -1,0 +1,47 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Outer glow halo -->
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="rune" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9ff0ff"/>
+      <stop offset="0.5" stop-color="#3fd0ff"/>
+      <stop offset="1" stop-color="#1a9be6"/>
+    </linearGradient>
+    <radialGradient id="core" cx="0.5" cy="0.5" r="0.6">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#7fe6ff"/>
+      <stop offset="1" stop-color="#2ab0f0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Glowing halo pass (blurred, cyan) -->
+  <g filter="url(#glow)">
+    <path d="M 40 108
+             L 150 108
+             L 150 74
+             L 214 128
+             L 150 182
+             L 150 148
+             L 40 148
+             Z"
+          fill="url(#rune)"/>
+  </g>
+
+  <!-- Bright core arrow on top -->
+  <path d="M 46 112
+           L 152 112
+           L 152 84
+           L 206 128
+           L 152 172
+           L 152 144
+           L 46 144
+           Z"
+        fill="url(#core)"
+        stroke="#eaffff" stroke-width="2" stroke-linejoin="round"/>
+</svg>

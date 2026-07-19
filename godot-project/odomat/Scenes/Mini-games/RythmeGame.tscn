@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dp57d7bkhp8a4"]
+
+[ext_resource type="Script" uid="uid://0fw0hrq35ama" path="res://Scenes/Mini-games/RythmeGame.gd" id="1_rtywq"]
+[ext_resource type="PackedScene" uid="uid://cfe8plr1obwws" path="res://Scenes/Mini-games/Arrow.tscn" id="2_b62yq"]
+[ext_resource type="Script" uid="uid://c8plfp3fx23wn" path="res://Scenes/Mini-games/target_circle.gd" id="2_gp6jp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rtywq"]
+
+[node name="RythmeGame" type="Node2D" unique_id=852431976]
+script = ExtResource("1_rtywq")
+arrow_scene = ExtResource("2_b62yq")
+
+[node name="TargetCircle" type="Area2D" parent="." unique_id=554153374]
+script = ExtResource("2_gp6jp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetCircle" unique_id=1347519694]
+shape = SubResource("CircleShape2D_rtywq")
+
+[node name="SpawnLeft" type="Marker2D" parent="." unique_id=1213982916]
+position = Vector2(-100, 540)
+
+[node name="SpawnRight" type="Marker2D" parent="." unique_id=1717047305]
+position = Vector2(2020, 540)
+
+[node name="SpawnTop" type="Marker2D" parent="." unique_id=568512754]
+position = Vector2(960, -100)
+
+[node name="SpawnBottom" type="Marker2D" parent="." unique_id=1644546875]
+position = Vector2(960, 1180)
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=1517896338]
+offset_left = 40.0
+offset_top = 30.0
+offset_right = 540.0
+offset_bottom = 110.0
+theme_override_font_sizes/font_size = 48
+text = "Score : 0"
