@@ -3,11 +3,9 @@ extends CanvasLayer
 # ── @onready ──────────────────────────────────────────────────────────────────
 @onready var _overlay : ColorRect       = $Overlay
 @onready var _center  : CenterContainer = $Center
-@onready var _popup   : CenterContainer = %ModuleSelectionPopup
+@onready var _popup   : Control = %ModuleSelectionPopup
 @onready var _menu_header : MenuHeader  = %MenuHeader
-@onready var _top_row : EquipmentRow    = %TopRow
-@onready var _middle_row : EquipmentRow = %MiddleRow
-@onready var _bottom_row : EquipmentRow = %BottomRow
+@onready var _body_diagram : Control    = %BodyDiagram
 
 ## slot_key → EquipmentSlot
 var _slot_controls : Dictionary = {}
@@ -23,13 +21,24 @@ func _ready() -> void:
 	_slot_controls.clear()
 	_row_slot_lists.clear()
 
-	# Récupère tous les slots depuis les rows paramétrables.
-	for row: EquipmentRow in [_top_row, _middle_row, _bottom_row]:
-		row.slot_pressed.connect(_open_slot_popup)
-		var row_slots: Dictionary = row.get_slot_controls()
-		for slot_key: String in row_slots:
-			_slot_controls[slot_key] = row_slots[slot_key]
-		_row_slot_lists.append(row.get_ordered_slots())
+	# Récupère tous les slots directement depuis le BodyDiagram.
+	for child in _body_diagram.get_children():
+		if child is EquipmentSlot:
+			if child.slot_key != "":
+				_slot_controls[child.slot_key] = child
+			child.slot_pressed.connect(_open_slot_popup)
+
+	# Group slots manually into rows for gamepad navigation
+	var top_row: Array = []
+	var middle_row: Array = []
+	var bottom_row: Array = []
+	
+	if _slot_controls.has("brain_chip"): top_row.append(_slot_controls["brain_chip"])
+	if _slot_controls.has("right_arm"): middle_row.append(_slot_controls["right_arm"])
+	if _slot_controls.has("left_arm"): middle_row.append(_slot_controls["left_arm"])
+	if _slot_controls.has("legs"): bottom_row.append(_slot_controls["legs"])
+	
+	_row_slot_lists = [top_row, middle_row, bottom_row]
 
 	# Fermeture du diagramme principal
 	_menu_header.close_pressed.connect(_close)
@@ -79,14 +88,19 @@ func _close() -> void:
 	queue_free()
 
 func _open_slot_popup(slot_key: String) -> void:
-	_center.visible = false
+	for slot in _slot_controls.values():
+		slot.set_glowing(false)
+
+	var slot_control: EquipmentSlot = _slot_controls[slot_key]
+	slot_control.set_glowing(true)
 	_popup.visible  = true
-	_popup.open_for_slot(slot_key)
+	_popup.open_for_slot(slot_key, slot_control.global_position, slot_control.size)
 
 
 func _close_popup() -> void:
 	_popup.visible  = false
-	_center.visible = true
+	for slot in _slot_controls.values():
+		slot.set_glowing(false)
 	_focus_first_slot()
 
 
@@ -97,7 +111,7 @@ func _update_body_labels() -> void:
 		var module: ModuleData = ModulesInventory.get_equipped_module_data(slot_key)
 		var slot_control: EquipmentSlot = _slot_controls[slot_key]
 		if module != null:
-			slot_control.set_equipped_name(module.module_name)
+			slot_control.set_equipped(module)
 		else:
 			slot_control.set_empty()
 
@@ -106,7 +120,7 @@ func _update_body_labels() -> void:
 
 func _on_module_equipped(slot: String, module: ModuleData) -> void:
 	if _slot_controls.has(slot):
-		(_slot_controls[slot] as EquipmentSlot).set_equipped_name(module.module_name)
+		(_slot_controls[slot] as EquipmentSlot).set_equipped(module)
 	# Délègue le rafraîchissement au popup s'il est visible
 	if _popup.visible:
 		_popup.refresh_for_slot(slot)

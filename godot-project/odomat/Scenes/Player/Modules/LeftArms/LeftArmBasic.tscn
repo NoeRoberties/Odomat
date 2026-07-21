@@ -2,13 +2,15 @@
 
 [ext_resource type="Script" uid="uid://c8q8cmqdfkvm6" path="res://Scripts/Player/Modules/LeftArmModule/left_arm_basic.gd" id="1_5wyh7"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_ljj52"]
-[ext_resource type="Texture2D" uid="uid://hgdq6m2sej6o" path="res://Assets/MainCharacter/LeftArm/left_arm_default.png" id="3_ljj52"]
+[ext_resource type="Texture2D" uid="uid://clrj4epdm74sr" path="res://Assets/HUD_UI/Equipment_Menu_assets/basis_modules_assets/left_arm_basis_item_texture.png" id="2_mwv4w"]
+[ext_resource type="Texture2D" uid="uid://dels2rbfx2lor" path="res://Assets/Player/LeftArm/left_arm_default.png" id="3_ljj52"]
 
 [sub_resource type="Resource" id="Resource_data"]
 script = ExtResource("2_ljj52")
 module_name = "Swoosh Left Arm"
 slot = 1
 description = "Melee arm using the current swoosh attack."
+item_texture = ExtResource("2_mwv4w")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ljj52"]
 atlas = ExtResource("3_ljj52")

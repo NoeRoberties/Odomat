@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6vtupf7mmlqn"]
+
+[ext_resource type="Script" uid="uid://dhth12bn5q8h" path="res://Scripts/UI/EquipmentMenu/module_list_element.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dn7adb51gj5l8" path="res://Assets/HUD_UI/Equipment_Menu_assets/equipment_menu_list_element.png" id="2_bg_tex"]
+[ext_resource type="Texture2D" uid="uid://c14adb51gj5l8" path="res://Assets/HUD_UI/Equipment_Menu_assets/equipment_menu_list_element_selected.png" id="3_selected_tex"]
+
+[node name="ModuleListElement" type="TextureButton" unique_id=1279563992]
+custom_minimum_size = Vector2(0, 76)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+toggle_mode = true
+texture_normal = ExtResource("2_bg_tex")
+texture_pressed = ExtResource("3_selected_tex")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=220952241]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="Content" type="HBoxContainer" parent="Margin" unique_id=858946971]
+layout_mode = 2
+theme_override_constants/separation = 36
+
+[node name="Icon" type="TextureRect" parent="Margin/Content" unique_id=2010602163]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightPart" type="VBoxContainer" parent="Margin/Content" unique_id=978521569]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="Margin/Content/RightPart" unique_id=1174614229]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Module Name"
+
+[node name="StatsLabel" type="Label" parent="Margin/Content/RightPart" unique_id=1446605489]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.698039, 0.698039, 0.698039, 1)
+theme_override_font_sizes/font_size = 9
+text = "Stats info"
+
+[node name="CheckIcon" type="Label" parent="Margin/Content" unique_id=1004483256]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 12
+text = "✓"
+horizontal_alignment = 2

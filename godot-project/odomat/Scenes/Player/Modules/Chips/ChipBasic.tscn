@@ -2,13 +2,15 @@
 
 [ext_resource type="Script" uid="uid://oj1v6fj853p2" path="res://Scripts/Player/Modules/ChipModule/chip_basic.gd" id="1_mod"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_data"]
-[ext_resource type="Texture2D" uid="uid://c8p0hrc0a4pjt" path="res://Assets/MainCharacter/chest_head.png" id="3_xib44"]
+[ext_resource type="Texture2D" uid="uid://bakqvmajsx53a" path="res://Assets/HUD_UI/Equipment_Menu_assets/basis_modules_assets/chip_basis_item_texture.png" id="2_w4p6d"]
+[ext_resource type="Texture2D" uid="uid://wi22ry1yd6y0" path="res://Assets/Player/chest_head.png" id="3_xib44"]
 
 [sub_resource type="Resource" id="Resource_data"]
 script = ExtResource("2_data")
 module_name = "Brain Chip (Idle)"
 slot = 3
 description = "Placeholder chip module with no active behavior yet."
+item_texture = ExtResource("2_w4p6d")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h54ih"]
 atlas = ExtResource("3_xib44")

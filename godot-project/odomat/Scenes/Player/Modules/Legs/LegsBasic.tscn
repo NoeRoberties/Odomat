@@ -1,14 +1,16 @@
 [gd_scene format=3 uid="uid://h1l2bndrv7ra"]
 
 [ext_resource type="Script" uid="uid://80yxfvrjks1x" path="res://Scripts/Player/Modules/LegsModule/legs_basic.gd" id="1_i2epd"]
+[ext_resource type="Texture2D" uid="uid://blb3cbvga0p3p" path="res://Assets/HUD_UI/Equipment_Menu_assets/basis_modules_assets/legs_basis_item_texture.png" id="2_h1r3d"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_v1p42"]
-[ext_resource type="Texture2D" uid="uid://c02wsmraok3h8" path="res://Assets/MainCharacter/Legs/legs_default.png" id="3_h1r3d"]
+[ext_resource type="Texture2D" uid="uid://kxogo8g781ul" path="res://Assets/Player/Legs/legs_default.png" id="3_h1r3d"]
 
 [sub_resource type="Resource" id="Resource_data"]
 script = ExtResource("2_v1p42")
 module_name = "Basic Legs"
 slot = 2
 description = "Default locomotion module."
+item_texture = ExtResource("2_h1r3d")
 
 [sub_resource type="Gradient" id="Gradient_tf83h"]
 colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0, 1)

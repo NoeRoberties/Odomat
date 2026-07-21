@@ -21,7 +21,7 @@ enum Slot {
 @export_multiline var description: String = ""
 
 ## Icône optionnelle affichée dans l'inventaire.
-@export var icon: Texture2D = null
+@export var item_texture: Texture2D = null
 
 ## Champs de stats optionnels conservés pour l'affichage UI.
 @export var speed_bonus: float = 0.0
