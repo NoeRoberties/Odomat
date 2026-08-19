@@ -1,30 +1,30 @@
-extends CharacterBody2D
+extends Enemy
 class_name Beetle
+
+const BEETLE_HEALTH: int = 10
 
 const WANDERING_DISTANCE: float = 200.0
 const ATTACK_SPEED_MULTIPLIER: float = 3.0
 const ATTACK_DAMAGE: int = 12
 const ATTACK_KNOCKBACK_FORCE: float = 260.0
 
-@export var _health: float = 10.0
 @export var _speed: float = 75.0
-
-var _state: State = State.WANDERING
-
-var _animated_sprite: AnimatedSprite2D
-var _original_color: Color
-var _blink_tween: Tween
 
 var _wandering_destination: Vector2
 var _attacking_destination: Vector2
 var _player: CharacterBody2D = null
 
-
 enum State {ATTACKING, WANDERING, LOADING}
 
-func _physics_process(_delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
+var _state: State = State.WANDERING
+
+func _on_ready() -> void:
+	_health = BEETLE_HEALTH
+	_choose_wandering_destination()
+
+
+func _on_physics_process(_delta: float) -> void:
+	print("This is called")
 	if _state == State.WANDERING:
 		_animated_sprite.play("wandering")
 		_animated_sprite.flip_h = velocity.x > 0
@@ -34,10 +34,15 @@ func _physics_process(_delta: float) -> void:
 		_animated_sprite.flip_h = velocity.x > 0
 		_attack()
 
-func _ready() -> void:
-	_animated_sprite = $AnimatedSprite2D
-	_original_color = _animated_sprite.self_modulate
-	_choose_wandering_destination()
+
+func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float) -> void:
+	if knockback_force > 0 and attacker_position != Vector2.ZERO:
+		var kb_dir := (global_position - attacker_position)
+		if kb_dir.length_squared() == 0.0:
+			kb_dir = Vector2.RIGHT
+		else:
+			kb_dir = kb_dir.normalized()
+		velocity = kb_dir * knockback_force
 
 
 func _load_attack() -> void:
@@ -57,6 +62,22 @@ func _attack() -> void:
 	move_and_slide()
 	_apply_contact_damage_to_player()
 
+
+func _apply_contact_damage_to_player() -> void:
+	for i in range(get_slide_collision_count()):
+		var collision := get_slide_collision(i)
+		var collider := collision.get_collider()
+		if not (collider is Node):
+			continue
+		if not (collider as Node).is_in_group("player"):
+			continue
+		if not collider.has_method("take_damage"):
+			continue
+
+		# Pass attacker position and force to allow target to compute knockback.
+		collider.take_damage(ATTACK_DAMAGE, global_position, ATTACK_KNOCKBACK_FORCE)
+		_load_attack()
+		break
 
 func _wander() -> void:
 	var direction: Vector2 = _wandering_destination - global_position
@@ -96,53 +117,3 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 		_state = State.WANDERING
 		%AttackLoadingTimer.stop()
 		_choose_wandering_destination()
-
-
-func _apply_contact_damage_to_player() -> void:
-	for i in range(get_slide_collision_count()):
-		var collision := get_slide_collision(i)
-		var collider := collision.get_collider()
-		if not (collider is Node):
-			continue
-		if not (collider as Node).is_in_group("player"):
-			continue
-		if not collider.has_method("take_damage"):
-			continue
-
-		# Pass attacker position and force to allow target to compute knockback.
-		collider.take_damage(ATTACK_DAMAGE, global_position, ATTACK_KNOCKBACK_FORCE)
-		_load_attack()
-		break
-
-func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
-	_health -= damage
-	
-	# Apply knockback: prefer provided force; fall back to 0 (no knockback)
-	if knockback_force > 0 and attacker_position != Vector2.ZERO:
-		var kb_dir := (global_position - attacker_position)
-		if kb_dir.length_squared() == 0.0:
-			kb_dir = Vector2.RIGHT
-		else:
-			kb_dir = kb_dir.normalized()
-		velocity = kb_dir * knockback_force
-	
-	# Visual feedback: blinking effect
-	if _animated_sprite:
-		_animate_blink()
-	
-	if _health <= 0:
-		queue_free()
-
-
-func _animate_blink() -> void:
-	if _blink_tween:
-		_blink_tween.kill()
-
-	_animated_sprite.self_modulate = _original_color
-	
-	_blink_tween = create_tween()
-	_blink_tween.set_parallel(false)  # Sequential animations
-	
-	for i in range(4):
-		_blink_tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
-		_blink_tween.tween_property(_animated_sprite, "self_modulate", _original_color, 0.08)
