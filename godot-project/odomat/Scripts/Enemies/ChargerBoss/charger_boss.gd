@@ -163,6 +163,7 @@ func _process_phase1(delta: float) -> void:
 func _complete_charge_leg(hit_normal: Vector2 = Vector2.ZERO) -> void:
 	# Deplete self HP per charge leg (wall impact)
 	_health -= CHARGE_SELF_DAMAGE
+	DamageNumbers.display_number(CHARGE_SELF_DAMAGE, global_position + Vector2(0, -25), Color(1.0, 0.55, 0.1))
 	_play_wall_bounce_animation(hit_normal)
 
 	if _health <= PHASE2_HP_THRESHOLD:
@@ -170,6 +171,7 @@ func _complete_charge_leg(hit_normal: Vector2 = Vector2.ZERO) -> void:
 	else:
 		_state = State.PIVOT
 		_pivot_timer = PIVOT_DURATION
+
 
 
 func _play_wall_bounce_animation(hit_normal: Vector2) -> void:
@@ -268,10 +270,12 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 
 	# Phase 2: Static turret takes damage from player
 	_health -= damage
+	DamageNumbers.display_number(damage, global_position + Vector2(0, -25))
 	_animate_blink()
 
 	if _health <= 0:
 		queue_free()
+
 
 
 func _set_visual_color(color: Color) -> void:

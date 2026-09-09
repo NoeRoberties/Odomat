@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 ModulesInventory="*res://Scripts/Player/Modules/modules_inventory.gd"
 GameState="*uid://do8qee8ntl23l"
+DamageNumbers="*res://Scripts/UI/HUD/damage_numbers.gd"
+
 
 [display]
 

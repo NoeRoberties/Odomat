@@ -44,6 +44,8 @@ func _trigger_shockwave() -> void:
 
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, _knockback_force: float = 0.0) -> void:
 	_health -= damage
+	DamageNumbers.display_number(damage, global_position + Vector2(0, -20))
+
 	
 	if _animated_sprite:
 		_animate_blink()

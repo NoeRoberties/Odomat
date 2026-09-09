@@ -380,6 +380,8 @@ func _on_danger_area_body_exited(body: Node2D) -> void:
 
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	_health -= damage
+	DamageNumbers.display_number(damage, global_position + Vector2(0, -20))
+
 
 	if _animated_sprite:
 		_animate_archer_blink()

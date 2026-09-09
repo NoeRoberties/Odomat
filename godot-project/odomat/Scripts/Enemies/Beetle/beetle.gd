@@ -116,6 +116,8 @@ func _apply_contact_damage_to_player() -> void:
 
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	_health -= damage
+	DamageNumbers.display_number(damage, global_position + Vector2(0, -20))
+
 	
 	# Apply knockback: prefer provided force; fall back to 0 (no knockback)
 	if knockback_force > 0 and attacker_position != Vector2.ZERO:
