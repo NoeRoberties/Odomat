@@ -24,7 +24,6 @@ func _on_ready() -> void:
 
 
 func _on_physics_process(_delta: float) -> void:
-	print("This is called")
 	if _state == State.WANDERING:
 		_animated_sprite.play("wandering")
 		_animated_sprite.flip_h = velocity.x > 0
