@@ -1,4 +1,7 @@
-extends CharacterBody2D
+extends Enemy
+class_name Archer
+
+const ARCHER_HEALTH: int = 15
 
 @export var arrow_scene: PackedScene = preload("res://Scenes/Enemies/Archer/Arrow.tscn")
 
@@ -14,7 +17,6 @@ enum State {
 
 var _state: State = State.IDLE
 
-var _health := 15
 var _speed := 90.0
 var _shoot_distance := 250.0
 
@@ -41,21 +43,12 @@ var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
 const KNOCKBACK_DURATION := 0.5
 
-var _animated_sprite: AnimatedSprite2D
-var _original_color: Color
-var _blink_tween: Tween
+
+func _on_ready() -> void:
+	_health = ARCHER_HEALTH
 
 
-
-func _ready() -> void:
-	_animated_sprite = $AnimatedSprite2D
-	_original_color = _animated_sprite.modulate
-
-
-func _physics_process(delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
-
+func _on_physics_process(delta: float) -> void:
 	if _shoot_timer > 0.0:
 		_shoot_timer -= delta
 
@@ -84,6 +77,16 @@ func _physics_process(delta: float) -> void:
 	_update_sprite_direction()
 	if velocity.length_squared() > 0.0001:
 		move_and_slide()
+
+
+func _on_damage(_damage: int, attacker_position: Vector2, knockback_force: float) -> void:
+	if attacker_position != Vector2.ZERO:
+		var dir := (global_position - attacker_position).normalized()
+		_knockback_velocity = dir * knockback_force
+	_knockback_timer = KNOCKBACK_DURATION
+	_state = State.KNOCKBACK
+	_has_shot = false
+	_shoot_end_timer = 0.0
 
 
 func _state_idle() -> void:
@@ -376,35 +379,3 @@ func _on_danger_area_body_exited(body: Node2D) -> void:
 		_player = null
 		_state = State.IDLE
 		velocity = Vector2.ZERO
-
-
-func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
-	_health -= damage
-
-	if _animated_sprite:
-		_animate_archer_blink()
-
-	if attacker_position != Vector2.ZERO:
-		var dir := (global_position - attacker_position).normalized()
-		_knockback_velocity = dir * knockback_force
-	_knockback_timer = KNOCKBACK_DURATION
-	_state = State.KNOCKBACK
-	_has_shot = false
-	_shoot_end_timer = 0.0
-
-	if _health <= 0:
-		queue_free()
-
-
-func _animate_archer_blink() -> void:
-	if _blink_tween:
-		_blink_tween.kill()
-
-	_animated_sprite.self_modulate = _original_color
-	
-	_blink_tween = create_tween()
-	_blink_tween.set_parallel(false)
-	
-	for i in range(4):
-		_blink_tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
-		_blink_tween.tween_property(_animated_sprite, "self_modulate", _original_color, 0.08)
