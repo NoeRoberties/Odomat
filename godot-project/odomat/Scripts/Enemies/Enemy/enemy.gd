@@ -22,8 +22,6 @@ func _on_ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
 	_on_physics_process(delta)
 
 

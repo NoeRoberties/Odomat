@@ -29,7 +29,6 @@ var _master_bus_index: int = 0
 
 
 func _ready() -> void:
-	GameState.current_state = GameState.GameState.MENU
 	_master_bus_index = AudioServer.get_bus_index("Master")
 	_populate_resolutions()
 	_select_current_resolution()
@@ -98,7 +97,6 @@ func _apply_resolution(resolution: Vector2i) -> void:
 
 
 func _on_start_game_button_pressed() -> void:
-	GameState.current_state = GameState.GameState.PLAYING
 	get_tree().change_scene_to_file(GAMEPLAY_SCENE_PATH)
 
 

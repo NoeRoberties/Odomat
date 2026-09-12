@@ -5,7 +5,8 @@ const MAIN_MENU_SCENE_PATH := "res://Scenes/UI/MainMenu/MainMenu.tscn"
 
 
 func _ready() -> void:
-	GameState.current_state = GameState.GameState.MENU
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().paused = true
 	_escape_game_button.grab_focus()
 
 
@@ -16,10 +17,9 @@ func _input(event: InputEvent) -> void:
 
 
 func _close_menu() -> void:
-	GameState.current_state = GameState.GameState.PLAYING
+	get_tree().paused = false
 	queue_free()
 
 
 func _on_escape_game_button_pressed() -> void:
-	GameState.current_state = GameState.GameState.MENU
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
