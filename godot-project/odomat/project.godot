@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 ModulesInventory="*res://Scripts/Player/Modules/modules_inventory.gd"
-GameState="*uid://do8qee8ntl23l"
 
 [display]
 

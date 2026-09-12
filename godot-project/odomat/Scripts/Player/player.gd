@@ -49,8 +49,6 @@ func _exit_tree() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
 	if event.is_action_pressed("escape_inventory"):
 		_open_in_game_menu()
 		return
@@ -72,7 +70,6 @@ func _open_in_game_menu() -> void:
 func _open_menu(menu_scene: PackedScene, menu_node_name: String) -> void:
 	if get_tree().root.get_node_or_null(menu_node_name) != null:
 		return
-	GameState.current_state = GameState.GameState.MENU
 	var menu := menu_scene.instantiate()
 	menu.name = menu_node_name
 	get_tree().root.add_child(menu)
