@@ -18,6 +18,7 @@ var shockwave_scene: PackedScene = preload("res://Scenes/Enemies/Worm/Shockwave.
 func _on_ready() -> void:
 	_health = WORM_HEALTH
 	$WaitTimer.start(MAX_WAIT_TIME)
+	$CollisionShape2D.disabled = true
 	visible = false
 
 
@@ -47,6 +48,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		_animated_sprite.play("confused")
 		$ConfusedTimer.start(CONFUSED_TIME)
 	elif _state == State.DIVING:
+		$CollisionShape2D.disabled = true
 		visible = false
 		_state = State.WAITING
 		$WaitTimer.start(randf_range(MIN_WAIT_TIME, MAX_WAIT_TIME))
@@ -65,6 +67,7 @@ func _on_wait_timer_timeout() -> void:
 		var offset := Vector2.from_angle(angle) * distance
 		global_position = _player.global_position + offset
 		_state = State.ARISING
+		$CollisionShape2D.disabled = false
 		visible = true
 		_animated_sprite.play("arise")
 

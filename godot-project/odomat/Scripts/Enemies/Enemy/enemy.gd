@@ -27,7 +27,6 @@ func _physics_process(delta: float) -> void:
 
 ## Override this function to add instructions to the _physics_process function of the Enemy base class 
 func _on_physics_process(_delta: float) -> void:
-	print("The wrong is called")
 	return
 
 
