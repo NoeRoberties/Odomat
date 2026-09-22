@@ -1,9 +1,9 @@
 extends Enemy
-class_name Archer
+class_name Scorpio
 
-const ARCHER_HEALTH: int = 15
+const SCORPIO_HEALTH: int = 15
 
-@export var arrow_scene: PackedScene = preload("res://Scenes/Enemies/Archer/Arrow.tscn")
+@export var dart_scene: PackedScene = preload("res://Scenes/Enemies/Scorpio/Dart.tscn")
 
 enum State {
 	IDLE,
@@ -45,7 +45,7 @@ const KNOCKBACK_DURATION := 0.5
 
 
 func _on_ready() -> void:
-	_health = ARCHER_HEALTH
+	_health = SCORPIO_HEALTH
 
 
 func _on_physics_process(delta: float) -> void:
@@ -66,7 +66,7 @@ func _on_physics_process(delta: float) -> void:
 			_state_prepare_shot(delta)
 
 		State.SHOOT:
-			_state_shoot(delta)
+			_state_shoot()
 
 		State.DASH_FLEE:
 			_state_dash_flee(delta)
@@ -160,8 +160,7 @@ func _state_dash_approach(delta: float) -> void:
 
 func _state_prepare_shot(delta: float) -> void:
 	velocity = Vector2.ZERO
-	if _animated_sprite.animation != "idle":
-		_animated_sprite.play("idle")
+	_animated_sprite.play("prepare_shoot")
 
 	if _player == null:
 		_state = State.IDLE
@@ -176,10 +175,10 @@ func _state_prepare_shot(delta: float) -> void:
 		_state = State.SHOOT
 
 
-func _state_shoot(delta: float) -> void:
+func _state_shoot() -> void:
 	velocity = Vector2.ZERO
 
-	if _player == null or not arrow_scene:
+	if _player == null or not dart_scene:
 		_state = State.IDLE
 		return
 
@@ -188,15 +187,13 @@ func _state_shoot(delta: float) -> void:
 		_shoot_timer = _shoot_cooldown
 		_shoot()
 
-	if _animated_sprite.animation != "shoot":
-		_animated_sprite.play("shoot")
+	_animated_sprite.play("shoot")
+	await _animated_sprite.animation_finished
 
-	_shoot_end_timer -= delta
-	if _shoot_end_timer <= 0.0:
-		if _in_danger_zone and _player != null:
-			_start_dash_flee()
-		else:
-			_state = State.IDLE
+	if _in_danger_zone and _player != null:
+		_start_dash_flee()
+	else:
+		_state = State.IDLE
 
 
 func _state_dash_flee(delta: float) -> void:
@@ -280,26 +277,11 @@ func _get_flee_direction() -> Vector2:
 
 
 func _shoot() -> void:
-	if not arrow_scene or not _player:
+	if not dart_scene or not _player:
 		return
 
 	var target_position = _player.global_position
 	_animated_sprite.play("shoot")
-
-	var frame_count: int = _animated_sprite.sprite_frames.get_frame_count("shoot")
-	var anim_speed: float = _animated_sprite.sprite_frames.get_animation_speed("shoot")
-	var shoot_duration: float = 0.5
-
-	if anim_speed > 0.0:
-		shoot_duration = float(frame_count) / anim_speed
-
-	_shoot_end_timer = shoot_duration
-
-	var wait_time: float = shoot_duration - 0.5
-	if wait_time < 0.0:
-		wait_time = 0.0
-
-	await get_tree().create_timer(wait_time).timeout
 
 	if _state != State.SHOOT or _player == null:
 		return
@@ -309,12 +291,12 @@ func _shoot() -> void:
 		offset.x = -offset.x
 
 	var shoot_pos = global_position + offset
-	var arrow = arrow_scene.instantiate()
-	arrow.pos = shoot_pos
-	arrow.dir = (target_position - shoot_pos).angle()
-	arrow.rota = arrow.dir
-	arrow.target = _player
-	get_tree().current_scene.add_child(arrow)
+	var dart = dart_scene.instantiate()
+	dart.pos = shoot_pos
+	dart.dir = (target_position - shoot_pos).angle()
+	dart.rota = dart.dir
+	dart.target = _player
+	get_tree().current_scene.add_child(dart)
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
