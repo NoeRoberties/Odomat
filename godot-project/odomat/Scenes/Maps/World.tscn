@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://brnw2i2klx3j6" path="res://Scenes/Player/Player.tscn" id="1_Player"]
 [ext_resource type="Script" uid="uid://cp1qgq66wl8xa" path="res://Scripts/Maps/world.gd" id="2_World"]
 [ext_resource type="PackedScene" uid="uid://dpt76ag0jeexs" path="res://Scenes/Enemies/Beetle/Beetle.tscn" id="3_7g83o"]
-[ext_resource type="PackedScene" uid="uid://cuyrth054w2hu" path="res://Scenes/Enemies/Archer/Archer.tscn" id="4_87k0f"]
+[ext_resource type="PackedScene" uid="uid://cuyrth054w2hu" path="res://Scenes/Enemies/Scorpio/Scorpio.tscn" id="4_87k0f"]
 [ext_resource type="PackedScene" uid="uid://bo26nh3e2i3b7" path="res://Scenes/Enemies/Worm/Worm.tscn" id="5_81t7q"]
 
 [node name="World" type="Node2D" unique_id=420205900]
@@ -12,7 +12,7 @@ script = ExtResource("2_World")
 
 [node name="Player" parent="." unique_id=979638911 instance=ExtResource("1_Player")]
 
-[node name="Archer" parent="." unique_id=1862442761 instance=ExtResource("4_87k0f")]
+[node name="Scorpio" parent="." unique_id=1862442761 instance=ExtResource("4_87k0f")]
 position = Vector2(-90, 109)
 
 [node name="Beetle" parent="." unique_id=1381557161 instance=ExtResource("3_7g83o")]
