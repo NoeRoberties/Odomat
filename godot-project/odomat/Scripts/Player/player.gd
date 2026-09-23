@@ -141,9 +141,9 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 		return
 	_hit_invulnerability = HIT_INVULNERABILITY_DURATION
 	_health -= damage
-	DamageNumbers.display_number(damage, global_position + Vector2(0, -25), Color.WHITE, true)
 	# Notify listeners (HUD)
 	emit_signal("health_changed", _health, max_health)
+
 
 	_play_damage_blink()
 	if attacker_position != Vector2.ZERO:

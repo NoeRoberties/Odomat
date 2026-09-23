@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6vtupf7mmlqn"]
+[gd_scene format=3 uid="uid://c6vtupf7mmlqn"]
 
 [ext_resource type="Script" uid="uid://dhth12bn5q8h" path="res://Scripts/UI/EquipmentMenu/module_list_element.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dn7adb51gj5l8" path="res://Assets/HUD_UI/Equipment_Menu_assets/equipment_menu_list_element.png" id="2_bg_tex"]
