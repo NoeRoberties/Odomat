@@ -7,18 +7,22 @@ const WANDERING_DISTANCE: float = 200.0
 const ATTACK_SPEED_MULTIPLIER: float = 3.0
 const ATTACK_DAMAGE: int = 12
 const ATTACK_KNOCKBACK_FORCE: float = 260.0
+const KNOCKBACK_DEGRESION_FORCE: float = 200.0
+const KNOCKBACK_VELOCITY_TRESHOLD: float = 10.0
 
 @export var _speed: float = 75.0
 
 var _wandering_destination: Vector2
 var _attacking_destination: Vector2
 var _player: CharacterBody2D = null
+var _attack_timer: Timer = null
 
-enum State {ATTACKING, WANDERING, LOADING}
+enum State {ATTACKING, WANDERING, LOADING, KNOCKBACKED}
 
 var _state: State = State.WANDERING
 
 func _on_ready() -> void:
+	_attack_timer = %AttackLoadingTimer
 	_health = BEETLE_HEALTH
 	_choose_wandering_destination()
 
@@ -32,6 +36,11 @@ func _on_physics_process(_delta: float) -> void:
 		_animated_sprite.play("rush")
 		_animated_sprite.flip_h = velocity.x > 0
 		_attack()
+	if _state == State.KNOCKBACKED:
+		velocity = velocity.move_toward(Vector2.ZERO, KNOCKBACK_DEGRESION_FORCE * _delta)
+		move_and_slide()
+		if velocity.length() <= KNOCKBACK_VELOCITY_TRESHOLD:
+			_state = State.WANDERING
 
 
 func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float) -> void:
@@ -42,13 +51,18 @@ func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float)
 		else:
 			kb_dir = kb_dir.normalized()
 		velocity = kb_dir * knockback_force
+		_state = State.KNOCKBACKED
+		if _attack_timer != null:
+			_attack_timer.stop()
+		_animated_sprite.animation = "wandering"
 
 
 func _load_attack() -> void:
 	velocity = Vector2.ZERO
 	_state = State.LOADING
 	_animated_sprite.play("player_detected")
-	%AttackLoadingTimer.start()
+	if _attack_timer != null:
+		_attack_timer.start()
 
 
 func _attack() -> void:
@@ -57,7 +71,8 @@ func _attack() -> void:
 	if direction.length() > 3.0:
 		velocity = direction.normalized() * _speed * ATTACK_SPEED_MULTIPLIER
 	else:
-		_load_attack()
+		_state = State.WANDERING
+		return
 	move_and_slide()
 	_apply_contact_damage_to_player()
 
@@ -78,7 +93,12 @@ func _apply_contact_damage_to_player() -> void:
 		_load_attack()
 		break
 
+
 func _wander() -> void:
+	
+	if _player != null:
+		_load_attack()
+		
 	var direction: Vector2 = _wandering_destination - global_position
 	
 	if direction.length() > 5.0:
@@ -99,20 +119,19 @@ func _choose_wandering_destination() -> void:
 func _on_attack_loading_timer_timeout() -> void:
 	_state = State.ATTACKING
 	_attacking_destination = _player.global_position
-	%AttackLoadingTimer.stop()
+	if _attack_timer != null:
+		_attack_timer.stop()
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player = body
-		_load_attack()
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
-	if _health <= 0:
-		return
 	if body.is_in_group("player"):
 		_player = null
+		if _attack_timer != null:
+			_attack_timer.stop()
 		_state = State.WANDERING
-		%AttackLoadingTimer.stop()
 		_choose_wandering_destination()
