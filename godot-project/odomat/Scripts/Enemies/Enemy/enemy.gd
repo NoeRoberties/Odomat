@@ -3,10 +3,13 @@ extends CharacterBody2D
 
 const DEFAULT_HEALTH = 10.0
 
+const HEALTH_BAR_SCENE = preload("res://Scenes/HUD/EnemyHealthBar.tscn")
+
 var _health: int = DEFAULT_HEALTH
 var _animated_sprite: AnimatedSprite2D
 var _original_color: Color
 var _blink_tween: Tween
+var _health_bar: EnemyHealthBar
 
 func _ready() -> void:
 	_animated_sprite = get_node_or_null("AnimatedSprite2D")
@@ -14,6 +17,10 @@ func _ready() -> void:
 		queue_free()
 	_original_color = _animated_sprite.modulate
 	_on_ready()
+	_health_bar = HEALTH_BAR_SCENE.instantiate()
+	_health_bar.setMaxHP(_health)
+	_place_health_bar()
+	add_child(_health_bar)
 
 
 ## Override this function to add instructions to the _ready function of the Enemy base class
@@ -33,6 +40,7 @@ func _on_physics_process(_delta: float) -> void:
 ## Call this function to make the enemy loose health and apply a knockback
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	_health -= damage
+	_health_bar.update_health(_health)
 	
 	if _health <= 0:
 		queue_free()
@@ -48,6 +56,11 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 ## It is useful for knockback handling.
 func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float) -> void:
 	return
+
+
+## Overrite this function to choose health bar placement
+func _place_health_bar() -> void:
+	_health_bar.position = Vector2.ZERO
 
 
 ## Function to make the enemy sprite blink in red 

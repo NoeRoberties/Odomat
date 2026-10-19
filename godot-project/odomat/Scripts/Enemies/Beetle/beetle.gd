@@ -2,7 +2,7 @@ extends Enemy
 class_name Beetle
 
 const BEETLE_HEALTH: int = 10
-
+const HEALTH_BAR_POSITION: Vector2 = Vector2(-24.0, -44.0)
 const WANDERING_DISTANCE: float = 200.0
 const ATTACK_SPEED_MULTIPLIER: float = 3.0
 const ATTACK_DAMAGE: int = 12
@@ -55,6 +55,10 @@ func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float)
 		if _attack_timer != null:
 			_attack_timer.stop()
 		_animated_sprite.animation = "wandering"
+
+
+func _place_health_bar() -> void:
+	_health_bar.position = HEALTH_BAR_POSITION
 
 
 func _load_attack() -> void:

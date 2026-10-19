@@ -1,6 +1,8 @@
 extends Enemy
 class_name Worm
 
+
+const HEALTH_BAR_POSITION: Vector2 = Vector2(-24.0, -64.0)
 const WORM_HEALTH: int = 30
 const MIN_WAIT_TIME: float = 1.0
 const MAX_WAIT_TIME: float = 4.0
@@ -20,6 +22,10 @@ func _on_ready() -> void:
 	$WaitTimer.start(MAX_WAIT_TIME)
 	$CollisionShape2D.disabled = true
 	visible = false
+
+
+func _place_health_bar() -> void:
+	_health_bar.position = HEALTH_BAR_POSITION
 
 
 func _find_player() -> void:
