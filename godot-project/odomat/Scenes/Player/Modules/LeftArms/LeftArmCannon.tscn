@@ -5,6 +5,8 @@
 
 [sub_resource type="Resource" id="Resource_lnuxo"]
 script = ExtResource("2_ljj52")
+module_name = "Cannon"
+slot = 1
 metadata/_custom_type_script = "uid://dshkf1jvbt0hi"
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dm8c5"]
