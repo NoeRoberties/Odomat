@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://uph2rls0ayp8"]
+
+[ext_resource type="Script" uid="uid://bce4qbbgy0ctb" path="res://Scripts/Player/Modules/LeftArmModule/left_arm_cannon.gd" id="1_dm8c5"]
+[ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_ljj52"]
+
+[sub_resource type="Resource" id="Resource_lnuxo"]
+script = ExtResource("2_ljj52")
+module_name = "Cannon"
+slot = 1
+metadata/_custom_type_script = "uid://dshkf1jvbt0hi"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dm8c5"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}]
+
+[node name="LeftArmCannon" type="Node2D" unique_id=1214912606]
+script = ExtResource("1_dm8c5")
+module_data = SubResource("Resource_lnuxo")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1498248716]
+sprite_frames = SubResource("SpriteFrames_dm8c5")
+animation = &"walk_left"
+
+[node name="Rect" type="ColorRect" parent="." unique_id=862061842]
+offset_top = -6.0
+offset_right = 36.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(1, 0.5568628, 0, 1)
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1803607626]
+position = Vector2(36, 0)
