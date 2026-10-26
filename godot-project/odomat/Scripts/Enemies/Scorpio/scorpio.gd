@@ -88,6 +88,7 @@ func _on_damage(_damage: int, attacker_position: Vector2, knockback_force: float
 	_state = State.KNOCKBACK
 	_has_shot = false
 	_shoot_end_timer = 0.0
+	_animated_sprite.play("hurt")
 
 
 func _place_health_bar() -> void:
