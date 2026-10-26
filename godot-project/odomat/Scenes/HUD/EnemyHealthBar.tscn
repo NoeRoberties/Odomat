@@ -1,15 +1,11 @@
 [gd_scene format=3 uid="uid://gnxkvlnrxdd7"]
 
+[ext_resource type="Texture2D" uid="uid://ujvaw823swrs" path="res://Assets/HUD/EnemyHealthBar/EnemyHealthBarOver.png" id="1_78f5e"]
+[ext_resource type="Texture2D" uid="uid://bxjyiorqwhvif" path="res://Assets/HUD/EnemyHealthBar/EnemyHealthBarProgress.png" id="2_1kyi4"]
 [ext_resource type="Script" uid="uid://dw5pfsrs2ae5u" path="res://Scripts/HUD/enemy_health_bar.gd" id="3_78f5e"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kv7hf"]
-load_path = "res://.godot/imported/EnemyHealthBarOver.png-78e902572c9dcf8a7642bd72d6a8ef8d.ctex"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qspp0"]
-load_path = "res://.godot/imported/EnemyHealthBarProgress.png-02a548a5ee03c4e8894a20fbcb62afb6.ctex"
 
 [node name="EnemyHealthBar" type="TextureProgressBar" unique_id=331889640]
 value = 100.0
-texture_over = SubResource("CompressedTexture2D_kv7hf")
-texture_progress = SubResource("CompressedTexture2D_qspp0")
+texture_over = ExtResource("1_78f5e")
+texture_progress = ExtResource("2_1kyi4")
 script = ExtResource("3_78f5e")
