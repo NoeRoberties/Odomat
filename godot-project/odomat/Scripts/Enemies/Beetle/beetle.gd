@@ -54,7 +54,7 @@ func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float)
 		_state = State.KNOCKBACKED
 		if _attack_timer != null:
 			_attack_timer.stop()
-		_animated_sprite.animation = "wandering"
+		_animated_sprite.animation = "hurt"
 
 
 func _place_health_bar() -> void:
