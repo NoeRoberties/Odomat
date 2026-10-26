@@ -22,6 +22,7 @@ func _on_ready() -> void:
 	$WaitTimer.start(MAX_WAIT_TIME)
 	$CollisionShape2D.disabled = true
 	visible = false
+	_gain_immunity()
 
 
 func _place_health_bar() -> void:
@@ -51,6 +52,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		_animated_sprite.play("getting_up")
 	elif _state == State.GETTING_UP:
 		_state = State.CONFUSED
+		_loose_immunity()
 		_animated_sprite.play("confused")
 		$ConfusedTimer.start(CONFUSED_TIME)
 	elif _state == State.DIVING:
@@ -79,5 +81,6 @@ func _on_wait_timer_timeout() -> void:
 
 
 func _on_confused_timer_timeout() -> void:
+	_gain_immunity()
 	_state = State.DIVING
 	_animated_sprite.play("dive")

@@ -10,16 +10,18 @@ var _animated_sprite: AnimatedSprite2D
 var _original_color: Color
 var _blink_tween: Tween
 var _health_bar: EnemyHealthBar
+var _immune: bool
 
 func _ready() -> void:
+	_immune = false
 	_animated_sprite = get_node_or_null("AnimatedSprite2D")
 	if _animated_sprite == null:
 		queue_free()
 	_original_color = _animated_sprite.modulate
-	_on_ready()
 	_health_bar = HEALTH_BAR_SCENE.instantiate()
-	_health_bar.setMaxHP(_health)
 	_place_health_bar()
+	_on_ready()
+	_health_bar.setMaxHP(_health)
 	add_child(_health_bar)
 
 
@@ -37,8 +39,22 @@ func _on_physics_process(_delta: float) -> void:
 	return
 
 
+## Call this function to make the enemy instance untouchable
+func _gain_immunity() -> void:
+	_health_bar.hide()
+	_immune = true
+
+
+## Call this function to make the enemy instance touchable by player attacks
+func _loose_immunity() -> void:
+	_health_bar.show()
+	_immune = false
+
+
 ## Call this function to make the enemy loose health and apply a knockback
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
+	if _immune:
+		return
 	_health -= damage
 	_health_bar.update_health(_health)
 	
