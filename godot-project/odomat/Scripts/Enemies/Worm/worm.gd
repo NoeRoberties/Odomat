@@ -25,6 +25,12 @@ func _on_ready() -> void:
 	_gain_immunity()
 
 
+func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float) -> void:
+	_animated_sprite.play("hurt")
+	await _animated_sprite.animation_finished
+	_animated_sprite.play("confused")
+
+
 func _place_health_bar() -> void:
 	_health_bar.position = HEALTH_BAR_POSITION
 
