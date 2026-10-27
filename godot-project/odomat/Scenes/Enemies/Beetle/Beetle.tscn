@@ -9,6 +9,18 @@ radius = 14.035668
 [sub_resource type="CircleShape2D" id="CircleShape2D_7yyg5"]
 radius = 150.03
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_edmr7"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(0, 128, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2etyk"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(80, 128, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8ass"]
+atlas = ExtResource("2_edmr7")
+region = Rect2(160, 128, 80, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_h6ba7"]
 atlas = ExtResource("2_edmr7")
 region = Rect2(0, 64, 80, 64)
@@ -35,6 +47,20 @@ region = Rect2(160, 0, 80, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ygk7p"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_edmr7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2etyk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8ass")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_h6ba7")
@@ -88,8 +114,9 @@ process_callback = 0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1628199959]
 sprite_frames = SubResource("SpriteFrames_ygk7p")
-animation = &"player_detected"
-frame_progress = 0.011055296
+animation = &"hurt"
+frame = 2
+frame_progress = 1.0
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

@@ -1,6 +1,7 @@
 extends Enemy
 class_name Scorpio
 
+const HEALTH_BAR_POSITION: Vector2 = Vector2(0.0, 0.0)
 const SCORPIO_HEALTH: int = 15
 
 @export var dart_scene: PackedScene = preload("res://Scenes/Enemies/Scorpio/Dart.tscn")
@@ -87,6 +88,11 @@ func _on_damage(_damage: int, attacker_position: Vector2, knockback_force: float
 	_state = State.KNOCKBACK
 	_has_shot = false
 	_shoot_end_timer = 0.0
+	_animated_sprite.play("hurt")
+
+
+func _place_health_bar() -> void:
+	_health_bar.position = HEALTH_BAR_POSITION
 
 
 func _state_idle() -> void:
