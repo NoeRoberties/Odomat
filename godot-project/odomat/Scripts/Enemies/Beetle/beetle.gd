@@ -1,30 +1,36 @@
 extends Enemy
 class_name Beetle
 
+const BEETLE_SPEED: float = 75.0
 const BEETLE_HEALTH: int = 10
 const HEALTH_BAR_POSITION: Vector2 = Vector2(-24.0, -44.0)
-const WANDERING_DISTANCE: float = 200.0
-const ATTACK_SPEED_MULTIPLIER: float = 3.0
+const WANDERING_DISTANCE: float = 300.0
+const ATTACK_SPEED_MULTIPLIER: float = 10.0
 const ATTACK_DAMAGE: int = 12
 const ATTACK_KNOCKBACK_FORCE: float = 260.0
 const KNOCKBACK_DEGRESION_FORCE: float = 200.0
 const KNOCKBACK_VELOCITY_TRESHOLD: float = 10.0
+const DETECTION_AREA_RADIUS: float = 350.0
+const RECOVERING_TIME: float = 2.0
 
-@export var _speed: float = 75.0
+var _speed: float = BEETLE_SPEED
 
 var _wandering_destination: Vector2
 var _attacking_destination: Vector2
 var _player: CharacterBody2D = null
 var _attack_timer: Timer = null
+var _recover_timer: Timer = null
 
-enum State {ATTACKING, WANDERING, LOADING, KNOCKBACKED}
+enum State {ATTACKING, WANDERING, LOADING, KNOCKBACKED, RECOVERING}
 
 var _state: State = State.WANDERING
 
 func _on_ready() -> void:
 	_attack_timer = %AttackLoadingTimer
+	_recover_timer = %RecoveringTimer
 	_health = BEETLE_HEALTH
 	_choose_wandering_destination()
+	%DetectionCircle.shape.radius = DETECTION_AREA_RADIUS
 
 
 func _on_physics_process(_delta: float) -> void:
@@ -41,6 +47,9 @@ func _on_physics_process(_delta: float) -> void:
 		move_and_slide()
 		if velocity.length() <= KNOCKBACK_VELOCITY_TRESHOLD:
 			_state = State.WANDERING
+	if _state == State.RECOVERING:
+		_animated_sprite.play("recovering")
+	_handle_collision()
 
 
 func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float) -> void:
@@ -71,31 +80,26 @@ func _load_attack() -> void:
 
 func _attack() -> void:
 	var direction: Vector2 = _attacking_destination - global_position
-	
-	if direction.length() > 3.0:
-		velocity = direction.normalized() * _speed * ATTACK_SPEED_MULTIPLIER
+	var distance: float = direction.length()
+
+	if distance > 3.0:
+		var attack_speed = _speed * ATTACK_SPEED_MULTIPLIER
+
+		# Slow down when approaching the destination.
+		attack_speed = min(attack_speed, distance / get_physics_process_delta_time())
+
+		velocity = direction.normalized() * attack_speed
+		move_and_slide()
 	else:
-		_state = State.WANDERING
-		return
-	move_and_slide()
-	_apply_contact_damage_to_player()
+		_recover()
 
 
-func _apply_contact_damage_to_player() -> void:
-	for i in range(get_slide_collision_count()):
-		var collision := get_slide_collision(i)
-		var collider := collision.get_collider()
-		if not (collider is Node):
-			continue
-		if not (collider as Node).is_in_group("player"):
-			continue
-		if not collider.has_method("take_damage"):
-			continue
-
-		# Pass attacker position and force to allow target to compute knockback.
-		collider.take_damage(ATTACK_DAMAGE, global_position, ATTACK_KNOCKBACK_FORCE)
-		_load_attack()
-		break
+func _recover() -> void:
+	velocity = Vector2.ZERO
+	_state = State.RECOVERING
+	_animated_sprite.play("recovering")
+	if _recover_timer != null:
+		_recover_timer.start(RECOVERING_TIME)
 
 
 func _wander() -> void:
@@ -120,11 +124,32 @@ func _choose_wandering_destination() -> void:
 	_wandering_destination = global_position + offset_vector
 
 
+func _handle_collision() -> void:
+	for i in range(get_slide_collision_count()):
+		var collision := get_slide_collision(i)
+		var collider := collision.get_collider()
+		if _state == State.ATTACKING and (collider as Node).is_in_group("player") and collider.has_method("take_damage"):
+			collider.take_damage(ATTACK_DAMAGE, global_position, ATTACK_KNOCKBACK_FORCE)
+			_recover()
+			break
+		_choose_wandering_destination()
+
+
 func _on_attack_loading_timer_timeout() -> void:
 	_state = State.ATTACKING
 	_attacking_destination = _player.global_position
 	if _attack_timer != null:
 		_attack_timer.stop()
+
+
+func _on_recovering_timer_timeout() -> void:
+	if _player != null:
+		_load_attack()
+	else:
+		_choose_wandering_destination()
+		_state = State.WANDERING
+	if _attack_timer != null:
+		_recover_timer.stop()
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
