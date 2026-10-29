@@ -1,0 +1,249 @@
+[gd_scene format=3 uid="uid://duhyafo6xupe2"]
+
+[ext_resource type="Texture2D" uid="uid://dsw73d2puv3qe" path="res://Assets/Map/Lab_OldMan/Labo_vieuxfoue.png" id="1_6rheg"]
+[ext_resource type="Script" uid="uid://cxr3lx3m1i3f1" path="res://Scripts/Maps/old_man_lab.gd" id="1_416ka"]
+[ext_resource type="PackedScene" uid="uid://brnw2i2klx3j6" path="res://Scenes/Player/Player.tscn" id="2_ognfd"]
+[ext_resource type="PackedScene" uid="uid://dtqm6mc60fbp6" path="res://Scenes/NPCs/NPC.tscn" id="2_skcjh"]
+[ext_resource type="Texture2D" uid="uid://b8ir8edunkkf4" path="res://Assets/Old_man/OldMan.png" id="3_416ka"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_skcjh"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(0, 0, 625.6231, 682)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6rheg"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(703.4713, 294.39398, 490.22266, 300.34772)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ognfd"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(1238.5735, 342.72583, 276.18176, 169.16132)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_416ka"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(1545.0992, 411.74384, 103.305786, 78.51242)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54uly"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(1732.5591, 367.85962, 115.70264, 127.272766)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rf2br"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(2008.0002, 350.00006, 100, 172.00006)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qv2dn"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(2203.6028, 441.49997, 274.00024, 66.00003)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mos8o"]
+atlas = ExtResource("3_416ka")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6p02m"]
+atlas = ExtResource("3_416ka")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc60t"]
+atlas = ExtResource("3_416ka")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ibjqp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mos8o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6p02m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jc60t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwkfi"]
+atlas = ExtResource("1_6rheg")
+region = Rect2(2203.6028, 386.49994, 274.00024, 55.00003)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6rheg"]
+size = Vector2(524, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_416ka"]
+size = Vector2(552.94183, 111.99727)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_54uly"]
+size = Vector2(552.94183, 92.68799)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ognfd"]
+size = Vector2(552.94183, 101)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_skcjh"]
+size = Vector2(552.94183, 71.24556)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rf2br"]
+size = Vector2(294.7585, 101)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qv2dn"]
+size = Vector2(207.88951, 101)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fwkfi"]
+size = Vector2(63.8833, 257.51108)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mos8o"]
+size = Vector2(42.394783, 27.041039)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6p02m"]
+size = Vector2(174.68716, 67.10795)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jc60t"]
+size = Vector2(308, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ibjqp"]
+size = Vector2(76.37453, 21.220276)
+
+[node name="OldManLab" type="Node2D" unique_id=1603672143]
+script = ExtResource("1_416ka")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=439222132]
+offset_left = -1006.0
+offset_top = -481.0
+offset_right = 2703.0
+offset_bottom = 1644.0
+color = Color(0, 0, 0, 1)
+
+[node name="RoomBackground" type="Sprite2D" parent="." unique_id=1933265874]
+position = Vector2(797, 460.00003)
+scale = Vector2(1.4912001, 1.4941349)
+texture = SubResource("AtlasTexture_skcjh")
+
+[node name="Carpet" type="Sprite2D" parent="." unique_id=585750613]
+position = Vector2(817, 618)
+scale = Vector2(1.4, 1.405)
+texture = SubResource("AtlasTexture_6rheg")
+
+[node name="Workbench" type="Sprite2D" parent="." unique_id=613467261]
+position = Vector2(684, 366)
+scale = Vector2(1.2, 1.209)
+texture = SubResource("AtlasTexture_ognfd")
+
+[node name="Table" type="Sprite2D" parent="." unique_id=736137352]
+position = Vector2(880, 389)
+scale = Vector2(1.2, 1.209)
+texture = SubResource("AtlasTexture_416ka")
+
+[node name="Shelf" type="Sprite2D" parent="." unique_id=1906193794]
+position = Vector2(1019, 389)
+scale = Vector2(1.44, 1.461681)
+texture = SubResource("AtlasTexture_54uly")
+
+[node name="Chimney" type="Sprite2D" parent="." unique_id=593593130]
+position = Vector2(1154, 420.99997)
+scale = Vector2(1.44, 1.461681)
+texture = SubResource("AtlasTexture_rf2br")
+
+[node name="OperationTable" type="Sprite2D" parent="." unique_id=755502244]
+position = Vector2(800, 553)
+scale = Vector2(1.44, 1.461681)
+texture = SubResource("AtlasTexture_qv2dn")
+
+[node name="NPC" parent="." unique_id=714362369 instance=ExtResource("2_skcjh")]
+position = Vector2(429, 558.00006)
+scale = Vector2(1.3, 1.3)
+_dialogues = Array[String](["Oh! You're finally awake!", "You were in very bad state when I picked you up.", "I gave you a little upgrade too. You have a new \"Bionic Sword\" module!", "You can check all your modules by pressing 'E' by the way.", "If you want to test it you can go outside. Right now there is plenty of creatures that are wandering close to here."])
+_sprite_frames = SubResource("SpriteFrames_ibjqp")
+_name = "Edgar"
+
+[node name="Player" parent="." unique_id=979638911 instance=ExtResource("2_ognfd")]
+position = Vector2(797, 461)
+scale = Vector2(1.15, 1.15)
+
+[node name="Lamps" type="Sprite2D" parent="." unique_id=1294631476]
+position = Vector2(800, 465)
+scale = Vector2(1.44, 1.461681)
+texture = SubResource("AtlasTexture_fwkfi")
+
+[node name="Collisions" type="StaticBody2D" parent="." unique_id=250653711]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions" unique_id=841269051]
+position = Vector2(831, 325)
+shape = SubResource("RectangleShape2D_6rheg")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions" unique_id=1564592402]
+position = Vector2(1176.2147, 420.741)
+rotation = 0.5311826
+shape = SubResource("RectangleShape2D_416ka")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Collisions" unique_id=212088657]
+position = Vector2(1303.1515, 613.19446)
+rotation = 1.6175964
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_54uly")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Collisions" unique_id=1184959254]
+position = Vector2(1142.0001, 836.00006)
+rotation = 2.4261892
+shape = SubResource("RectangleShape2D_ognfd")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Collisions" unique_id=639490353]
+position = Vector2(829.5294, 902.1569)
+rotation = -0.003977619
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_ognfd")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Collisions" unique_id=1828963226]
+position = Vector2(386.00003, 776)
+rotation = 0.71100366
+shape = SubResource("RectangleShape2D_ognfd")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Collisions" unique_id=660770707]
+position = Vector2(314.62326, 494.17368)
+rotation = 1.8309121
+shape = SubResource("RectangleShape2D_skcjh")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Collisions" unique_id=573582903]
+position = Vector2(1005.99994, 873)
+rotation = 2.9030318
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_rf2br")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Collisions" unique_id=1243930165]
+position = Vector2(572.99994, 863.99994)
+rotation = 3.473275
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_rf2br")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Collisions" unique_id=436887851]
+position = Vector2(343.1377, 745.91064)
+rotation = 1.1652031
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_qv2dn")
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="Collisions" unique_id=173786950]
+position = Vector2(471.61896, 342.30988)
+rotation = 1.2430412
+shape = SubResource("RectangleShape2D_fwkfi")
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="Collisions" unique_id=373804625]
+position = Vector2(596.2902, 373.2187)
+rotation = 2.4860823
+shape = SubResource("RectangleShape2D_mos8o")
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Collisions" unique_id=515194429]
+position = Vector2(352, 448)
+rotation = -1.0919477
+shape = SubResource("RectangleShape2D_6p02m")
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Collisions" unique_id=794642258]
+position = Vector2(809, 526)
+shape = SubResource("RectangleShape2D_jc60t")
+
+[node name="Exit" type="Area2D" parent="." unique_id=1897958881]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit" unique_id=1632365824]
+position = Vector2(451.21948, 396.73666)
+rotation = -0.39228317
+shape = SubResource("RectangleShape2D_ibjqp")
+
+[connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]

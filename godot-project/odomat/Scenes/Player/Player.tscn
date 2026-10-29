@@ -6,7 +6,7 @@
 size = Vector2(63, 52)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kyqiw"]
-size = Vector2(58.5, 44.5)
+size = Vector2(58.5, 65.25)
 
 [node name="Player" type="CharacterBody2D" unique_id=979638911 groups=["player"]]
 collision_layer = 3
@@ -25,8 +25,7 @@ shape = SubResource("RectangleShape2D_rpqav")
 position = Vector2(5, 1)
 
 [node name="Collider" type="CollisionShape2D" parent="." unique_id=618857043]
-visible = false
-position = Vector2(0, -10)
+position = Vector2(0, 0.375)
 shape = SubResource("RectangleShape2D_kyqiw")
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
