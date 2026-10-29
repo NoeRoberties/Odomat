@@ -5,7 +5,7 @@ var rota: float
 var dir: float
 var target: Node = null
 
-var _speed = 1000.0
+var _speed = 1500.0
 var _lifetime = 3.0
 
 const DAMAGE: int = 10

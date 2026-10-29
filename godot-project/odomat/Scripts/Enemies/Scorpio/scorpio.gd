@@ -3,6 +3,12 @@ class_name Scorpio
 
 const HEALTH_BAR_POSITION: Vector2 = Vector2(0.0, 0.0)
 const SCORPIO_HEALTH: int = 15
+const KNOCKBACK_DURATION := 0.5
+const PREPARE_SHOT_DURATION: float = 0.8
+const DASH_SPEED: float = 320.0
+const SHOOT_DISTANCE: float = 350.0
+const SHOOT_COOLDOWN: float = 1.0
+const DASH_DURATION: float = 0.22
 
 @export var dart_scene: PackedScene = preload("res://Scenes/Enemies/Scorpio/Dart.tscn")
 
@@ -19,20 +25,15 @@ enum State {
 var _state: State = State.IDLE
 
 var _speed := 90.0
-var _shoot_distance := 250.0
 
 var _player: Node2D = null
 var _in_attack_zone := false
 var _in_danger_zone := false
 
-var _shoot_cooldown := 1.0
 var _shoot_timer := 0.0
 
-var _prepare_shot_duration := 1.3
 var _prepare_shot_timer := 0.0
 
-var _dash_speed := 320.0
-var _dash_duration := 0.22
 var _dash_timer := 0.0
 var _dash_direction := Vector2.ZERO
 
@@ -42,7 +43,6 @@ var _shoot_end_timer := 0.0
 
 var _knockback_velocity := Vector2.ZERO
 var _knockback_timer := 0.0
-const KNOCKBACK_DURATION := 0.5
 
 
 func _on_ready() -> void:
@@ -109,7 +109,7 @@ func _state_idle() -> void:
 
 	if _in_attack_zone:
 		var dist = global_position.distance_to(_player.global_position)
-		if dist > _shoot_distance:
+		if dist > SHOOT_DISTANCE:
 			_start_dash_approach()
 		elif _shoot_timer <= 0.0:
 			_start_prepare_shot()
@@ -127,7 +127,7 @@ func _state_approach() -> void:
 
 	var dist = global_position.distance_to(_player.global_position)
 
-	if dist <= _shoot_distance:
+	if dist <= SHOOT_DISTANCE:
 		velocity = Vector2.ZERO
 		if _shoot_timer <= 0.0:
 			_start_prepare_shot()
@@ -143,7 +143,7 @@ func _state_approach() -> void:
 
 func _state_dash_approach(delta: float) -> void:
 	_dash_timer -= delta
-	velocity = _dash_direction * _dash_speed
+	velocity = _dash_direction * DASH_SPEED
 	if _animated_sprite.animation != "walk":
 		_animated_sprite.play("walk")
 
@@ -158,7 +158,7 @@ func _state_dash_approach(delta: float) -> void:
 			return
 
 		var dist = global_position.distance_to(_player.global_position)
-		if dist <= _shoot_distance and _shoot_timer <= 0.0:
+		if dist <= SHOOT_DISTANCE and _shoot_timer <= 0.0:
 			_start_prepare_shot()
 		else:
 			_state = State.APPROACH
@@ -167,15 +167,11 @@ func _state_dash_approach(delta: float) -> void:
 func _state_prepare_shot(delta: float) -> void:
 	velocity = Vector2.ZERO
 	_animated_sprite.play("prepare_shoot")
-
+	
 	if _player == null:
 		_state = State.IDLE
 		return
-
-	if _in_danger_zone:
-		_start_dash_flee()
-		return
-
+	
 	_prepare_shot_timer -= delta
 	if _prepare_shot_timer <= 0.0:
 		_state = State.SHOOT
@@ -190,7 +186,7 @@ func _state_shoot() -> void:
 
 	if not _has_shot:
 		_has_shot = true
-		_shoot_timer = _shoot_cooldown
+		_shoot_timer = SHOOT_COOLDOWN
 		_shoot()
 
 	_animated_sprite.play("shoot")
@@ -204,7 +200,7 @@ func _state_shoot() -> void:
 
 func _state_dash_flee(delta: float) -> void:
 	_dash_timer -= delta
-	velocity = _dash_direction * _dash_speed
+	velocity = _dash_direction * DASH_SPEED
 	if _animated_sprite.animation != "walk":
 		_animated_sprite.play("walk")
 
@@ -239,14 +235,14 @@ func _state_knockback(delta: float) -> void:
 		else:
 			_state = State.IDLE
 
-		_shoot_timer = _shoot_cooldown
+		_shoot_timer = SHOOT_COOLDOWN
 
 
 func _start_dash_approach() -> void:
 	if _player == null:
 		return
 	_dash_direction = (_player.global_position - global_position).normalized()
-	_dash_timer = _dash_duration
+	_dash_timer = DASH_DURATION
 	_state = State.DASH_APPROACH
 
 
@@ -254,12 +250,12 @@ func _start_dash_flee() -> void:
 	if _player == null:
 		return
 	_dash_direction = _get_flee_direction()
-	_dash_timer = _dash_duration
+	_dash_timer = DASH_DURATION
 	_state = State.DASH_FLEE
 
 
 func _start_prepare_shot() -> void:
-	_prepare_shot_timer = _prepare_shot_duration
+	_prepare_shot_timer = PREPARE_SHOT_DURATION
 	_has_shot = false
 	_shoot_end_timer = 0.0
 	_state = State.PREPARE_SHOT
@@ -333,7 +329,7 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 		return
 	_player = body
 	_in_attack_zone = true
-	_shoot_timer = _shoot_cooldown
+	_shoot_timer = SHOOT_COOLDOWN
 
 	if _in_danger_zone and _state != State.SHOOT and _state != State.KNOCKBACK:
 		_start_dash_flee()
@@ -355,7 +351,7 @@ func _on_danger_area_body_entered(body: Node2D) -> void:
 	_player = body
 	_in_danger_zone = true
 
-	if _state != State.SHOOT and _state != State.KNOCKBACK:
+	if _state != State.PREPARE_SHOT and _state != State.KNOCKBACK:
 		_start_dash_flee()
 
 
