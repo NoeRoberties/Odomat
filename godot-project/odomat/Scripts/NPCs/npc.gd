@@ -9,6 +9,8 @@ var _dialogue_box_scene: PackedScene = preload("res://Scenes/UI/Dialogues/Dialog
 
 func _ready() -> void:
 	%AnimatedSprite2D.sprite_frames = _sprite_frames
+	if %AnimatedSprite2D.sprite_frames.has_animation("default"):
+		%AnimatedSprite2D.play("default")
 
 
 func _launch_dialogue() -> void:
