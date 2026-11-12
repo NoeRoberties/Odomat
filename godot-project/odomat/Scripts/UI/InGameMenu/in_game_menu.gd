@@ -1,12 +1,13 @@
 extends CanvasLayer
 
 const MAIN_MENU_SCENE_PATH := "res://Scenes/UI/MainMenu/MainMenu.tscn"
-@onready var _escape_game_button: Button = %EscapeGameButton
+@onready var _escape_game_button: TextureButton = %EscapeGameButton
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().paused = true
+	_escape_game_button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	_escape_game_button.grab_focus()
 
 

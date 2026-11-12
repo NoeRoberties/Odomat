@@ -12,10 +12,11 @@ const BG_FRAME_RATE: float = 10.0 # 10 frames per second
 const BG_FRAME_PATH_TEMPLATE: String = "res://Assets/HUD_UI/Main_Menu_Anim/bg_main_menu_%04d.png"
 
 @onready var _texture_rect: TextureRect = $TextureRect
-@onready var _start_button: Button = %StartGameButton
-@onready var _settings_button: Button = %SettingsButton
-@onready var _quit_button: Button = %QuitButton
-@onready var _back_button: Button = %BackButton
+@onready var _odomat_logo: TextureRect = %OdomatLogo
+@onready var _start_button: TextureButton = %StartGameButton
+@onready var _settings_button: TextureButton = %SettingsButton
+@onready var _quit_button: TextureButton = %QuitButton
+@onready var _back_button: TextureButton = %BackButton
 @onready var _resolution_selector: OptionButton = %ResolutionSelector
 @onready var _apply_button: Button = %ApplyResolutionButton
 @onready var _volume_slider: HSlider = %VolumeSlider
@@ -37,6 +38,7 @@ var _bg_frame_index: int = 0
 const BASE_VIEWPORT_SIZE := Vector2(1600.0, 900.0)
 
 var _base_captured: bool = false
+var _base_logo_rect: Rect2
 var _base_main_vbox_rect: Rect2
 var _base_settings_vbox_rect: Rect2
 var _base_right_margin_main: float
@@ -70,7 +72,17 @@ func _ready() -> void:
 	
 	_main_vbox.show()
 	_settings_vbox.hide()
+	_fade_in_logo()
 	_start_button.grab_focus()
+
+
+func _fade_in_logo() -> void:
+	_odomat_logo.modulate.a = 0.0
+	var fade_tween := create_tween()
+	fade_tween.set_trans(Tween.TRANS_SINE)
+	fade_tween.set_ease(Tween.EASE_OUT)
+	fade_tween.tween_interval(0.15)
+	fade_tween.tween_property(_odomat_logo, "modulate:a", 1.0, 0.9)
 
 
 func _process(delta: float) -> void:
@@ -189,6 +201,7 @@ func _capture_base_editor_settings() -> void:
 		return
 	_base_captured = true
 	
+	_base_logo_rect = Rect2(_odomat_logo.position, _odomat_logo.size)
 	_base_main_vbox_rect = Rect2(_main_vbox.position, _main_vbox.size)
 	_base_settings_vbox_rect = Rect2(_settings_vbox.position, _settings_vbox.size)
 	
@@ -196,6 +209,7 @@ func _capture_base_editor_settings() -> void:
 	_base_right_margin_settings = BASE_VIEWPORT_SIZE.x - (_settings_vbox.position.x + _settings_vbox.size.x)
 	
 	var controls_to_track: Array[Control] = [
+		_odomat_logo,
 		_start_button, _settings_button, _quit_button, _back_button, _apply_button,
 		_resolution_selector, _volume_slider, _resolution_label, _volume_label, _volume_value_label
 	]
@@ -225,6 +239,8 @@ func _update_layouts() -> void:
 	
 	# If running at the design resolution (1600x900), preserve exact editor values
 	if is_equal_approx(scale_factor, 1.0):
+		_odomat_logo.position = _base_logo_rect.position
+		_odomat_logo.size = _base_logo_rect.size
 		_main_vbox.position = _base_main_vbox_rect.position
 		_main_vbox.size = _base_main_vbox_rect.size
 		_settings_vbox.position = _base_settings_vbox_rect.position
@@ -238,32 +254,22 @@ func _update_layouts() -> void:
 			c.add_theme_constant_override("separation", _base_separations[c])
 		return
 	
-	# When resolution changes, scale proportionally based on the editor design
-	var new_main_w := _base_main_vbox_rect.size.x * scale_factor
-	var new_main_h := _base_main_vbox_rect.size.y * scale_factor
-	var new_main_right := _base_right_margin_main * scale_factor
-	_main_vbox.size = Vector2(new_main_w, new_main_h)
-	_main_vbox.position = Vector2(
-		viewport_size.x - new_main_w - new_main_right,
-		(viewport_size.y - new_main_h) / 2.0
-	)
-	
-	var new_set_w := _base_settings_vbox_rect.size.x * scale_factor
-	var new_set_h := _base_settings_vbox_rect.size.y * scale_factor
-	var new_set_right := _base_right_margin_settings * scale_factor
-	_settings_vbox.size = Vector2(new_set_w, new_set_h)
-	_settings_vbox.position = Vector2(
-		viewport_size.x - new_set_w - new_set_right,
-		(viewport_size.y - new_set_h) / 2.0
-	)
+	# Reapply the editor composition as percentages of the design viewport.
+	var viewport_ratio := viewport_size / BASE_VIEWPORT_SIZE
+	_odomat_logo.position = _base_logo_rect.position * viewport_ratio
+	_odomat_logo.size = _base_logo_rect.size * viewport_ratio
+	_main_vbox.position = _base_main_vbox_rect.position * viewport_ratio
+	_main_vbox.size = _base_main_vbox_rect.size * viewport_ratio
+	_settings_vbox.position = _base_settings_vbox_rect.position * viewport_ratio
+	_settings_vbox.size = _base_settings_vbox_rect.size * viewport_ratio
 	
 	for ctrl: Control in _base_min_sizes:
-		ctrl.custom_minimum_size = _base_min_sizes[ctrl] * scale_factor
+		ctrl.custom_minimum_size = _base_min_sizes[ctrl] * viewport_ratio
 	
 	for ctrl: Control in _base_font_sizes:
 		var scaled_font := int(round(_base_font_sizes[ctrl] * scale_factor))
 		ctrl.add_theme_font_size_override("font_size", max(10, scaled_font))
 	
 	for c: BoxContainer in _base_separations:
-		var scaled_sep := int(round(_base_separations[c] * scale_factor))
+		var scaled_sep := int(round(_base_separations[c] * viewport_ratio.y))
 		c.add_theme_constant_override("separation", max(2, scaled_sep))

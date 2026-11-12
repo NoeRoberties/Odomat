@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dhth12bn5q8h" path="res://Scripts/UI/EquipmentMenu/module_list_element.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dn7adb51gj5l8" path="res://Assets/HUD_UI/Equipment_Menu_assets/equipment_menu_list_element.png" id="2_bg_tex"]
 [ext_resource type="Texture2D" uid="uid://c14adb51gj5l8" path="res://Assets/HUD_UI/Equipment_Menu_assets/equipment_menu_list_element_selected.png" id="3_selected_tex"]
+[ext_resource type="FontFile" path="res://Assets/Fonts/VCR_OSD_MONO_1.001.ttf" id="4_font"]
 
 [node name="ModuleListElement" type="TextureButton" unique_id=1279563992]
 custom_minimum_size = Vector2(0, 76)
@@ -45,17 +46,20 @@ alignment = 1
 
 [node name="NameLabel" type="Label" parent="Margin/Content/RightPart" unique_id=1174614229]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 11
 text = "Module Name"
 
 [node name="StatsLabel" type="Label" parent="Margin/Content/RightPart" unique_id=1446605489]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_colors/font_color = Color(0.698039, 0.698039, 0.698039, 1)
 theme_override_font_sizes/font_size = 9
 text = "Stats info"
 
 [node name="CheckIcon" type="Label" parent="Margin/Content" unique_id=1004483256]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_colors/font_color = Color(0.2, 0.8, 0.2, 1)
 theme_override_font_sizes/font_size = 12
 text = "✓"
