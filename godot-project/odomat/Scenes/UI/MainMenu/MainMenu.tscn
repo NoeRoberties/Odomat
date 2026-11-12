@@ -56,10 +56,16 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 130)
 layout_mode = 2
 size_flags_horizontal = 4
-texture_normal = ExtResource("3_gwdte")
-texture_pressed = ExtResource("3_gwdte")
-texture_hover = ExtResource("3_gwdte")
-ignore_texture_size = true
+
+[node name="NeonFrame" type="TextureRect" parent="MainVBoxContainer/StartGameButton" unique_id=1866394001]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_gwdte")
+expand_mode = 1
 stretch_mode = 0
 
 [node name="StartGameLabel" type="Label" parent="MainVBoxContainer/StartGameButton" unique_id=421046056]
@@ -80,10 +86,16 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 130)
 layout_mode = 2
 size_flags_horizontal = 4
-texture_normal = ExtResource("3_gwdte")
-texture_pressed = ExtResource("3_gwdte")
-texture_hover = ExtResource("3_gwdte")
-ignore_texture_size = true
+
+[node name="NeonFrame" type="TextureRect" parent="MainVBoxContainer/SettingsButton" unique_id=1866394002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_gwdte")
+expand_mode = 1
 stretch_mode = 0
 
 [node name="SettingsLabel" type="Label" parent="MainVBoxContainer/SettingsButton" unique_id=63884896]
@@ -104,10 +116,16 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 130)
 layout_mode = 2
 size_flags_horizontal = 4
-texture_normal = ExtResource("3_gwdte")
-texture_pressed = ExtResource("3_gwdte")
-texture_hover = ExtResource("3_gwdte")
-ignore_texture_size = true
+
+[node name="NeonFrame" type="TextureRect" parent="MainVBoxContainer/QuitButton" unique_id=1866394003]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_gwdte")
+expand_mode = 1
 stretch_mode = 0
 
 [node name="QuitLabel" type="Label" parent="MainVBoxContainer/QuitButton" unique_id=99108533]
@@ -180,23 +198,51 @@ theme_override_fonts/font = ExtResource("4_font")
 text = "100%"
 horizontal_alignment = 2
 
-[node name="ApplyResolutionButton" type="Button" parent="SettingVBoxContainer" unique_id=652907887]
+[node name="ApplyResolutionButton" type="TextureButton" parent="SettingVBoxContainer" unique_id=652907887]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(280, 90)
 layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="NeonFrame" type="TextureRect" parent="SettingVBoxContainer/ApplyResolutionButton" unique_id=1866394005]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_gwdte")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="ApplyResolutionLabel" type="Label" parent="SettingVBoxContainer/ApplyResolutionButton" unique_id=1127503207]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 17
 text = "Apply Resolution"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BackButton" type="TextureButton" parent="SettingVBoxContainer" unique_id=1062637178]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 130)
+custom_minimum_size = Vector2(220, 80)
 layout_mode = 2
 size_flags_horizontal = 4
-texture_normal = ExtResource("3_gwdte")
-texture_pressed = ExtResource("3_gwdte")
-texture_hover = ExtResource("3_gwdte")
-ignore_texture_size = true
+
+[node name="NeonFrame" type="TextureRect" parent="SettingVBoxContainer/BackButton" unique_id=1866394004]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_gwdte")
+expand_mode = 1
 stretch_mode = 0
 
 [node name="BackLabel" type="Label" parent="SettingVBoxContainer/BackButton" unique_id=1127503206]

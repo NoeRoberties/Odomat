@@ -18,7 +18,7 @@ const BG_FRAME_PATH_TEMPLATE: String = "res://Assets/HUD_UI/Main_Menu_Anim/bg_ma
 @onready var _quit_button: TextureButton = %QuitButton
 @onready var _back_button: TextureButton = %BackButton
 @onready var _resolution_selector: OptionButton = %ResolutionSelector
-@onready var _apply_button: Button = %ApplyResolutionButton
+@onready var _apply_button: TextureButton = %ApplyResolutionButton
 @onready var _volume_slider: HSlider = %VolumeSlider
 @onready var _volume_value_label: Label = %VolumeValueLabel
 @onready var _main_vbox: VBoxContainer = %MainVBoxContainer
@@ -46,6 +46,7 @@ var _base_right_margin_settings: float
 var _base_min_sizes: Dictionary = {}
 var _base_font_sizes: Dictionary = {}
 var _base_separations: Dictionary = {}
+var _hover_tweens: Dictionary = {}
 
 
 func _ready() -> void:
@@ -66,6 +67,9 @@ func _ready() -> void:
 	]
 	for node in focus_nodes:
 		node.add_theme_stylebox_override("focus", empty_stylebox)
+
+	for button: Control in [_start_button, _settings_button, _quit_button, _back_button, _apply_button]:
+		_setup_hover_animation(button)
 	
 	get_viewport().size_changed.connect(_update_layouts)
 	_update_layouts()
@@ -83,6 +87,32 @@ func _fade_in_logo() -> void:
 	fade_tween.set_ease(Tween.EASE_OUT)
 	fade_tween.tween_interval(0.15)
 	fade_tween.tween_property(_odomat_logo, "modulate:a", 1.0, 0.9)
+
+
+func _setup_hover_animation(button: Control) -> void:
+	button.mouse_entered.connect(_on_menu_button_mouse_entered.bind(button))
+	button.mouse_exited.connect(_on_menu_button_mouse_exited.bind(button))
+	button.pivot_offset = button.size * 0.5
+
+
+func _on_menu_button_mouse_entered(button: Control) -> void:
+	_tween_button_scale(button, 1.04)
+
+
+func _on_menu_button_mouse_exited(button: Control) -> void:
+	_tween_button_scale(button, 1.0)
+
+
+func _tween_button_scale(button: Control, target_scale: float) -> void:
+	var previous_tween: Tween = _hover_tweens.get(button)
+	if previous_tween != null:
+		previous_tween.kill()
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(button, "scale", Vector2.ONE * target_scale, 0.12)
+	_hover_tweens[button] = tween
 
 
 func _process(delta: float) -> void:
@@ -245,6 +275,7 @@ func _update_layouts() -> void:
 		_main_vbox.size = _base_main_vbox_rect.size
 		_settings_vbox.position = _base_settings_vbox_rect.position
 		_settings_vbox.size = _base_settings_vbox_rect.size
+		_update_button_pivots()
 		
 		for ctrl: Control in _base_min_sizes:
 			ctrl.custom_minimum_size = _base_min_sizes[ctrl]
@@ -262,6 +293,7 @@ func _update_layouts() -> void:
 	_main_vbox.size = _base_main_vbox_rect.size * viewport_ratio
 	_settings_vbox.position = _base_settings_vbox_rect.position * viewport_ratio
 	_settings_vbox.size = _base_settings_vbox_rect.size * viewport_ratio
+	_update_button_pivots()
 	
 	for ctrl: Control in _base_min_sizes:
 		ctrl.custom_minimum_size = _base_min_sizes[ctrl] * viewport_ratio
@@ -273,3 +305,8 @@ func _update_layouts() -> void:
 	for c: BoxContainer in _base_separations:
 		var scaled_sep := int(round(_base_separations[c] * viewport_ratio.y))
 		c.add_theme_constant_override("separation", max(2, scaled_sep))
+
+
+func _update_button_pivots() -> void:
+	for button: Control in [_start_button, _settings_button, _quit_button, _back_button, _apply_button]:
+		button.pivot_offset = button.size * 0.5

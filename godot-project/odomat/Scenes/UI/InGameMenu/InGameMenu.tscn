@@ -64,10 +64,17 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 130)
 layout_mode = 2
 size_flags_horizontal = 4
-texture_normal = ExtResource("2_button")
-texture_pressed = ExtResource("2_button")
-texture_hover = ExtResource("2_button")
-ignore_texture_size = true
+
+[node name="NeonFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=2274391001]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_button")
+expand_mode = 1
 stretch_mode = 0
 
 [node name="EscapeGameLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=1362153953]
