@@ -143,11 +143,15 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, knockba
 	_play_damage_blink()
 	if attacker_position != Vector2.ZERO:
 		var dir := (global_position - attacker_position).normalized()
-		_knockback_velocity = dir * knockback_force
-		_knockback_timer = KNOCKBACK_DURATION
-		is_knocked_back = true
+		apply_knockback(dir * knockback_force)
 	if _health <= 0:
 		queue_free()
+
+
+func apply_knockback(knockback_velocity: Vector2) -> void:
+	_knockback_velocity = knockback_velocity
+	_knockback_timer = KNOCKBACK_DURATION
+	is_knocked_back = true
 
 
 func update_animation(move_dir: Vector2) -> void:
