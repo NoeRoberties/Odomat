@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://uph2rls0ayp8"]
+
+[ext_resource type="Script" uid="uid://bce4qbbgy0ctb" path="res://Scripts/Player/Modules/LeftArmModule/left_arm_cannon.gd" id="1_dm8c5"]
+[ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_ljj52"]
+[ext_resource type="Texture2D" uid="uid://c8aqudvh3wld2" path="res://Assets/Player/LeftArm/left_arm_cannon.png" id="3_cannon"]
+
+[sub_resource type="Resource" id="Resource_lnuxo"]
+script = ExtResource("2_ljj52")
+module_name = "Cannon"
+slot = 1
+metadata/_custom_type_script = "uid://dshkf1jvbt0hi"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cannon"]
+atlas = ExtResource("3_cannon")
+region = Rect2(1090, 740, 1480, 910)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cannon"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cannon")
+}],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cannon")
+}],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}]
+
+[node name="LeftArmCannon" type="Node2D" unique_id=1214912606]
+script = ExtResource("1_dm8c5")
+module_data = SubResource("Resource_lnuxo")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1498248716]
+position = Vector2(18, 0)
+scale = Vector2(0.025, 0.025)
+sprite_frames = SubResource("SpriteFrames_cannon")
+animation = &"walk_left"
+flip_h = true
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1803607626]
+position = Vector2(36, -5)

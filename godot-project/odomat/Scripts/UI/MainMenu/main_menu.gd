@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-const GAMEPLAY_SCENE_PATH := "res://Scenes/Maps/World.tscn"
+const GAMEPLAY_SCENE_PATH := "res://Scenes/Maps/OldManLab.tscn"
 const SUPPORTED_RESOLUTIONS: Array[Vector2i] = [
 	Vector2i(1280, 720),
 	Vector2i(1366, 768),
