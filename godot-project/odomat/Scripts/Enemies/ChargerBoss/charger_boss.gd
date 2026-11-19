@@ -142,8 +142,6 @@ func _get_cycle_charge_direction() -> Vector2:
 
 
 func _physics_process(delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
 
 	if _current_phase == Phase.PHASE1_CHARGING:
 		_process_phase1(delta)

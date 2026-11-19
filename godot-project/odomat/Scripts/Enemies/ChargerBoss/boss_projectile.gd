@@ -14,8 +14,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
 
 	global_position += direction * SPEED * delta
 	_lifetime_timer += delta
