@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dv1xly4yw068s" path="res://Scripts/UI/EquipmentMenu/equipment_menu.gd" id="1_ujf5b"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/EquipmentMenu/MenuHeader.tscn" id="2_h5u56"]
-[ext_resource type="Texture2D" uid="uid://bjbsjw43wc5b8" path="res://Assets/HUD_UI/Equipment_Menu_assets/inventory_background.png" id="2_ujf5b"]
+[ext_resource type="Texture2D" uid="uid://bjbsjw43wc5b8" path="res://Assets/UI/Equipment_Menu_assets/inventory_background.png" id="2_ujf5b"]
 [ext_resource type="PackedScene" uid="uid://b8vtupf7mmlqn" path="res://Scenes/UI/EquipmentMenu/EquipmentSlot.tscn" id="4_slot"]
 [ext_resource type="PackedScene" uid="uid://dgrsaebgjx6wy" path="res://Scenes/UI/EquipmentMenu/ModuleSelectionPopup.tscn" id="5_jaose"]
 

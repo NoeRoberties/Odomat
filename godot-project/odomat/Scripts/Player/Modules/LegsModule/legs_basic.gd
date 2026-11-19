@@ -33,16 +33,11 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
 	if event.is_action_pressed("dash"):
 		_dash_requested = true
 
 
 func _physics_process(_delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
-
 	var player: Player = get_parent()
 	if player == null:
 		return
@@ -75,8 +70,6 @@ func _physics_process(_delta: float) -> void:
 
 
 func _process(_delta: float) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
 	_update_dash_ui()
 
 

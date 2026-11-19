@@ -1,8 +1,9 @@
-extends CharacterBody2D
+extends Enemy
 class_name Worm
 
-const BASE_HEALTH: float = 30.0
-const BASE_SPEED: float = 85.0
+
+const HEALTH_BAR_POSITION: Vector2 = Vector2(-24.0, -64.0)
+const WORM_HEALTH: int = 30
 const MIN_WAIT_TIME: float = 1.0
 const MAX_WAIT_TIME: float = 4.0
 const CONFUSED_TIME: float = 3.0
@@ -11,22 +12,27 @@ const DAMAGE: int = 25
 
 enum State {WAITING, ARISING, HITTING_GROUND, GETTING_UP, CONFUSED, DIVING}
 
-var _health: float = BASE_HEALTH
 var _state: State = State.WAITING
 var _player: Player = null
-var _speed: float = BASE_SPEED
 
 var shockwave_scene: PackedScene = preload("res://Scenes/Enemies/Worm/Shockwave.tscn")
 
-var _animated_sprite: AnimatedSprite2D
-var _original_color: Color
-var _blink_tween: Tween
-
-func _ready() -> void:
-	_animated_sprite = $AnimatedSprite2D
-	_original_color = _animated_sprite.modulate
+func _on_ready() -> void:
+	_health = WORM_HEALTH
 	$WaitTimer.start(MAX_WAIT_TIME)
+	$CollisionShape2D.disabled = true
 	visible = false
+	_gain_immunity()
+
+
+func _on_damage(damage: int, attacker_position: Vector2, knockback_force: float) -> void:
+	_animated_sprite.play("hurt")
+	await _animated_sprite.animation_finished
+	_animated_sprite.play("confused")
+
+
+func _place_health_bar() -> void:
+	_health_bar.position = HEALTH_BAR_POSITION
 
 
 func _find_player() -> void:
@@ -42,30 +48,6 @@ func _trigger_shockwave() -> void:
 	get_tree().current_scene.add_child(shockwave)
 
 
-func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO, _knockback_force: float = 0.0) -> void:
-	_health -= damage
-	
-	if _animated_sprite:
-		_animate_blink()
-	
-	if _health <= 0:
-		queue_free()
-
-
-func _animate_blink() -> void:
-	if _blink_tween:
-		_blink_tween.kill()
-
-	_animated_sprite.self_modulate = _original_color
-	
-	_blink_tween = create_tween()
-	_blink_tween.set_parallel(false)
-	
-	for i in range(4):
-		_blink_tween.tween_property(_animated_sprite, "self_modulate", Color.RED, 0.08)
-		_blink_tween.tween_property(_animated_sprite, "self_modulate", _original_color, 0.08)
-
-
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if _state == State.ARISING:
 		_state = State.HITTING_GROUND
@@ -76,9 +58,11 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		_animated_sprite.play("getting_up")
 	elif _state == State.GETTING_UP:
 		_state = State.CONFUSED
+		_loose_immunity()
 		_animated_sprite.play("confused")
 		$ConfusedTimer.start(CONFUSED_TIME)
 	elif _state == State.DIVING:
+		$CollisionShape2D.disabled = true
 		visible = false
 		_state = State.WAITING
 		$WaitTimer.start(randf_range(MIN_WAIT_TIME, MAX_WAIT_TIME))
@@ -97,10 +81,12 @@ func _on_wait_timer_timeout() -> void:
 		var offset := Vector2.from_angle(angle) * distance
 		global_position = _player.global_position + offset
 		_state = State.ARISING
+		$CollisionShape2D.disabled = false
 		visible = true
 		_animated_sprite.play("arise")
 
 
 func _on_confused_timer_timeout() -> void:
+	_gain_immunity()
 	_state = State.DIVING
 	_animated_sprite.play("dive")

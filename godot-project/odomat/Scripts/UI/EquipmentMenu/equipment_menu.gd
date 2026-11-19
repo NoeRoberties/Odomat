@@ -14,7 +14,8 @@ var _row_slot_lists : Array = []
 
 
 func _ready() -> void:
-	GameState.current_state = GameState.GameState.MENU
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().paused = true
 	_overlay.visible  = true
 	_center.visible   = true
 	_popup.visible    = false
@@ -84,7 +85,7 @@ func _activate_focused_slot() -> bool:
 	return false
 
 func _close() -> void:
-	GameState.current_state = GameState.GameState.PLAYING
+	get_tree().paused = false
 	queue_free()
 
 func _open_slot_popup(slot_key: String) -> void:

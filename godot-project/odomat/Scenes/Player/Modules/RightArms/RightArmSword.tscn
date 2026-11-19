@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://daebdyth45vwx" path="res://Scripts/Player/Modules/RightArmModule/right_arm_sword.gd" id="1_snbx1"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_612gy"]
-[ext_resource type="Texture2D" uid="uid://dim14t5awow5h" path="res://Assets/HUD_UI/Equipment_Menu_assets/basis_modules_assets/right_arm_basis_item_texture.png" id="3_item_tex"]
+[ext_resource type="Texture2D" uid="uid://dim14t5awow5h" path="res://Assets/UI/Equipment_Menu_assets/basis_modules_assets/right_arm_basis_item_texture.png" id="3_item_tex"]
 [ext_resource type="Texture2D" uid="uid://ccr3u33xarcoh" path="res://Assets/Player/RightArm/sword_right_arm.png" id="4_sword_arm"]
 
 [sub_resource type="Resource" id="Resource_data"]

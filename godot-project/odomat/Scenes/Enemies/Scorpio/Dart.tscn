@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dsdwy7jougufp"]
+
+[ext_resource type="Script" uid="uid://hb6xkgya83fa" path="res://Scripts/Enemies/Scorpio/dart.gd" id="2_acd0x"]
+[ext_resource type="Texture2D" uid="uid://gljjopdhw377" path="res://Assets/Enemy/Mobs/Scorpion/Scorpion_projectil.png" id="2_nb6sm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6a6ax"]
+size = Vector2(29.5, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o1b06"]
+atlas = ExtResource("2_nb6sm")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8tmhr"]
+atlas = ExtResource("2_nb6sm")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq43p"]
+atlas = ExtResource("2_nb6sm")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sxb7v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o1b06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8tmhr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mq43p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1321679581]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("2_acd0x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=956845001]
+position = Vector2(0.25, 0)
+shape = SubResource("RectangleShape2D_6a6ax")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=3627134]
+sprite_frames = SubResource("SpriteFrames_sxb7v")

@@ -40,9 +40,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _do_attack(player: CharacterBody2D) -> void:
-	if GameState.current_state != GameState.GameState.PLAYING:
-		return
-	
 	_attacking = true
 	if _last_move_dir.x <= 0.0:
 		_sprite.play("attack_left")
