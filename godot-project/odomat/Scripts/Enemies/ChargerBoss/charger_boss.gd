@@ -5,11 +5,13 @@ const MAX_HEALTH: float = 100.0
 const PHASE2_HP_THRESHOLD: float = 50.0
 
 # Phase 1 Parameters
-const CHARGE_SPEED: float = 850.0 # Faster high-speed charging
-const CHARGE_SELF_DAMAGE: float = 1.375 # Takes ~36 charges (twice as many!) to go from 100 to 50 HP
+const CHARGE_SPEED: float = 2000.0
+const CHARGE_SELF_DAMAGE: float = 1.375
 const CHARGE_CONTACT_DAMAGE: int = 15
 const CHARGE_KNOCKBACK_FORCE: float = 280.0
-const PIVOT_DURATION: float = 0.35 # Pause duration on wall impact for recovery & impact shake
+const TELEGRAPH_DURATION: float = 0.65
+const PIVOT_DURATION: float = 1.0
+const TRAIL_INTERVAL: float = 0.22
 
 
 # Phase 2 Parameters
@@ -18,9 +20,10 @@ const BULLETS_PER_SALVO: int = 12
 const SALVO_ROTATION_STEP: float = 0.35 # ~20 degrees rotation step per wave
 
 enum Phase { PHASE1_CHARGING, PHASE2_TURRET }
-enum State { CHARGE, PIVOT, TURRET_IDLE, TURRET_FIRING }
+enum State { TELEGRAPH, CHARGE, PIVOT, TURRET_IDLE, TURRET_FIRING }
 
 @export var projectile_scene: PackedScene = preload("res://Scenes/Enemies/ChargerBoss/BossProjectile.tscn")
+@export var charge_trail_scene: PackedScene = preload("res://Scenes/Enemies/Worm/Shockwave.tscn")
 @export var arena_room_size: Vector2 = Vector2(970.0, 670.0)
 
 var _current_phase: Phase = Phase.PHASE1_CHARGING
@@ -30,6 +33,10 @@ var _spawn_origin: Vector2 = Vector2.ZERO
 
 var _charge_direction: Vector2 = Vector2.RIGHT
 var _pivot_timer: float = 0.0
+var _telegraph_timer: float = 0.0
+var _trail_timer: float = 0.0
+
+var _charge_warning: Line2D
 
 var _salvo_timer: float = 0.0
 var _salvo_angle_offset: float = 0.0
@@ -55,8 +62,9 @@ func _ready() -> void:
 		_original_color = COLOR_PHASE1_CHARGE
 		_visual.modulate = COLOR_PHASE1_CHARGE
 	_setup_visual_arena_room()
-	_pick_random_charge_direction()
+	_setup_charge_warning()
 	_find_player()
+	_begin_telegraph()
 
 
 
@@ -98,6 +106,41 @@ func _find_player() -> void:
 		_player = players[0]
 
 
+func _setup_charge_warning() -> void:
+	_charge_warning = Line2D.new()
+	_charge_warning.name = "ChargeWarning"
+	_charge_warning.width = 5.0
+	_charge_warning.default_color = Color(1.0, 0.8, 0.1, 0.75)
+	_charge_warning.visible = false
+	add_child(_charge_warning)
+
+
+func _begin_telegraph() -> void:
+	_state = State.TELEGRAPH
+	_telegraph_timer = TELEGRAPH_DURATION
+	velocity = Vector2.ZERO
+	_charge_direction = _get_cycle_charge_direction()
+	_set_visual_color(COLOR_PHASE1_PIVOT)
+
+	if _charge_warning:
+		_charge_warning.visible = true
+		_charge_warning.clear_points()
+		_charge_warning.add_point(Vector2.ZERO)
+		_charge_warning.add_point(_charge_direction * 900.0)
+
+
+func _get_cycle_charge_direction() -> Vector2:
+	if _player == null:
+		_find_player()
+
+	if _player != null:
+		var toward_player := _player.global_position - global_position
+		if toward_player.length_squared() > 1.0:
+			return toward_player.normalized()
+
+	return Vector2.RIGHT
+
+
 func _physics_process(delta: float) -> void:
 	if GameState.current_state != GameState.GameState.PLAYING:
 		return
@@ -115,11 +158,26 @@ func _get_arena_rect() -> Rect2:
 
 func _process_phase1(delta: float) -> void:
 	match _state:
+		State.TELEGRAPH:
+			velocity = Vector2.ZERO
+			_telegraph_timer -= delta
+			if _charge_warning:
+				_charge_warning.modulate.a = 0.45 + 0.55 * (1.0 - clampf(_telegraph_timer / TELEGRAPH_DURATION, 0.0, 1.0))
+			if _telegraph_timer <= 0.0:
+				if _charge_warning:
+					_charge_warning.visible = false
+				_state = State.CHARGE
+				_trail_timer = 0.0
+
 		State.CHARGE:
 			velocity = _charge_direction * CHARGE_SPEED
 			_set_visual_color(COLOR_PHASE1_CHARGE)
 			move_and_slide()
 			_apply_phase1_contact_damage()
+			_trail_timer -= delta
+			if _trail_timer <= 0.0:
+				_spawn_charge_trail()
+				_trail_timer = TRAIL_INTERVAL
 
 			var arena_rect := _get_arena_rect()
 			var radius: float = 22.0
@@ -156,8 +214,7 @@ func _process_phase1(delta: float) -> void:
 			velocity = Vector2.ZERO
 			_pivot_timer -= delta
 			if _pivot_timer <= 0.0:
-				_pick_random_charge_direction()
-				_state = State.CHARGE
+				_begin_telegraph()
 
 
 func _complete_charge_leg(hit_normal: Vector2 = Vector2.ZERO) -> void:
@@ -192,21 +249,49 @@ func _play_wall_bounce_animation(hit_normal: Vector2) -> void:
 	# Smooth knockback position rebound off wall
 	_impact_tween.parallel().tween_property(self, "global_position", kb_target, 0.18).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
+	_fire_impact_projectiles(hit_normal)
+	_spawn_impact_shockwave()
 
 
+func _spawn_charge_trail() -> void:
+	if charge_trail_scene == null:
+		return
+	var trail: Area2D = charge_trail_scene.instantiate()
+	trail.global_position = global_position
+	trail.z_index = -1
+	trail.scale = Vector2(0.25, 0.25)
+	trail.set("grow_time", 0.12)
+	trail.set("stay_time", 0.12)
+	trail.set("fade_time", 0.20)
+	trail.set("damage", 8)
+	trail.set("knockback_force", 180.0)
+	get_tree().current_scene.add_child(trail)
 
-func _pick_random_charge_direction() -> void:
-	if _player == null:
-		_find_player()
 
-	if _player != null:
-		var dir := (_player.global_position - global_position)
-		if dir.length_squared() > 1.0:
-			_charge_direction = dir.normalized()
-			return
+func _fire_impact_projectiles(hit_normal: Vector2) -> void:
+	if projectile_scene == null:
+		return
+	var base_angle := hit_normal.angle()
+	for offset: float in [-0.45, 0.0, 0.45]:
+		var bullet = projectile_scene.instantiate() as BossProjectile
+		bullet.global_position = global_position
+		bullet.direction = Vector2.from_angle(base_angle + offset)
+		get_parent().add_child(bullet)
 
-	# Fallback if player not found
-	_charge_direction = Vector2.from_angle(randf() * TAU)
+
+func _spawn_impact_shockwave() -> void:
+	if charge_trail_scene == null:
+		return
+	var shockwave: Area2D = charge_trail_scene.instantiate()
+	shockwave.global_position = global_position
+	shockwave.z_index = -1
+	shockwave.scale = Vector2(0.65, 0.65)
+	shockwave.set("grow_time", 0.18)
+	shockwave.set("stay_time", 0.15)
+	shockwave.set("fade_time", 0.30)
+	shockwave.set("damage", 10)
+	shockwave.set("knockback_force", 220.0)
+	get_tree().current_scene.add_child(shockwave)
 
 
 
