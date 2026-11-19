@@ -7,14 +7,18 @@ const SUPPORTED_RESOLUTIONS: Array[Vector2i] = [
 	Vector2i(1600, 900),
 	Vector2i(1920, 1080),
 ]
+const BG_FRAME_COUNT: int = 57
+const BG_FRAME_RATE: float = 10.0 # 10 frames per second
+const BG_FRAME_PATH_TEMPLATE: String = "res://Assets/UI/Main_Menu_Anim/bg_main_menu_%04d.png"
 
 @onready var _texture_rect: TextureRect = $TextureRect
-@onready var _start_button: Button = %StartGameButton
-@onready var _settings_button: Button = %SettingsButton
-@onready var _quit_button: Button = %QuitButton
-@onready var _back_button: Button = %BackButton
+@onready var _odomat_logo: TextureRect = %OdomatLogo
+@onready var _start_button: DefaultMenuButton = $MainVBoxContainer/StartGameButton
+@onready var _settings_button: DefaultMenuButton = $MainVBoxContainer/SettingsButton
+@onready var _quit_button: DefaultMenuButton = $MainVBoxContainer/QuitButton
+@onready var _back_button: DefaultMenuButton = $SettingVBoxContainer/BackButton
 @onready var _resolution_selector: OptionButton = %ResolutionSelector
-@onready var _apply_button: Button = %ApplyResolutionButton
+@onready var _apply_button: DefaultMenuButton = $SettingVBoxContainer/ApplyResolutionButton
 @onready var _volume_slider: HSlider = %VolumeSlider
 @onready var _volume_value_label: Label = %VolumeValueLabel
 @onready var _main_vbox: VBoxContainer = %MainVBoxContainer
@@ -26,9 +30,25 @@ const SUPPORTED_RESOLUTIONS: Array[Vector2i] = [
 
 var _pending_resolution: Vector2i
 var _master_bus_index: int = 0
+var _bg_frames: Array[Texture2D] = []
+var _bg_anim_timer: float = 0.0
+var _bg_frame_index: int = 0
+
+
+const BASE_VIEWPORT_SIZE := Vector2(1600.0, 900.0)
+
+var _base_captured: bool = false
+var _base_logo_rect: Rect2
+var _base_main_vbox_rect: Rect2
+var _base_settings_vbox_rect: Rect2
+var _base_min_sizes: Dictionary = {}
+var _base_font_sizes: Dictionary = {}
+var _base_separations: Dictionary = {}
 
 
 func _ready() -> void:
+	_init_background_animation()
+	_capture_base_editor_settings()
 	_master_bus_index = AudioServer.get_bus_index("Master")
 	_populate_resolutions()
 	_select_current_resolution()
@@ -36,21 +56,55 @@ func _ready() -> void:
 	_update_apply_button_state()
 	_sync_volume_ui()
 	
-	# Disable the default white focus outlines on buttons and inputs
 	var empty_stylebox := StyleBoxEmpty.new()
-	var focus_nodes: Array[Control] = [
-		_start_button, _settings_button, _quit_button, _back_button, _apply_button,
-		_resolution_selector, _volume_slider
-	]
-	for node in focus_nodes:
-		node.add_theme_stylebox_override("focus", empty_stylebox)
+	_resolution_selector.add_theme_stylebox_override("focus", empty_stylebox)
+	_volume_slider.add_theme_stylebox_override("focus", empty_stylebox)
 	
 	get_viewport().size_changed.connect(_update_layouts)
-	_update_layouts()
+	call_deferred("_update_layouts")
 	
 	_main_vbox.show()
 	_settings_vbox.hide()
+	_fade_in_logo()
 	_start_button.grab_focus()
+
+
+func _fade_in_logo() -> void:
+	_odomat_logo.modulate.a = 0.0
+	var fade_tween := create_tween()
+	fade_tween.set_trans(Tween.TRANS_SINE)
+	fade_tween.set_ease(Tween.EASE_OUT)
+	fade_tween.tween_interval(0.40)
+	fade_tween.tween_property(_odomat_logo, "modulate:a", 1.0, 1.5)
+
+
+func _process(delta: float) -> void:
+	_update_background_animation(delta)
+
+
+func _init_background_animation() -> void:
+	_bg_frames.clear()
+	for i in range(1, BG_FRAME_COUNT + 1):
+		var frame_path := BG_FRAME_PATH_TEMPLATE % i
+		var tex := load(frame_path) as Texture2D
+		if tex != null:
+			_bg_frames.append(tex)
+	if not _bg_frames.is_empty():
+		_texture_rect.texture = _bg_frames[0]
+
+
+func _update_background_animation(delta: float) -> void:
+	if _bg_frames.is_empty():
+		return
+	
+	_bg_anim_timer += delta
+	var frame_duration := 1.0 / BG_FRAME_RATE
+	if _bg_anim_timer >= frame_duration:
+		var advance := int(_bg_anim_timer / frame_duration)
+		_bg_anim_timer = fmod(_bg_anim_timer, frame_duration)
+		_bg_frame_index = (_bg_frame_index + advance) % _bg_frames.size()
+		_texture_rect.texture = _bg_frames[_bg_frame_index]
+
 
 
 func _populate_resolutions() -> void:
@@ -97,6 +151,7 @@ func _apply_resolution(resolution: Vector2i) -> void:
 
 
 func _on_start_game_button_pressed() -> void:
+	_start_button.scale = Vector2(1, 1)
 	get_tree().change_scene_to_file(GAMEPLAY_SCENE_PATH)
 
 
@@ -108,6 +163,7 @@ func _on_resolution_selector_item_selected(index: int) -> void:
 
 
 func _on_apply_resolution_button_pressed() -> void:
+	_apply_button.scale = Vector2(1, 1)
 	_apply_resolution(_pending_resolution)
 	_update_apply_button_state()
 
@@ -120,84 +176,97 @@ func _on_volume_slider_value_changed(value: float) -> void:
 
 
 func _on_settings_button_pressed() -> void:
+	_settings_button.scale = Vector2(1, 1)
 	_main_vbox.hide()
 	_settings_vbox.show()
 	_back_button.grab_focus()
 
 
 func _on_quit_button_pressed() -> void:
+	_quit_button.scale = Vector2(1, 1)
 	get_tree().quit()
 
 
 func _on_back_button_pressed() -> void:
+	_back_button.scale = Vector2.ONE
 	_settings_vbox.hide()
 	_main_vbox.show()
 	_settings_button.grab_focus()
 
 
-func _update_layouts() -> void:
-	var viewport_size := get_viewport().get_visible_rect().size
+func _capture_base_editor_settings() -> void:
+	if _base_captured:
+		return
+	_base_captured = true
 	
-	# 1. Adapt background texture to cover the full viewport keeping aspect ratio
-	_texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	_texture_rect.position = Vector2.ZERO
-	_texture_rect.scale = Vector2.ONE
-	_texture_rect.size = viewport_size
+	# Preserve the editor-authored 1600×900 layout, including anchored offsets.
+	_base_logo_rect = Rect2(
+		Vector2(_odomat_logo.offset_left, _odomat_logo.offset_top),
+		Vector2(_odomat_logo.offset_right - _odomat_logo.offset_left,
+			_odomat_logo.offset_bottom - _odomat_logo.offset_top)
+	)
+	_base_main_vbox_rect = Rect2(
+		Vector2(BASE_VIEWPORT_SIZE.x + _main_vbox.offset_left, _main_vbox.offset_top),
+		Vector2(_main_vbox.offset_right - _main_vbox.offset_left,
+			BASE_VIEWPORT_SIZE.y - _main_vbox.offset_top - _main_vbox.offset_bottom)
+	)
+	_base_settings_vbox_rect = Rect2(
+		Vector2(BASE_VIEWPORT_SIZE.x + _settings_vbox.offset_left, _settings_vbox.offset_top),
+		Vector2(_settings_vbox.offset_right - _settings_vbox.offset_left,
+			BASE_VIEWPORT_SIZE.y - _settings_vbox.offset_top - _settings_vbox.offset_bottom)
+	)
 	
-	# 2. Position and size main containers based on the new viewport size
-	# Width: 35% of the viewport width, clamped to a reasonable range [400, 600]
-	var container_width := clampf(viewport_size.x * 0.35, 400.0, 600.0)
-	var container_height := viewport_size.y * 0.8
+	for ctrl: Control in find_children("*", "Control", true, false):
+		if ctrl != null:
+			if ctrl.custom_minimum_size != Vector2.ZERO:
+				_base_min_sizes[ctrl] = ctrl.custom_minimum_size
+			var fs: int = ctrl.get_theme_font_size("font_size")
+			if fs > 0:
+				_base_font_sizes[ctrl] = fs
 	
-	# Place the containers on the right with a margin of 50 pixels
-	var container_x := viewport_size.x - container_width - 50.0
-	var container_y := (viewport_size.y - container_height) / 2.0
-	
-	_main_vbox.position = Vector2(container_x, container_y)
-	_main_vbox.size = Vector2(container_width, container_height)
-	
-	_settings_vbox.position = Vector2(container_x, container_y)
-	_settings_vbox.size = Vector2(container_width, container_height)
-	
-	# 3. Scale UI elements to fit the viewport height
-	var button_height := clampf(viewport_size.y * 0.08, 45.0, 75.0)
-	var neon_button_width := button_height * 2.882
-	var input_height := clampf(viewport_size.y * 0.06, 35.0, 55.0)
-	var font_size := clampi(int(viewport_size.y * 0.022), 14, 22)
-	var container_separation := clampi(int(viewport_size.y * 0.02), 12, 24)
-	var row_separation := clampi(int(viewport_size.y * 0.015), 8, 16)
-	
-	# Override button sizes and horizontal alignment to match visible textures exactly
-	_start_button.custom_minimum_size = Vector2(neon_button_width, button_height)
-	_start_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	
-	_settings_button.custom_minimum_size = Vector2(neon_button_width, button_height)
-	_settings_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	
-	_quit_button.custom_minimum_size = Vector2(neon_button_width, button_height)
-	_quit_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	
-	_back_button.custom_minimum_size = Vector2(neon_button_width, button_height)
-	_back_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	
-	_apply_button.custom_minimum_size = Vector2(0, button_height)
-	_apply_button.size_flags_horizontal = Control.SIZE_FILL
-	
-	# Override input selector and slider sizes
-	_resolution_selector.custom_minimum_size = Vector2(0, input_height)
-	_volume_slider.custom_minimum_size = Vector2(0, input_height)
-	
-	# Override font sizes
-	var controls_to_scale: Array[Control] = [
-		_start_button, _settings_button, _quit_button, _back_button, _apply_button,
-		_resolution_label, _volume_label, _volume_value_label, _resolution_selector
+	var containers: Array[BoxContainer] = [
+		_main_vbox, _settings_vbox, _resolution_row, _volume_row
 	]
-	for control in controls_to_scale:
-		control.add_theme_font_size_override("font_size", font_size)
+	for c: BoxContainer in containers:
+		if c != null:
+			_base_separations[c] = c.get_theme_constant("separation")
+
+
+func _update_layouts() -> void:
+	_capture_base_editor_settings()
+	var viewport_size := get_viewport().get_visible_rect().size
+	var viewport_ratio := viewport_size / BASE_VIEWPORT_SIZE
+	var scale_factor := viewport_size.y / BASE_VIEWPORT_SIZE.y
 	
-	# Override separations
-	_main_vbox.add_theme_constant_override("separation", container_separation)
-	_settings_vbox.add_theme_constant_override("separation", container_separation)
-	_resolution_row.add_theme_constant_override("separation", row_separation)
-	_volume_row.add_theme_constant_override("separation", row_separation)
+	_texture_rect.size = viewport_size
+
+	_apply_scaled_rect(_odomat_logo, _base_logo_rect, viewport_ratio)
+	_apply_scaled_rect(_main_vbox, _base_main_vbox_rect, viewport_ratio)
+	_apply_scaled_rect(_settings_vbox, _base_settings_vbox_rect, viewport_ratio)
+	_update_button_pivots()
+	
+	for ctrl: Control in _base_min_sizes:
+		ctrl.custom_minimum_size = _base_min_sizes[ctrl] * viewport_ratio
+	
+	for ctrl: Control in _base_font_sizes:
+		var scaled_font := int(round(_base_font_sizes[ctrl] * scale_factor))
+		ctrl.add_theme_font_size_override("font_size", max(10, scaled_font))
+	
+	for c: BoxContainer in _base_separations:
+		var scaled_sep := int(round(_base_separations[c] * viewport_ratio.y))
+		c.add_theme_constant_override("separation", max(2, scaled_sep))
+
+
+func _apply_scaled_rect(control: Control, base_rect: Rect2, viewport_ratio: Vector2) -> void:
+	var base_center := base_rect.get_center()
+	var scaled_center := base_center * viewport_ratio
+	var scaled_size := base_rect.size * viewport_ratio
+	control.position = scaled_center - scaled_size * 0.5
+	control.size = scaled_size
+	control.pivot_offset = scaled_size * 0.5
+	control.scale = Vector2.ONE
+
+
+func _update_button_pivots() -> void:
+	for button: Control in [_start_button, _settings_button, _quit_button, _back_button, _apply_button]:
+		button.pivot_offset = button.size * 0.5

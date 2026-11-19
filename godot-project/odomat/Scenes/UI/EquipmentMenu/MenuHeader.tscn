@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" uid="uid://cl47guofiddrl" path="res://Scripts/UI/EquipmentMenu/menu_header.gd" id="1_header"]
+[ext_resource type="FontFile" path="res://Assets/Fonts/VCR_OSD_MONO_1.001.ttf" id="2_font"]
 
 [node name="MenuHeader" type="VBoxContainer"]
 layout_mode = 2
@@ -12,6 +13,7 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="HeaderBar"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
 text = "Title"
 
 [node name="HeaderSep" type="HSeparator" parent="."]
