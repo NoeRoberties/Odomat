@@ -10,17 +10,16 @@ const SUPPORTED_RESOLUTIONS: Array[Vector2i] = [
 
 @onready var _pause_panel: TextureRect = $CenterContainer/PanelSprite
 @onready var _settings_panel: TextureRect = %SettingsPanelSprite
-@onready var _escape_game_button: TextureButton = %EscapeGameButton
-@onready var _settings_button: TextureButton = %SettingsButton
+@onready var _escape_game_button: MenuButton = %EscapeGameButton
+@onready var _settings_button: MenuButton = %SettingsButton
 @onready var _resolution_selector: OptionButton = %ResolutionSelector
-@onready var _apply_button: TextureButton = %ApplyResolutionButton
-@onready var _back_button: TextureButton = %BackButton
+@onready var _apply_button: MenuButton = %ApplyResolutionButton
+@onready var _back_button: MenuButton = %BackButton
 @onready var _volume_slider: HSlider = %VolumeSlider
 @onready var _volume_value_label: Label = %VolumeValueLabel
 
 var _pending_resolution: Vector2i
 var _master_bus_index: int = 0
-var _hover_tweens: Dictionary = {}
 
 
 func _ready() -> void:
@@ -34,9 +33,6 @@ func _ready() -> void:
 	_update_apply_button_state()
 
 	var empty_stylebox := StyleBoxEmpty.new()
-	for button: Control in [_escape_game_button, _settings_button, _apply_button, _back_button]:
-		button.add_theme_stylebox_override("focus", empty_stylebox)
-		_setup_hover_animation(button)
 	_resolution_selector.add_theme_stylebox_override("focus", empty_stylebox)
 	_volume_slider.add_theme_stylebox_override("focus", empty_stylebox)
 
@@ -69,32 +65,6 @@ func _sync_volume_ui() -> void:
 
 func _update_apply_button_state() -> void:
 	_apply_button.disabled = (_pending_resolution == get_window().size)
-
-
-func _setup_hover_animation(button: Control) -> void:
-	button.pivot_offset = button.size * 0.5
-	button.mouse_entered.connect(_on_button_mouse_entered.bind(button))
-	button.mouse_exited.connect(_on_button_mouse_exited.bind(button))
-
-
-func _on_button_mouse_entered(button: Control) -> void:
-	_tween_button_scale(button, 1.04)
-
-
-func _on_button_mouse_exited(button: Control) -> void:
-	_tween_button_scale(button, 1.0)
-
-
-func _tween_button_scale(button: Control, target_scale: float) -> void:
-	var previous_tween: Tween = _hover_tweens.get(button)
-	if previous_tween != null:
-		previous_tween.kill()
-
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_SINE)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(button, "scale", Vector2.ONE * target_scale, 0.12)
-	_hover_tweens[button] = tween
 
 
 func _input(event: InputEvent) -> void:

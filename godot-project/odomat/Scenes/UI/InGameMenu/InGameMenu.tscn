@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cd5xf0ss1fp80" path="res://Assets/UI/menu_panel.png" id="3_panel"]
 [ext_resource type="FontFile" uid="uid://c4u13bcvldcjo" path="res://Assets/Fonts/VCR_OSD_MONO_1.001.ttf" id="4_font"]
 [ext_resource type="Texture2D" uid="uid://caftd348ak0jt" path="res://Assets/UI/slider_grabb.png" id="5_grabber"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/Common/MenuButton.tscn" id="6_menu_button"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
 bg_color = Color(0, 0, 0, 0.55)
@@ -94,66 +95,14 @@ theme_override_fonts/font = ExtResource("4_font")
 text = "Pause Menu"
 horizontal_alignment = 1
 
-[node name="EscapeGameButton" type="TextureButton" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" unique_id=1527013714]
-unique_name_in_owner = true
+[node name="EscapeGameButton" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" instance=ExtResource("6_menu_button") unique_name_in_owner=true]
 custom_minimum_size = Vector2(220, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="NeonFrame" type="TextureRect" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=-2020576295]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("2_button")
-expand_mode = 1
-
-[node name="EscapeGameLabel" type="Label" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=1362153953]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 21
-text = "Escape Game"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="SettingsButton" type="TextureButton" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" unique_id=1527013715]
-unique_name_in_owner = true
+button_text = "Escape Game"
+font_size = 21
+[node name="SettingsButton" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" instance=ExtResource("6_menu_button") unique_name_in_owner=true]
 custom_minimum_size = Vector2(220, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="NeonFrame" type="TextureRect" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton" unique_id=-2020576294]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("2_button")
-expand_mode = 1
-
-[node name="SettingsLabel" type="Label" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton" unique_id=1362153954]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 21
-text = "Settings"
-horizontal_alignment = 1
-vertical_alignment = 1
-
+button_text = "Settings"
+font_size = 21
 [node name="Hint" type="Label" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" unique_id=2000859198]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_font")
@@ -238,69 +187,17 @@ theme_override_fonts/font = ExtResource("4_font")
 text = "100%"
 horizontal_alignment = 2
 
-[node name="ApplyResolutionButton" type="TextureButton" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" unique_id=652907888]
-unique_name_in_owner = true
+[node name="ApplyResolutionButton" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" instance=ExtResource("6_menu_button") unique_name_in_owner=true]
 custom_minimum_size = Vector2(280, 90)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="NeonFrame" type="TextureRect" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton" unique_id=1866394006]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("2_button")
-expand_mode = 1
-
-[node name="ApplyResolutionLabel" type="Label" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton" unique_id=1127503208]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 17
-text = "Apply Resolution"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="BackButton" type="TextureButton" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" unique_id=1062637179]
-unique_name_in_owner = true
+button_text = "Apply Resolution"
+font_size = 17
+[node name="BackButton" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" instance=ExtResource("6_menu_button") unique_name_in_owner=true]
 custom_minimum_size = Vector2(220, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="NeonFrame" type="TextureRect" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton" unique_id=1866394007]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("2_button")
-expand_mode = 1
-
-[node name="BackLabel" type="Label" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton" unique_id=1127503209]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 17
-text = "Back"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[connection signal="pressed" from="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton" to="." method="_on_escape_game_button_pressed"]
-[connection signal="pressed" from="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+button_text = "Back"
+font_size = 17
+[connection signal="menu_pressed" from="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton" to="." method="_on_escape_game_button_pressed"]
+[connection signal="menu_pressed" from="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="item_selected" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ResolutionRow/ResolutionSelector" to="." method="_on_resolution_selector_item_selected"]
 [connection signal="value_changed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/VolumeRow/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
-[connection signal="pressed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton" to="." method="_on_apply_resolution_button_pressed"]
-[connection signal="pressed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="menu_pressed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton" to="." method="_on_apply_resolution_button_pressed"]
+[connection signal="menu_pressed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton" to="." method="_on_back_button_pressed"]

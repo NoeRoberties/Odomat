@@ -13,12 +13,12 @@ const BG_FRAME_PATH_TEMPLATE: String = "res://Assets/UI/Main_Menu_Anim/bg_main_m
 
 @onready var _texture_rect: TextureRect = $TextureRect
 @onready var _odomat_logo: TextureRect = %OdomatLogo
-@onready var _start_button: TextureButton = %StartGameButton
-@onready var _settings_button: TextureButton = %SettingsButton
-@onready var _quit_button: TextureButton = %QuitButton
-@onready var _back_button: TextureButton = %BackButton
+@onready var _start_button: MenuButton = %StartGameButton
+@onready var _settings_button: MenuButton = %SettingsButton
+@onready var _quit_button: MenuButton = %QuitButton
+@onready var _back_button: MenuButton = %BackButton
 @onready var _resolution_selector: OptionButton = %ResolutionSelector
-@onready var _apply_button: TextureButton = %ApplyResolutionButton
+@onready var _apply_button: MenuButton = %ApplyResolutionButton
 @onready var _volume_slider: HSlider = %VolumeSlider
 @onready var _volume_value_label: Label = %VolumeValueLabel
 @onready var _main_vbox: VBoxContainer = %MainVBoxContainer
@@ -41,12 +41,9 @@ var _base_captured: bool = false
 var _base_logo_rect: Rect2
 var _base_main_vbox_rect: Rect2
 var _base_settings_vbox_rect: Rect2
-var _base_right_margin_main: float
-var _base_right_margin_settings: float
 var _base_min_sizes: Dictionary = {}
 var _base_font_sizes: Dictionary = {}
 var _base_separations: Dictionary = {}
-var _hover_tweens: Dictionary = {}
 
 
 func _ready() -> void:
@@ -59,17 +56,9 @@ func _ready() -> void:
 	_update_apply_button_state()
 	_sync_volume_ui()
 	
-	# Disable the default white focus outlines on buttons and inputs
 	var empty_stylebox := StyleBoxEmpty.new()
-	var focus_nodes: Array[Control] = [
-		_start_button, _settings_button, _quit_button, _back_button, _apply_button,
-		_resolution_selector, _volume_slider
-	]
-	for node in focus_nodes:
-		node.add_theme_stylebox_override("focus", empty_stylebox)
-
-	for button: Control in [_start_button, _settings_button, _quit_button, _back_button, _apply_button]:
-		_setup_hover_animation(button)
+	_resolution_selector.add_theme_stylebox_override("focus", empty_stylebox)
+	_volume_slider.add_theme_stylebox_override("focus", empty_stylebox)
 	
 	get_viewport().size_changed.connect(_update_layouts)
 	call_deferred("_update_layouts")
@@ -87,32 +76,6 @@ func _fade_in_logo() -> void:
 	fade_tween.set_ease(Tween.EASE_OUT)
 	fade_tween.tween_interval(0.40)
 	fade_tween.tween_property(_odomat_logo, "modulate:a", 1.0, 1.5)
-
-
-func _setup_hover_animation(button: Control) -> void:
-	button.mouse_entered.connect(_on_menu_button_mouse_entered.bind(button))
-	button.mouse_exited.connect(_on_menu_button_mouse_exited.bind(button))
-	button.pivot_offset = button.size * 0.5
-
-
-func _on_menu_button_mouse_entered(button: Control) -> void:
-	_tween_button_scale(button, 1.04)
-
-
-func _on_menu_button_mouse_exited(button: Control) -> void:
-	_tween_button_scale(button, 1.0)
-
-
-func _tween_button_scale(button: Control, target_scale: float) -> void:
-	var previous_tween: Tween = _hover_tweens.get(button)
-	if previous_tween != null:
-		previous_tween.kill()
-
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_SINE)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(button, "scale", Vector2.ONE * target_scale, 0.12)
-	_hover_tweens[button] = tween
 
 
 func _process(delta: float) -> void:
@@ -225,7 +188,7 @@ func _on_quit_button_pressed() -> void:
 
 
 func _on_back_button_pressed() -> void:
-	_back_button.size = Vector2(1, 1)
+	_back_button.scale = Vector2.ONE
 	_settings_vbox.hide()
 	_main_vbox.show()
 	_settings_button.grab_focus()
@@ -236,9 +199,7 @@ func _capture_base_editor_settings() -> void:
 		return
 	_base_captured = true
 	
-	# Capture authored offsets rather than rectangles after a resolution change.
-	# Anchored controls can already have a resolution-dependent runtime position
-	# in _ready(), so rebuild their 1600x900 baseline from their scene offsets.
+	# Preserve the editor-authored 1600×900 layout, including anchored offsets.
 	_base_logo_rect = Rect2(
 		Vector2(_odomat_logo.offset_left, _odomat_logo.offset_top),
 		Vector2(_odomat_logo.offset_right - _odomat_logo.offset_left,
@@ -255,18 +216,7 @@ func _capture_base_editor_settings() -> void:
 			BASE_VIEWPORT_SIZE.y - _settings_vbox.offset_top - _settings_vbox.offset_bottom)
 	)
 	
-	_base_right_margin_main = BASE_VIEWPORT_SIZE.x - (_main_vbox.position.x + _main_vbox.size.x)
-	_base_right_margin_settings = BASE_VIEWPORT_SIZE.x - (_settings_vbox.position.x + _settings_vbox.size.x)
-	
-	var controls_to_track: Array[Control] = [
-		_odomat_logo,
-		_start_button, _settings_button, _quit_button, _back_button, _apply_button,
-		_resolution_selector, _volume_slider, _resolution_label, _volume_label, _volume_value_label
-	]
 	for ctrl: Control in find_children("*", "Control", true, false):
-		if not controls_to_track.has(ctrl):
-			controls_to_track.append(ctrl)
-	for ctrl: Control in controls_to_track:
 		if ctrl != null:
 			if ctrl.custom_minimum_size != Vector2.ZERO:
 				_base_min_sizes[ctrl] = ctrl.custom_minimum_size
@@ -290,15 +240,9 @@ func _update_layouts() -> void:
 	
 	_texture_rect.size = viewport_size
 
-	# Keep the exact editor-authored rectangles as the 1600x900 baseline.
-	# At other resolutions, scale each element from its own center so its
-	# position and size preserve the editor composition proportionally.
 	_apply_scaled_rect(_odomat_logo, _base_logo_rect, viewport_ratio)
 	_apply_scaled_rect(_main_vbox, _base_main_vbox_rect, viewport_ratio)
-
-	_settings_vbox.position = _base_settings_vbox_rect.position * viewport_ratio
-	_settings_vbox.size = _base_settings_vbox_rect.size * viewport_ratio
-	_settings_vbox.scale = Vector2.ONE
+	_apply_scaled_rect(_settings_vbox, _base_settings_vbox_rect, viewport_ratio)
 	_update_button_pivots()
 	
 	for ctrl: Control in _base_min_sizes:
