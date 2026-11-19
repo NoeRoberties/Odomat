@@ -1,13 +1,21 @@
 class_name RightArmIdleModule
 extends Module
 
-const ATTACK_DAMAGE: int = 1
-const KNOCKBACK_FORCE: float = 200.0
-const ATTACK_COOLDOWN: float = 0.4
-const SWOOSH_RANGE = 50.0
 const SWOOSH_SCENE: PackedScene = preload("res://Scenes/Player/WeaponEffects/SwordSwoosh.tscn")
 
+const COMBO_DAMAGE: Array[int] = [1, 1, 1, 3]
+const COMBO_KNOCKBACK: Array[float] = [200.0, 200.0, 250.0, 550.0]
+const COMBO_RANGE: Array[float] = [50.0, 60.0, 60.0, 70.0]
+const COMBO_COOLDOWN: Array[float] = [0.12, 0.12, 0.15, 0.5]
+const STRONG_HIT_INDEX: int = 3
+const COMBO_WINDOW: float = 0.3
+
+@export var attack_speed: float = 1.0
+
 var _cooldown_remaining = 0.0
+var _combo_step: int = 0
+var _combo_timer: float = 0.0
+var _attack_buffered := false
 var _attacking = false
 var _last_move_dir: Vector2 = Vector2.DOWN
 var _last_device_is_gamepad := false
@@ -21,6 +29,14 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_cooldown_remaining = maxf(_cooldown_remaining - delta, 0.0)
+	if _cooldown_remaining <= 0.0:
+		if _attack_buffered:
+			_attack_buffered = false
+			_try_attack()
+		else:
+			_combo_timer = maxf(_combo_timer - delta, 0.0)
+			if _combo_timer <= 0.0:
+				_combo_step = 0
 
 
 func _input(event: InputEvent) -> void:
@@ -31,21 +47,32 @@ func _input(event: InputEvent) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("sword_attack") and _cooldown_remaining <= 0.0:
-		var player = get_parent()
-		if player == null:
-			return
-		_cooldown_remaining = ATTACK_COOLDOWN
-		_do_attack(player)
+	if event.is_action_pressed("sword_attack"):
+		if _cooldown_remaining <= 0.0:
+			_try_attack()
+		else:
+			_attack_buffered = true
 
 
-func _do_attack(player: CharacterBody2D) -> void:
+func _try_attack() -> void:
+	var player = get_parent()
+	if player == null:
+		return
+	var step := _combo_step
+	_cooldown_remaining = COMBO_COOLDOWN[step] / maxf(attack_speed, 0.01)
+	_combo_timer = COMBO_WINDOW
+	_combo_step = (step + 1) % COMBO_DAMAGE.size()
+	_do_attack(player, step)
+
+
+func _do_attack(player: CharacterBody2D, step: int) -> void:
 	_attacking = true
 	if _last_move_dir.x <= 0.0:
 		_sprite.play("attack_left")
 	else:
 		_sprite.play("attack_right")
-	_spawn_swoosh(player)
+	_sprite.frame = 0
+	_spawn_swoosh(player, step)
 
 
 func _get_attack_direction(player: CharacterBody2D) -> Vector2:
@@ -58,14 +85,14 @@ func _get_attack_direction(player: CharacterBody2D) -> Vector2:
 	return (mouse_pos - self.global_position).normalized()
 
 
-func _spawn_swoosh(player: CharacterBody2D) -> void:
+func _spawn_swoosh(player: CharacterBody2D, step: int) -> void:
 	var swoosh := SWOOSH_SCENE.instantiate()
 	var direction := _get_attack_direction(player)
 
-	swoosh.global_position = self.global_position + direction * SWOOSH_RANGE
+	swoosh.global_position = self.global_position + direction * COMBO_RANGE[step]
 	swoosh.rotation = direction.angle() + PI
 	player.get_parent().add_child(swoosh)
-	swoosh.trigger_hit(ATTACK_DAMAGE, player.global_position, KNOCKBACK_FORCE)
+	swoosh.trigger_hit(COMBO_DAMAGE[step], player.global_position, COMBO_KNOCKBACK[step], step, step == STRONG_HIT_INDEX)
 
 
 func update_animation(move_dir: Vector2) -> void:
