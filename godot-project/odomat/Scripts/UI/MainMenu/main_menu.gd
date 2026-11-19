@@ -13,12 +13,12 @@ const BG_FRAME_PATH_TEMPLATE: String = "res://Assets/UI/Main_Menu_Anim/bg_main_m
 
 @onready var _texture_rect: TextureRect = $TextureRect
 @onready var _odomat_logo: TextureRect = %OdomatLogo
-@onready var _start_button: MenuButton = %StartGameButton
-@onready var _settings_button: MenuButton = %SettingsButton
-@onready var _quit_button: MenuButton = %QuitButton
-@onready var _back_button: MenuButton = %BackButton
+@onready var _start_button: DefaultMenuButton = $MainVBoxContainer/StartGameButton
+@onready var _settings_button: DefaultMenuButton = $MainVBoxContainer/SettingsButton
+@onready var _quit_button: DefaultMenuButton = $MainVBoxContainer/QuitButton
+@onready var _back_button: DefaultMenuButton = $SettingVBoxContainer/BackButton
 @onready var _resolution_selector: OptionButton = %ResolutionSelector
-@onready var _apply_button: MenuButton = %ApplyResolutionButton
+@onready var _apply_button: DefaultMenuButton = $SettingVBoxContainer/ApplyResolutionButton
 @onready var _volume_slider: HSlider = %VolumeSlider
 @onready var _volume_value_label: Label = %VolumeValueLabel
 @onready var _main_vbox: VBoxContainer = %MainVBoxContainer

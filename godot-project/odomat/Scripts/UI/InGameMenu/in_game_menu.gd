@@ -10,11 +10,11 @@ const SUPPORTED_RESOLUTIONS: Array[Vector2i] = [
 
 @onready var _pause_panel: TextureRect = $CenterContainer/PanelSprite
 @onready var _settings_panel: TextureRect = %SettingsPanelSprite
-@onready var _escape_game_button: MenuButton = %EscapeGameButton
-@onready var _settings_button: MenuButton = %SettingsButton
+@onready var _escape_game_button: DefaultMenuButton = $CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton
+@onready var _settings_button: DefaultMenuButton = $CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton
 @onready var _resolution_selector: OptionButton = %ResolutionSelector
-@onready var _apply_button: MenuButton = %ApplyResolutionButton
-@onready var _back_button: MenuButton = %BackButton
+@onready var _apply_button: DefaultMenuButton = $CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton
+@onready var _back_button: DefaultMenuButton = $CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton
 @onready var _volume_slider: HSlider = %VolumeSlider
 @onready var _volume_value_label: Label = %VolumeValueLabel
 

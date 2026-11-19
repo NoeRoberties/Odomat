@@ -1,4 +1,4 @@
-class_name MenuButton
+class_name DefaultMenuButton
 extends TextureButton
 
 signal menu_pressed
@@ -21,7 +21,7 @@ func _ready() -> void:
 	pressed.connect(_on_pressed)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
-	size_changed.connect(_update_pivot)
+	resized.connect(_update_pivot)
 	_update_pivot()
 
 
