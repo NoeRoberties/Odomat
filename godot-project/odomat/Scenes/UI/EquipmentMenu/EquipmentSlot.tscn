@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b8vtupf7mmlqn"]
 
 [ext_resource type="Script" uid="uid://becd5aso3ydbb" path="res://Scripts/UI/EquipmentMenu/equipment_slot.gd" id="1_1tl5q"]
-[ext_resource type="Texture2D" uid="uid://x335dkkyng8m" path="res://Assets/HUD_UI/Equipment_Menu_assets/glowing_equipment_slot.png" id="2_huged"]
+[ext_resource type="Texture2D" uid="uid://x335dkkyng8m" path="res://Assets/UI/Equipment_Menu_assets/glowing_equipment_slot.png" id="2_huged"]
 [ext_resource type="FontFile" path="res://Assets/Fonts/VCR_OSD_MONO_1.001.ttf" id="3_font"]
 
 [node name="EquipmentSlot" type="Control" unique_id=674606895]

@@ -1,12 +1,49 @@
 [gd_scene format=3 uid="uid://dqm8rx76ftwxy"]
 
 [ext_resource type="Script" uid="uid://ca70on6f5lwgv" path="res://Scripts/UI/InGameMenu/in_game_menu.gd" id="1_7m2gq"]
-[ext_resource type="Texture2D" uid="uid://ddeuc7o5jl4n8" path="res://Assets/HUD_UI/button_neon.png" id="2_button"]
-[ext_resource type="Texture2D" uid="uid://cd5xf0ss1fp80" path="res://Assets/HUD_UI/menu_panel.png" id="3_panel"]
+[ext_resource type="Texture2D" uid="uid://ddeuc7o5jl4n8" path="res://Assets/UI/button_neon.png" id="2_button"]
+[ext_resource type="Texture2D" uid="uid://cd5xf0ss1fp80" path="res://Assets/UI/menu_panel.png" id="3_panel"]
 [ext_resource type="FontFile" uid="uid://c4u13bcvldcjo" path="res://Assets/Fonts/VCR_OSD_MONO_1.001.ttf" id="4_font"]
+[ext_resource type="Texture2D" uid="uid://caftd348ak0jt" path="res://Assets/UI/slider_grabb.png" id="5_grabber"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
 bg_color = Color(0, 0, 0, 0.55)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_selector"]
+bg_color = Color(0.1254902, 0.12156863, 0.14117648, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.84705883, 0.22745098, 0.8, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider"]
+bg_color = Color(0.1254902, 0.12156863, 0.14117648, 1)
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.68931895, 0.180704, 0.6921424, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0.68931895, 0.180704, 0.6921424, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_top = 1.0
+expand_margin_bottom = 1.0
 
 [node name="InGameMenu" type="CanvasLayer" unique_id=1902034122]
 process_mode = 3
@@ -27,17 +64,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="NinePatchRect" parent="CenterContainer" unique_id=1274275468]
+[node name="PanelSprite" type="TextureRect" parent="CenterContainer" unique_id=1274275468]
 texture_filter = 1
-custom_minimum_size = Vector2(348, 220)
+custom_minimum_size = Vector2(348, 260)
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("3_panel")
-patch_margin_left = 50
-patch_margin_top = 30
-patch_margin_right = 50
-patch_margin_bottom = 30
+expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer" unique_id=689929450]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelSprite" unique_id=689929450]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,23 +84,23 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer" unique_id=722158407]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelSprite/MarginContainer" unique_id=722158407]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1205329766]
+[node name="Title" type="Label" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" unique_id=1205329766]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_font")
 text = "Pause Menu"
 horizontal_alignment = 1
 
-[node name="EscapeGameButton" type="TextureButton" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1527013714]
+[node name="EscapeGameButton" type="TextureButton" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" unique_id=1527013714]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 130)
+custom_minimum_size = Vector2(220, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="NeonFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=2274391001]
+[node name="NeonFrame" type="TextureRect" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=-2020576295]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,9 +110,8 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_button")
 expand_mode = 1
-stretch_mode = 0
 
-[node name="EscapeGameLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=1362153953]
+[node name="EscapeGameLabel" type="Label" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton" unique_id=1362153953]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -85,15 +119,188 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 21
 text = "Escape Game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Hint" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=2000859198]
+[node name="SettingsButton" type="TextureButton" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" unique_id=1527013715]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="NeonFrame" type="TextureRect" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton" unique_id=-2020576294]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_button")
+expand_mode = 1
+
+[node name="SettingsLabel" type="Label" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton" unique_id=1362153954]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 21
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hint" type="Label" parent="CenterContainer/PanelSprite/MarginContainer/VBoxContainer" unique_id=2000859198]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_font")
 text = "Press Esc to close"
 horizontal_alignment = 1
 
-[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/EscapeGameButton" to="." method="_on_escape_game_button_pressed"]
+[node name="SettingsPanelSprite" type="TextureRect" parent="CenterContainer" unique_id=1274275469]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(500, 330)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_panel")
+expand_mode = 1
+
+[node name="SettingsMargin" type="MarginContainer" parent="CenterContainer/SettingsPanelSprite" unique_id=689929451]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="SettingsVBox" type="VBoxContainer" parent="CenterContainer/SettingsPanelSprite/SettingsMargin" unique_id=722158408]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="ResolutionRow" type="HBoxContainer" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" unique_id=1873603550]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ResolutionLabel" type="Label" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ResolutionRow" unique_id=1902248285]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
+text = "Resolution"
+
+[node name="ResolutionSelector" type="OptionButton" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ResolutionRow" unique_id=47365866]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_styles/normal = SubResource("StyleBoxFlat_selector")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_selector")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_selector")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_selector")
+theme_override_styles/hover = SubResource("StyleBoxFlat_selector")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_selector")
+
+[node name="VolumeRow" type="HBoxContainer" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" unique_id=1205930324]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VolumeLabel" type="Label" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/VolumeRow" unique_id=1596164942]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
+text = "Master Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/VolumeRow" unique_id=819721831]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_icons/grabber = ExtResource("5_grabber")
+theme_override_icons/grabber_highlight = ExtResource("5_grabber")
+theme_override_icons/grabber_disabled = ExtResource("5_grabber")
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_grabber")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_grabber")
+value = 100.0
+
+[node name="VolumeValueLabel" type="Label" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/VolumeRow" unique_id=767953073]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
+text = "100%"
+horizontal_alignment = 2
+
+[node name="ApplyResolutionButton" type="TextureButton" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" unique_id=652907888]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="NeonFrame" type="TextureRect" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton" unique_id=1866394006]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_button")
+expand_mode = 1
+
+[node name="ApplyResolutionLabel" type="Label" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton" unique_id=1127503208]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 17
+text = "Apply Resolution"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="TextureButton" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox" unique_id=1062637179]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="NeonFrame" type="TextureRect" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton" unique_id=1866394007]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_button")
+expand_mode = 1
+
+[node name="BackLabel" type="Label" parent="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton" unique_id=1127503209]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 17
+text = "Back"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/EscapeGameButton" to="." method="_on_escape_game_button_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelSprite/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="item_selected" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ResolutionRow/ResolutionSelector" to="." method="_on_resolution_selector_item_selected"]
+[connection signal="value_changed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/VolumeRow/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="pressed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/ApplyResolutionButton" to="." method="_on_apply_resolution_button_pressed"]
+[connection signal="pressed" from="CenterContainer/SettingsPanelSprite/SettingsMargin/SettingsVBox/BackButton" to="." method="_on_back_button_pressed"]
