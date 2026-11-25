@@ -9,21 +9,24 @@ var _dir := Vector2.RIGHT
 var _speed := 600.0
 var _size := 1.0
 var _life := LIFETIME
+var _animation: String = "default"
 
 
-func setup(dir: Vector2, speed: float, size: float) -> void:
+func setup(dir: Vector2, speed: float, size: float, animation: String) -> void:
 	_dir = dir
 	_speed = speed
 	_size = size
+	_animation = animation
 
 
 func _ready() -> void:
 	scale = Vector2.ONE * _size
-	body_entered.connect(_on_body_entered)
-
-
-func _draw() -> void:
-	draw_circle(Vector2.ZERO, BASE_RADIUS, Color(1.0, 0.6, 0.1))
+	rotation = _dir.angle()
+	if _animation == "default":
+		$FullyChargedHitbox.disabled = true
+	if _animation == "fully_charged":
+		$DefaultHitbox.disabled = true
+	$AnimatedSprite2D.play(_animation)
 
 
 func _physics_process(delta: float) -> void:
