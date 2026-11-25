@@ -1,24 +1,24 @@
 [gd_scene format=3 uid="uid://ceeilcsopig6t"]
 
 [ext_resource type="Script" uid="uid://7wdd7f5lmx2o" path="res://Scripts/Player/WeaponEfffects/bullet.gd" id="1_bullet"]
-[ext_resource type="Texture2D" uid="uid://bn6id4ninvxsw" path="res://Assets/Player/LeftArm/Projectile_Canon.png" id="2_l5skj"]
+[ext_resource type="Texture2D" uid="uid://m01d0113ny7b" path="res://Assets/Player/LeftArm/LeftArmCannon/Projectile_Canon.png" id="2_l5skj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bullet"]
 radius = 6.0827627
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_l5skj"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_72q1v"]
 atlas = ExtResource("2_l5skj")
 region = Rect2(0, 8, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_72q1v"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_sb5qn"]
 atlas = ExtResource("2_l5skj")
 region = Rect2(68, 8, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sb5qn"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjd47"]
 atlas = ExtResource("2_l5skj")
 region = Rect2(136, 8, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wjd47"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5skj"]
 atlas = ExtResource("2_l5skj")
 region = Rect2(204, 0, 64, 64)
 
@@ -34,13 +34,13 @@ region = Rect2(0, 96, 64, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_l5skj")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_72q1v")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sb5qn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjd47")
 }],
 "loop": true,
 "name": &"default",
@@ -48,7 +48,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wjd47")
+"texture": SubResource("AtlasTexture_l5skj")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dtmwg")
@@ -75,7 +75,7 @@ shape = SubResource("CircleShape2D_bullet")
 position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_h04rx")
 animation = &"fully_charged"
-frame_progress = 0.4586345
+frame_progress = 0.76388997
 
 [node name="FullyChargedHitbox" type="CollisionShape2D" parent="." unique_id=1108198123]
 position = Vector2(4, 3)

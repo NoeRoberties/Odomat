@@ -2,89 +2,86 @@
 
 [ext_resource type="Script" uid="uid://bce4qbbgy0ctb" path="res://Scripts/Player/Modules/LeftArmModule/left_arm_cannon.gd" id="1_dm8c5"]
 [ext_resource type="Script" uid="uid://dshkf1jvbt0hi" path="res://Scripts/Player/Modules/module_data.gd" id="2_ljj52"]
-[ext_resource type="Texture2D" uid="uid://ckffl6sk6rg1x" path="res://Assets/Player/LeftArm/Left_arm_canon.png" id="2_pedts"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ks8r0"]
-atlas = ExtResource("2_pedts")
-region = Rect2(88, 0, 42, 48)
+[ext_resource type="Texture2D" uid="uid://brroqcvo321ky" path="res://Assets/Player/LeftArm/LeftArmCannon/Left_arm_cannon_icon.png" id="2_pedts"]
+[ext_resource type="Texture2D" uid="uid://7ydjpvf0pqff" path="res://Assets/Player/LeftArm/LeftArmCannon/Left_arm_canon.png" id="4_pedts"]
 
 [sub_resource type="Resource" id="Resource_lnuxo"]
 script = ExtResource("2_ljj52")
 module_name = "Cannon"
 slot = 1
-item_texture = SubResource("AtlasTexture_ks8r0")
+item_texture = ExtResource("2_pedts")
 metadata/_custom_type_script = "uid://dshkf1jvbt0hi"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dmski"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(68, 0, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d88w4"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(136, 0, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yflgs"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(204, 0, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d2l46"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(272, 0, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6nfrb"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(0, 96, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hawru"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(68, 96, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6rhpl"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(136, 96, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qio4p"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(204, 96, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k6kxc"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(0, 192, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ntco2"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(68, 192, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bdm1m"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(136, 192, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vpysj"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(204, 192, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wf4ca"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(272, 192, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_td3d3"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(0, 288, 68, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_88ce7"]
-atlas = ExtResource("2_pedts")
+atlas = ExtResource("4_pedts")
 region = Rect2(68, 288, 68, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yc5ma"]
-atlas = ExtResource("2_pedts")
-region = Rect2(204, 288, 68, 96)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ou0xb"]
+atlas = ExtResource("4_pedts")
+region = Rect2(136, 288, 68, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lnuxo"]
-atlas = ExtResource("2_pedts")
+[sub_resource type="AtlasTexture" id="AtlasTexture_yc5ma"]
+atlas = ExtResource("4_pedts")
 region = Rect2(0, 0, 68, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pedts"]
-atlas = ExtResource("2_pedts")
+[sub_resource type="AtlasTexture" id="AtlasTexture_65nho"]
+atlas = ExtResource("4_pedts")
 region = Rect2(272, 96, 68, 96)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cannon"]
@@ -141,7 +138,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_88ce7")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yc5ma")
+"texture": SubResource("AtlasTexture_ou0xb")
 }],
 "loop": false,
 "name": &"charging_right",
@@ -149,7 +146,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lnuxo")
+"texture": SubResource("AtlasTexture_yc5ma")
 }],
 "loop": true,
 "name": &"walk_left",
@@ -157,7 +154,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_pedts")
+"texture": SubResource("AtlasTexture_65nho")
 }],
 "loop": true,
 "name": &"walk_right",
@@ -170,7 +167,7 @@ module_data = SubResource("Resource_lnuxo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1498248716]
 sprite_frames = SubResource("SpriteFrames_cannon")
-animation = &"walk_left"
+animation = &"walk_right"
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=1803607626]
 position = Vector2(36, -5)
