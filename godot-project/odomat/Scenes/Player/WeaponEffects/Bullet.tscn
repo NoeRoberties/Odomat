@@ -1,12 +1,84 @@
 [gd_scene format=3 uid="uid://ceeilcsopig6t"]
 
-[ext_resource type="Script" uid="uid://7wdd7f5lmx2o" path="res://Scripts/Player/bullet.gd" id="1_bullet"]
+[ext_resource type="Script" uid="uid://7wdd7f5lmx2o" path="res://Scripts/Player/WeaponEfffects/bullet.gd" id="1_bullet"]
+[ext_resource type="Texture2D" uid="uid://m01d0113ny7b" path="res://Assets/Player/LeftArm/LeftArmCannon/Projectile_Canon.png" id="2_l5skj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bullet"]
+radius = 6.0827627
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_72q1v"]
+atlas = ExtResource("2_l5skj")
+region = Rect2(0, 8, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sb5qn"]
+atlas = ExtResource("2_l5skj")
+region = Rect2(68, 8, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjd47"]
+atlas = ExtResource("2_l5skj")
+region = Rect2(136, 8, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5skj"]
+atlas = ExtResource("2_l5skj")
+region = Rect2(204, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dtmwg"]
+atlas = ExtResource("2_l5skj")
+region = Rect2(272, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8iwps"]
+atlas = ExtResource("2_l5skj")
+region = Rect2(0, 96, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h04rx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_72q1v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sb5qn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjd47")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l5skj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dtmwg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8iwps")
+}],
+"loop": true,
+"name": &"fully_charged",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1op0c"]
 radius = 8.0
 
 [node name="Bullet" type="Area2D" unique_id=2003319049]
 script = ExtResource("1_bullet")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1979691984]
+[node name="DefaultHitbox" type="CollisionShape2D" parent="." unique_id=1979691984]
+position = Vector2(-2, -1)
 shape = SubResource("CircleShape2D_bullet")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1134394544]
+position = Vector2(0, -1)
+sprite_frames = SubResource("SpriteFrames_h04rx")
+animation = &"fully_charged"
+frame_progress = 0.76388997
+
+[node name="FullyChargedHitbox" type="CollisionShape2D" parent="." unique_id=1108198123]
+position = Vector2(4, 3)
+shape = SubResource("CircleShape2D_1op0c")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
