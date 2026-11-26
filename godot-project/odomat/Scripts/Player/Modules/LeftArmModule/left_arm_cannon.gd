@@ -58,6 +58,7 @@ func _stop_charge() -> void:
 	_charging = false
 	_fully_charged = false
 	_charge_time = 0.0
+	_sprite.speed_scale = 1.0
 
 
 func _blink_full_charged() -> void:
